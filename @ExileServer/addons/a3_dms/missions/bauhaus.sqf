@@ -20,7 +20,7 @@ _pos = [10,100] call DMS_findSafePos;
 
 
 // Set general mission difficulty
-_difficulty = "difficult";
+_difficulty = "moderate";
 
 
 // Create AI
@@ -31,7 +31,7 @@ _group =
 [
 	_pos,					// Position of AI
 	_AICount,				// Number of AI
-	"random",				// "random","hardcore","difficult","moderate", or "easy"
+	"moderate",				// "random","hardcore","difficult","moderate", or "easy"
 	"random", 				// "random","assault","MG","sniper" or "unarmed" OR [_type,_launcher]
 	_side 					// "bandit","hero", etc.
 ] call DMS_SpawnAIGroup;

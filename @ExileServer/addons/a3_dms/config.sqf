@@ -6,7 +6,7 @@
 */
 
 // If you're gonna make any changes to DMS functions and/or create any new missions, it's a good idea to enable this :)
-DMS_DEBUG = true;
+DMS_DEBUG = false;
 
 
 
@@ -22,7 +22,7 @@ DMS_DEBUG = true;
 	DMS_AI_KillPercent					= 100;						// The percent amount of AI that need to be killed for "killPercent" mission requirement (NOT IMPLEMENTED)
 
 	DMS_BanditMoneyGainOnKill			= 100;						// The amount of Poptabs gained for killing a bandit
-	DMS_BanditRepGainOnKill				= 25;						// The amount of Respect gained for killing a bandit
+	DMS_BanditRepGainOnKill				= 50;						// The amount of Respect gained for killing a bandit
 
 	DMS_MissionMarkerWinDot				= true;						// Keep the mission marker dot with a "win" message after mission is over
 	DMS_MissionMarkerLoseDot			= true;						// Keep the mission marker dot with a "lose" message after mission is over
@@ -47,7 +47,7 @@ DMS_DEBUG = true;
 	DMS_SpawnBoxIRGrenade				= true;						// Spawn an IR grenade on mission box upon misson completion during nighttime
 	
 	DMS_MinPlayerCount					= 0; 						// Minimum number of players until mission start
-	DMS_MinServerFPS					= 5; 						// Minimum server FPS for missions to start
+	DMS_MinServerFPS					= 2; 						// Minimum server FPS for missions to start
 
 	//Mission notification settings
 	DMS_PlayerNotificationTypes =		[							// Notification types. Supported values are: ["dynamicTextRequest", "standardHintRequest", "systemChatRequest"]
