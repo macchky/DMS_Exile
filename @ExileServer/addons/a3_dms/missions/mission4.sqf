@@ -61,13 +61,13 @@ _missionObjs =
 ];
 
 // Define Mission Start message
-_msgStart = format["傭兵たちが %1 で発見された！ 殺して装備を奪い取れ！",mapGridPosition _pos];
+_msgStart = format["傭兵たちが %1 で発見された！ 殺して装備を奪い取れ！\nA group of mercenaries has been spotted at %1! Kill them and take their equipment!",mapGridPosition _pos];
 
 // Define Mission Win message
-_msgWIN = format["%1 で傭兵たちの排除に成功した！",mapGridPosition _pos];
+_msgWIN = format["%1 で傭兵たちの排除に成功した！\nConvicts have successfully eliminated the mercenaries at %1!",mapGridPosition _pos];
 
 // Define Mission Lose message
-_msgLOSE = format["%1 に傭兵たちはもういなくなった！",mapGridPosition _pos];
+_msgLOSE = format["%1 に傭兵たちはもういなくなった！\nThe mercenaries are no longer at %1!",mapGridPosition _pos];
 
 
 // Define mission name (for map marker and logging)
