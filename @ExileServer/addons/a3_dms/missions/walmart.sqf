@@ -69,13 +69,13 @@ _missionObjs =
 ];
 
 // Define Mission Start message
-_msgStart = format["A local Walmart shop is being raided, stop the raiders and take the loot!"];
+_msgStart = format["コンビニが襲われている！襲撃者を排除しアイテムを奪え！"];
 
 // Define Mission Win message
-_msgWIN = format["Convicts have done a good deed and stopped the raiders!"];
+_msgWIN = format["コンビニ襲撃は阻止された！"];
 
 // Define Mission Lose message
-_msgLOSE = format["The raiders has looted everything from Walmart and escaped!"];
+_msgLOSE = format["コンビニ強盗は逃げてしまった！"];
 
 
 // Define mission name (for map marker and logging)

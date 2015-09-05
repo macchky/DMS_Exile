@@ -66,13 +66,13 @@ _missionObjs =
 ];
 
 // Define Mission Start message
-_msgStart = format["A Bauhaus truck has crashed and lost all its building supplies, get there quickly!"];
+_msgStart = format["トラックが事故って積み荷が落とされた、早く奪ってしまえ！"];
 
 // Define Mission Win message
-_msgWIN = format["Convicts have successfully claimed the crashed Buahaus truck %1!"];
+_msgWIN = format["%1　積み荷の奪取に成功した！"];
 
 // Define Mission Lose message
-_msgLOSE = format["The Bauhause truck has been repaired and escaped!"];
+_msgLOSE = format["トラックは直され、逃げてしまった！"];
 
 
 // Define mission name (for map marker and logging)
