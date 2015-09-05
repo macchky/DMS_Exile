@@ -65,13 +65,13 @@ _missionObjs =
 ];
 
 // Define Mission Start message
-_msgStart = format["兵士の一団がこの島で迷子になったようだ。排除しろ！\nA battalion of soldiers have gotten lost in convict land! Eliminate them!"];
+_msgStart = format["兵士の一団がこの島で迷子になったようだ。排除しろ！  A battalion of soldiers have gotten lost in convict land! Eliminate them!"];
 
 // Define Mission Win message
-_msgWIN = format["迷子の兵団の排除に成功した！\nConvicts have successfully eliminated the lost battalion!"];
+_msgWIN = format["迷子の兵団の排除に成功した！  Convicts have successfully eliminated the lost battalion!"];
 
 // Define Mission Lose message
-_msgLOSE = format["迷子の兵団はこの島から脱出してしまった！\nWhittlesey escaped with his Lost Battalion!"];
+_msgLOSE = format["迷子の兵団はこの島から脱出してしまった！  Whittlesey escaped with his Lost Battalion!"];
 
 
 // Define mission name (for map marker and logging)
