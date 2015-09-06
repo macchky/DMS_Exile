@@ -51,11 +51,11 @@ DMS_DEBUG = false;
 
 	//Mission notification settings
 	DMS_PlayerNotificationTypes =		[							// Notification types. Supported values are: ["dynamicTextRequest", "standardHintRequest", "systemChatRequest"]
-											//"dynamicTextRequest", <--- Currently won't work.
+											//"dynamicTextRequest", <--- Won't work in Exile v0.9.19
 											"standardHintRequest",
 											"systemChatRequest"
 										];
-	DMS_dynamicText_Size				= "0.55";					// Dynamic Text size for "dynamicTextRequest" notification type.
+	DMS_dynamicText_Size				= "0.65";					// Dynamic Text size for "dynamicTextRequest" notification type.
 	DMS_dynamicText_Color				= "#FFCC00";				// Dynamic Text color for "dynamicTextRequest" notification type.
 
 	DMS_MissionTypes =					[							//	List of missions with spawn chances. If they add up to 100%, they represent the percentage chance each one will spawn
@@ -523,6 +523,6 @@ DMS_DEBUG = false;
 // Debug Overwrites
 if(DMS_DEBUG) then {
 	DMS_TimeBetweenMissions			= [30,60];
-	DMS_MissionTimeOut				= [240,300];
+	DMS_MissionTimeOut				= [60,90];
 	diag_log format ["DMS_DEBUG CONFIG :: Overriding DMS_TimeBetweenMissions (%1) and DMS_MissionTimeOut (%2)",DMS_TimeBetweenMissions,DMS_MissionTimeOut];
 };
