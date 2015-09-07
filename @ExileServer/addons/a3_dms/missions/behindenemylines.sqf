@@ -20,18 +20,18 @@ _pos = [10,100] call DMS_fnc_findSafePos;
 
 
 // Set general mission difficulty
-_difficulty = "moderate";
+_difficulty = "easy";
 
 
 // Create AI
 // TODO: Spawn AI only when players are nearby
-_AICount = 6 + (round (random 2));
+_AICount = 2 + (round (random 2));
 
 _group =
 [
 	_pos,					// Position of AI
 	_AICount,				// Number of AI
-	"moderate",				// "random","hardcore","difficult","moderate", or "easy"
+	"random",				// "random","hardcore","difficult","moderate", or "easy"
 	"random", 				// "random","assault","MG","sniper" or "unarmed" OR [_type,_launcher]
 	_side 					// "bandit","hero", etc.
 ] call DMS_fnc_SpawnAIGroup;
@@ -39,22 +39,15 @@ _group =
 
 // Create Crates
 _crate1 = ["Box_NATO_Wps_F",_pos] call DMS_fnc_SpawnCrate;
-_crate2 = ["Box_NATO_Wps_F",[(_pos select 0)+2,(_pos select 1)-1,0]] call DMS_fnc_SpawnCrate;
 
-_wreck = createVehicle ["Land_Wreck_Ural_F",[(_pos select 0) - 10, (_pos select 1),-0.2],[], 0, "CAN_COLLIDE"];
+_wreck = createVehicle ["Land_BagBunker_Tower_F",[(_pos select 0) - 10, (_pos select 1),-0.2],[], 0, "CAN_COLLIDE"];
 
 // Set crate loot values
 _crate_loot_values1 =
 [
-	2,		// Weapons
-	15,		// Items
+	5,		// Weapons
+	3,		// Items
 	2 		// Backpacks
-];
-_crate_loot_values2 =
-[
-	1,		// Weapons
-	20,		// Items
-	5 		// Backpacks
 ];
 
 
@@ -69,20 +62,20 @@ _missionObjs =
 [
 	[_wreck],
 	[],
-	[[_crate1,_crate_loot_values1],[_crate2,_crate_loot_values2]]
+	[[_crate1,_crate_loot_values1]]
 ];
 
-
-_msgStart = format["<t color='#FFFF00' size='1.25'>Bauhaus Truck </t><br/> トラックが事故って積み荷が落とされた、早く奪ってしまえ！<br/>A Bauhaus truck has crashed and lost all its building supplies, get there quickly!"];
+// Define Mission Start message
+_msgStart = format["<t color='#FFFF00' size='1.25'>Enemy Bunker! </t><br/> A team of soldiers have set up a bunker inside convict land. Rid them from this place!"];
 
 // Define Mission Win message
-_msgWIN = format["<t color='#0080ff' size='1.25'>Bauhaus Truck </t><br/> 積み荷の奪取に成功した！<br/>Convicts have successfully claimed the crashed Buahaus truck!"];
+_msgWIN = format["<t color='#0080ff' size='1.25'>Enemy Bunker! </t><br/> Convicts have successfully taken care of the enemies and their bunker!"];
 
 // Define Mission Lose message
-_msgLOSE = format["<t color='#FF0000' size='1.25'>Bauhaus Truck! </t><br/> トラックは直され、逃げてしまった！<br/>The Bauhause truck has been repaired and escaped!"];
+_msgLOSE = format["<t color='#FF0000' size='1.25'>Enemy Bunker! </t><br/> The soldiers became impatient and have escaped the area!"];
 
 // Define mission name (for map marker and logging)
-_missionName = "Bauhaus Truck";
+_missionName = "Enemy Bunker";
 
 // Create Markers
 _markers =

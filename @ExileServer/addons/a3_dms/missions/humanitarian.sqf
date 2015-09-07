@@ -25,13 +25,13 @@ _difficulty = "moderate";
 
 // Create AI
 // TODO: Spawn AI only when players are nearby
-_AICount = 6 + (round (random 2));
+_AICount = 3 + (round (random 2));
 
 _group =
 [
 	_pos,					// Position of AI
 	_AICount,				// Number of AI
-	"moderate",				// "random","hardcore","difficult","moderate", or "easy"
+	"random",				// "random","hardcore","difficult","moderate", or "easy"
 	"random", 				// "random","assault","MG","sniper" or "unarmed" OR [_type,_launcher]
 	_side 					// "bandit","hero", etc.
 ] call DMS_fnc_SpawnAIGroup;
@@ -39,22 +39,15 @@ _group =
 
 // Create Crates
 _crate1 = ["Box_NATO_Wps_F",_pos] call DMS_fnc_SpawnCrate;
-_crate2 = ["Box_NATO_Wps_F",[(_pos select 0)+2,(_pos select 1)-1,0]] call DMS_fnc_SpawnCrate;
 
-_wreck = createVehicle ["Land_Wreck_Ural_F",[(_pos select 0) - 10, (_pos select 1),-0.2],[], 0, "CAN_COLLIDE"];
+_wreck = createVehicle ["Land_Wreck_Van_F",[(_pos select 0) - 10, (_pos select 1),-0.2],[], 0, "CAN_COLLIDE"];
 
 // Set crate loot values
 _crate_loot_values1 =
 [
 	2,		// Weapons
-	15,		// Items
+	[12,["Exile_Item_GloriousKnakWorst_Cooked","Exile_Item_PlasticBottleFreshWater","Exile_Item_PlasticBottleFreshWater","Exile_Item_BBQSandwich_Cooked","Exile_Item_Catfood_Cooked","Exile_Item_ChristmasTinner_Cooked"]],		// Items
 	2 		// Backpacks
-];
-_crate_loot_values2 =
-[
-	1,		// Weapons
-	20,		// Items
-	5 		// Backpacks
 ];
 
 
@@ -69,20 +62,20 @@ _missionObjs =
 [
 	[_wreck],
 	[],
-	[[_crate1,_crate_loot_values1],[_crate2,_crate_loot_values2]]
+	[[_crate1,_crate_loot_values1]]
 ];
 
-
-_msgStart = format["<t color='#FFFF00' size='1.25'>Bauhaus Truck </t><br/> トラックが事故って積み荷が落とされた、早く奪ってしまえ！<br/>A Bauhaus truck has crashed and lost all its building supplies, get there quickly!"];
+// Define Mission Start message
+_msgStart = format["<t color='#FFFF00' size='1.25'>Humantarian Supplies! </t><br/> A truck carrying humanitarian supplies has been sized by bandits, stop them!"];
 
 // Define Mission Win message
-_msgWIN = format["<t color='#0080ff' size='1.25'>Bauhaus Truck </t><br/> 積み荷の奪取に成功した！<br/>Convicts have successfully claimed the crashed Buahaus truck!"];
+_msgWIN = format["<t color='#0080ff' size='1.25'>Humantarian Supplies! </t><br/> Convicts have successfully claimed the humanitarian supplies for themselves!"];
 
 // Define Mission Lose message
-_msgLOSE = format["<t color='#FF0000' size='1.25'>Bauhaus Truck! </t><br/> トラックは直され、逃げてしまった！<br/>The Bauhause truck has been repaired and escaped!"];
+_msgLOSE = format["<t color='#FF0000' size='1.25'>Humantarian Supplies! </t><br/> The bandits have taken the humanitarian supplies and escaped!"];
 
 // Define mission name (for map marker and logging)
-_missionName = "Bauhaus Truck";
+_missionName = "Humantarian Supplies";
 
 // Create Markers
 _markers =

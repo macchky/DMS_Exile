@@ -20,12 +20,12 @@ _pos = [10,100] call DMS_fnc_findSafePos;
 
 
 // Set general mission difficulty
-_difficulty = "hardcore";
+_difficulty = "moderate";
 
 
 // Create AI
 // TODO: Spawn AI only when players are nearby
-_AICount = 6 + (round (random 2));
+_AICount = 7 + (round (random 2));
 
 _group =
 [
@@ -43,9 +43,9 @@ _crate = ["Box_NATO_Wps_F",_pos] call DMS_fnc_SpawnCrate;
 // Set crate loot values
 _crate_loot_values =
 [
-	7,		// Weapons
+	8,		// Weapons
 	5,		// Items
-	5 		// Backpacks
+	2 		// Backpacks
 ];
 
 
@@ -64,14 +64,13 @@ _missionObjs =
 ];
 
 // Define Mission Start message
-_msgStart = format["兵士の一団がこの島で迷子になったようだ。排除しろ！  A battalion of soldiers have gotten lost in convict land! Eliminate them!"];
+_msgStart = format["<t color='#FFFF00' size='1.25'>Lost Battalion! </t><br/> 兵士の一団がこの島で迷子になったようだ。排除しろ！<br/>A battalion of soldiers have gotten lost in convict land! Eliminate them!"];
 
 // Define Mission Win message
-_msgWIN = format["迷子の兵団の排除に成功した！  Convicts have successfully eliminated the lost battalion!"];
+_msgWIN = format["<t color='#0080ff' size='1.25'>Lost Battalion! </t><br/> 迷子の兵団の排除に成功した！<br/>Convicts have successfully eliminated the lost battalion!"];
 
 // Define Mission Lose message
-_msgLOSE = format["迷子の兵団はこの島から脱出してしまった！  Whittlesey escaped with his Lost Battalion!"];
-
+_msgLOSE = format["<t color='#FF0000' size='1.25'>Lost Battalion! </t><br/> 迷子の兵団はこの島から脱出してしまった！<br/>Whittlesey escaped with his Lost Battalion!"];
 
 // Define mission name (for map marker and logging)
 _missionName = "Lost Battalion";

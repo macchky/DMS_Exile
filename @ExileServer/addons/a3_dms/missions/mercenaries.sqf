@@ -1,5 +1,8 @@
 /*
-	Sample mission (duplicate for testing purposes)
+	Sample mission
+	Created by Defent and eraser1
+
+	Called from DMS_selectMission
 */
 
 private ["_num", "_side", "_pos", "_difficulty", "_AICount", "_group", "_crate", "_crate_loot_values", "_msgStart", "_msgWIN", "_msgLOSE", "_missionName", "_missionAIUnits", "_missionObjs", "_markers", "_time", "_added"];
@@ -13,11 +16,11 @@ _side = "bandit";
 
 
 // find position
-_pos = call DMS_fnc_findSafePos;
+_pos = [10,100] call DMS_fnc_findSafePos;
 
 
 // Set general mission difficulty
-_difficulty = "difficult";
+_difficulty = "moderate";
 
 
 // Create AI
@@ -28,7 +31,7 @@ _group =
 [
 	_pos,					// Position of AI
 	_AICount,				// Number of AI
-	"moderate",			// "random","hardcore","difficult","moderate", or "easy"
+	"moderate",				// "random","hardcore","difficult","moderate", or "easy"
 	"random", 				// "random","assault","MG","sniper" or "unarmed" OR [_type,_launcher]
 	_side 					// "bandit","hero", etc.
 ] call DMS_fnc_SpawnAIGroup;
@@ -55,20 +58,19 @@ _missionAIUnits =
 // Define mission-spawned objects and loot values
 _missionObjs =
 [
-	[],			// No spawned buildings
+	[],
 	[],
 	[[_crate,_crate_loot_values]]
 ];
 
 // Define Mission Start message
-_msgStart = format["傭兵たちが %1 で発見された！ 殺して装備を奪い取れ！  A group of mercenaries has been spotted at %1! Kill them and take their equipment!",mapGridPosition _pos];
+_msgStart = format["<t color='#FFFF00' size='1.25'>Mercenary Group! </t><br/> 傭兵たちが発見された！ 殺して装備を奪い取れ！<br/>A group of mercenaries has been spotted. Kill them and take their equipment!"];
 
 // Define Mission Win message
-_msgWIN = format["%1 で傭兵たちの排除に成功した！  Convicts have successfully eliminated the mercenaries at %1!",mapGridPosition _pos];
+_msgWIN = format["<t color='#0080ff' size='1.25'>Mercenary Group! </t><br/> 傭兵たちの排除に成功した！<br/>Convicts have successfully eliminated the mercenaries"];
 
 // Define Mission Lose message
-_msgLOSE = format["%1 に傭兵たちはもういなくなった！  The mercenaries are no longer at %1!",mapGridPosition _pos];
-
+_msgLOSE = format["<t color='#FF0000' size='1.25'>Mercenary Group! </t><br/> 傭兵たちはもういなくなった！<br/>The mercenaries have escaped and they took all their loot with them!"];
 
 // Define mission name (for map marker and logging)
 _missionName = "Mercenary Group";

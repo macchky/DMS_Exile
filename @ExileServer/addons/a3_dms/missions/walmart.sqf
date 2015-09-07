@@ -69,14 +69,13 @@ _missionObjs =
 ];
 
 // Define Mission Start message
-_msgStart = format["コンビニが襲われている！襲撃者を排除しアイテムを奪え！  A local Walmart shop is being raided, stop the raiders and take the loot!"];
+_msgStart = format["<t color='#FFFF00' size='1.25'>Walmart Riot! </t><br/> コンビニが襲われている！襲撃者を排除しアイテムを奪え！<br/>A local Walmart shop is being raided, stop the raiders and take the loot!"];
 
 // Define Mission Win message
-_msgWIN = format["コンビニ襲撃は阻止された！  Convicts have done a good deed and stopped the raiders!"];
+_msgWIN = format["<t color='#0080ff' size='1.25'>Walmart Riot! </t><br/> コンビニ襲撃は阻止された！<br/>Convicts have done a good deed and stopped the raiders!"];
 
 // Define Mission Lose message
-_msgLOSE = format["コンビニ強盗は逃げてしまった！  The raiders has looted everything from Walmart and escaped!"];
-
+_msgLOSE = format["<t color='#FF0000' size='1.25'>Walmart Riot! </t><br/> コンビニ強盗は逃げてしまった！<br/>The raiders has looted everything from Walmart and escaped!"];
 
 // Define mission name (for map marker and logging)
 _missionName = "Walmart Riot";
