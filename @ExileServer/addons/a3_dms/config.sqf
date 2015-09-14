@@ -5,7 +5,8 @@
 	Created by eraser1
 */
 
-// If you're gonna make any changes to DMS functions and/or create any new missions, it's a good idea to enable this :)
+// Enables debug logging in DMS functions. This will also make missions spawn and timeout more quickly (for testing purposes).
+// Disable this on live servers, unless you know what you're doing.
 DMS_DEBUG = false;
 
 
@@ -21,6 +22,9 @@ DMS_DEBUG = false;
 
 	DMS_AI_KillPercent					= 100;						// The percent amount of AI that need to be killed for "killPercent" mission requirement (NOT IMPLEMENTED)
 
+	DMS_MarkerPosRandomization			= false;					// Randomize the position of the circle marker of a mission
+	DMS_MarkerPosRandomRadius			= [25,100];					// Minimum/Maximum distance that the circle marker position will be randomized | Default: 0 meters to 200 meters
+	DMS_RandomMarkerBrush				= "Cross";					// See: https://community.bistudio.com/wiki/setMarkerBrush
 	DMS_MissionMarkerWinDot				= true;						// Keep the mission marker dot with a "win" message after mission is over
 	DMS_MissionMarkerLoseDot			= true;						// Keep the mission marker dot with a "lose" message after mission is over
 	DMS_MissionMarkerWinDotTime			= 30;						// How many seconds the "win" mission dot will remain on the map
@@ -48,11 +52,11 @@ DMS_DEBUG = false;
 
 	//Mission notification settings
 	DMS_PlayerNotificationTypes =		[							// Notification types. Supported values are: ["dynamicTextRequest", "standardHintRequest", "systemChatRequest"]
-											//"dynamicTextRequest", <--- Won't work in Exile v0.9.19
+											//"dynamicTextRequest", <--- Text formatting makes this weird...
 											"standardHintRequest"
 											//"systemChatRequest"
 										];
-	DMS_dynamicText_Size				= "0.65";					// Dynamic Text size for "dynamicTextRequest" notification type.
+	DMS_dynamicText_Size				= 0.65;					// Dynamic Text size for "dynamicTextRequest" notification type.
 	DMS_dynamicText_Color				= "#FFCC00";				// Dynamic Text color for "dynamicTextRequest" notification type.
 
 	DMS_MissionTypes =					[							//	List of missions with spawn chances. If they add up to 100%, they represent the percentage chance each one will spawn
@@ -70,7 +74,8 @@ DMS_DEBUG = false;
 											["lost_battalion",10],
 											["mercenaries",20],
 											["roguenavyseals",15],
-											["walmart",20]
+											["walmart",20],
+											["mercbase",5]
 										];
 
 	DMS_findSafePosBlacklist =			[							// For BIS_fnc_findSafePos position blacklist info refer to: https://community.bistudio.com/wiki/BIS_fnc_findSafePos
@@ -114,6 +119,7 @@ DMS_DEBUG = false;
 	DMS_AI_WP_Radius_moderate			= 40;						// Waypoint radius for "moderate" AI
 	DMS_AI_WP_Radius_difficult			= 75;						// Waypoint radius for "difficult" AI
 	DMS_AI_WP_Radius_hardcore			= 150;						// Waypoint radius for "hardcore" AI
+	DMS_AI_WP_Radius_base				= 5;						// Waypoint radius for AI in bases
 
 	DMS_static_weapons =				[							// Static weapons for AI
 											"O_HMG_01_F",
@@ -414,6 +420,40 @@ DMS_DEBUG = false;
 
 
 /* Loot Settings */
+	DMS_GodmodeCrates 					= true;						// Whether or not crates will have godmode after being filled with loot.
+	DMS_CrateCase_Sniper =				[							// If you pass "Sniper" in _lootValues, then it will spawn these weapons/items/backpacks
+											[
+												["Rangefinder",1],
+												["srifle_GM6_F",1],
+												["srifle_LRR_F",1],
+												["srifle_EBR_DMS_pointer_snds_F",1],
+												["hgun_Pistol_heavy_01_MRD_F",1],
+												["hgun_PDW2000_Holo_snds_F",1]
+											],
+											[
+												["ItemGPS",1],
+												["U_B_FullGhillie_ard",1],
+												["U_I_FullGhillie_lsh",1],
+												["U_O_FullGhillie_sard",1],
+												["U_O_GhillieSuit",1],
+												["V_PlateCarrierGL_blk",1],
+												["V_HarnessO_brn",1],
+												["Exile_Item_InstaDoc",3],
+												["Exile_Item_Surstromming_Cooked",5],
+												["Exile_Item_PlasticBottleFreshWater",5],
+												["optic_LRPS",1],
+												["muzzle_snds_acp",1],
+												["5Rnd_127x108_APDS_Mag",3],
+												["7Rnd_408_Mag",3],
+												["20Rnd_762x51_Mag",5],
+												["11Rnd_45ACP_Mag",3],
+												["30Rnd_9x21_Mag",3]
+											],
+											[
+												["B_Carryall_cbr",1],
+												["B_Kitbag_mcamo",1]
+											]
+										];
 	DMS_BoxWeapons =					[							// List of weapons that can spawn in a crate
 											"Exile_Melee_Axe",
 											"arifle_Katiba_GL_F",
@@ -532,9 +572,11 @@ DMS_DEBUG = false;
 
 
 // Debug Overwrites
-if(DMS_DEBUG) then {
+if(DMS_DEBUG) then
+{
 	DMS_TimeBetweenMissions			= [30,60];
 	DMS_MissionTimeOut				= [60,90];
 	//DMS_MissionTypes = [["testmission",1]];
+	//DMS_MissionTypes = [["mercbase",1]];
 	diag_log format ["DMS_DEBUG CONFIG :: Overriding DMS_TimeBetweenMissions (%1) and DMS_MissionTimeOut (%2)",DMS_TimeBetweenMissions,DMS_MissionTimeOut];
 };

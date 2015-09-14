@@ -1,5 +1,5 @@
 /*
-	DMS_fnc_MissionStatusCheck
+	DMS_fnc_MissionsMonitor
 
 	Created by eraser1
 
@@ -62,6 +62,11 @@ private ["_pos", "_success", "_timeStarted", "_timeUntilFail", "_units", "_build
 			};
 
 			_arr = DMS_Mission_Arr deleteAt _forEachIndex;
+
+			{
+				_x lock 0;
+				_x allowDamage true;
+			} forEach _vehs;
 
 			{
 				_x call DMS_fnc_FillCrate;

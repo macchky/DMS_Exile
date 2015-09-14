@@ -30,16 +30,24 @@ _type 		= _this select 2;
 _launcher 	= secondaryWeapon _unit;
 _playerObj	= objNull;
 
-// Remove gear according to configs
-if (DMS_clear_AI_body && {(random 100) <= DMS_clear_AI_body_chance}) then
+// Some of the previously used functions work with non-local argument. Some don't. BIS is annoying
+_removeAll =
 {
-	removeAllWeapons 				_unit;
-	removeAllAssignedItems 			_unit;
+	{_this removeWeaponGlobal _x;} forEach (weapons _this);
+	{_this unlinkItem _x;} forEach (assignedItems _this);
+	{_this removeItem _x;} forEach (items _this);
+
 	removeAllItemsWithMagazines 	_unit;
 	removeHeadgear 					_unit;
 	removeUniform 					_unit;
 	removeVest 						_unit;
-	removeBackpack 					_unit;
+	removeBackpackGlobal 			_unit;
+};
+
+// Remove gear according to configs
+if (DMS_clear_AI_body && {(random 100) <= DMS_clear_AI_body_chance}) then
+{
+	_unit call _removeAll;
 };
 
 if(DMS_ai_remove_launchers && {_launcher != ""}) then
@@ -48,8 +56,9 @@ if(DMS_ai_remove_launchers && {_launcher != ""}) then
 	_unit removeWeaponGlobal _launcher;
 	
 	{
-		if(_x == _rockets) then {
-			_unit removeMagazine _x;
+		if(_x == _rockets) then
+		{
+			_unit removeMagazineGlobal _x;
 		};
 	} forEach magazines _unit;
 };
@@ -111,18 +120,12 @@ if (isPlayer _player) then
 		// Remove gear from roadkills if configured to do so
 		if (DMS_remove_roadkill && {(random 100) <= DMS_remove_roadkill_chance}) then
 		{
-			removeAllWeapons 				_unit;
-			removeAllAssignedItems 			_unit;
-			removeAllItemsWithMagazines 	_unit;
-			removeHeadgear 					_unit;
-			removeUniform 					_unit;
-			removeVest 						_unit;
-			removeBackpack 					_unit;
+			_unit call _removeAll;
 		};
 	};};
 
 
-if ((!isNull _playerObj) && {((getPlayerUID _playerObj) != "")}) then
+if ((!isNull _playerObj) && {((getPlayerUID _playerObj) != "") && {_playerObj isKindOf "Exile_Unit_Player"}}) then
 {
 	_moneyGain = missionNamespace getVariable [format ["DMS_%1_%2_MoneyGain",_side,_type],0];
 	_repGain = missionNamespace getVariable [format ["DMS_%1_%2_RepGain",_side,_type],0];
