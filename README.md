@@ -4,7 +4,7 @@ See also: http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findCo
 ## To install:
 Put the pre-packed PBO in your ```@ExileServer\addons\``` directory. It should be alongside ```exile_server``` and ```exile_server_config```.
 
-### NOTE: It is heavily suggested that you use [The Unofficial Exile v0.9.19 SP3](http://www.exilemod.com/topic/169-download-link-for-banana-sp3/?do=findComment&comment=961) with DMS, as it will resolve several issues. [Also look at the first part of this comment](http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findComment&comment=920)
+### NOTE: [Also look at the first part of this comment](http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findComment&comment=920). This will solve a few issues that you may encounter.
 
 If you are using infiSTAR and want to keep ```_CGM = true;```, then set ```_UMW = true;```, and add ```DMS_MissionMarkerCircle```, ```DMS_MissionMarkerDot``` to ```_aLocalM```,
 so your ```_aLocalM``` would look like:
@@ -78,6 +78,54 @@ if (!hasInterface && !isServer) then
 
 
 ## Changelog:
+#### September 20, 2015 (11:30 PM CST-America):
+* CONFIG VALUES: Changed "DMS_MissionTypes" to "DMS_BanditMissionTypes"
+* Renamed some variables to "future-proof" them
+* Placed all current missions under "bandit" subfolder to for easier future integration.
+* Created function "DMS_fnc_SpawnBanditMission" to handle bandit mission spawning (makes it easier to spawn missions via admin console).
+* Attached vehicle eventhandlers to DMS-spawned non-persistent vehicles.
+* Fixed the "lock" option appearing on DMS-spawned vehicles.
+
+
+#### September 20, 2015 (3:30 PM CST-America):
+* NEW CONFIG VALUE: "DMS_MaxSurfaceNormal"
+* The above config value now determines the maximum incline that a mission can spawn on. Default value is 0.95, which should be sufficiently flat.
+* Added some grouping explanations in mission config settings.
+* Added check for A3XAI for the lovely ["Face"/"dayzai"](https://github.com/dayzai)
+* Added ability for people to use a static export from M3Editor. DMS will then calculate the relative position, and spawn it at the mission. Example provided in testmission.sqf.
+* Fixed an issue with DMS_fnc_TargetsKilled always returning false.
+
+
+#### September 20, 2015 (12:30 AM CST-America):
+* NEW CONFIG VALUE: "DMS_ai_offload_Only_DMS_AI"
+* You can use "DMS_ai_offload_Only_DMS_AI" to offload only AI spawned by DMS. This should resolve any issues with other mission systems from DMS.
+* Increased "DMS_playerNearRadius" from 75 meters to 100 meters.
+* You can now define "absolute" mission conditions. If this mission condition is met, it immediately counts the mission as completed. Add "true" after the completion argument to turn it into an "absolute" win condition.
+* Added compatibility with RS_VLS by [Rod Serling](https://github.com/Rod-Serling).
+
+
+#### September 18, 2015 (6:30 PM CST-America):
+* NEW CONFIG VALUE: "DMS_HideBox".
+* Loot vehicles cannot be lifted, pushed, or damaged until the mission is completed successfully. Then the vehicle will be added to the Exile simulation monitor.
+* AI in vehicles will be automatically ejected on death.
+* Another potential fix for launchers not despawning off of AI sometimes.
+* When an AI gunner from an armed ground vehicle is killed, the driver will be switched to the gunner seat after 5-10 seconds. This prevents the driver from driving around aimlessly and trolling.
+* The above feature should now also work on AI that have been offloaded now (doing so was a major, major pain in the ass, and is the reason why there was no update yesterday).
+
+
+#### September 16, 2015 (10:30 PM CST-America):
+* NEW CONFIG VALUES: DMS_MaxAIDistance and DMS_AIDistanceCheckFrequency
+* You can now use the above config values to kill AI that flee from their spawn position. Only "Soldier" AI will be killed.
+* Removed "O_HMG_01_F" from AI Static Weapons. AI were pretty useless on it... unless the AI were facing the right direction.
+* Reduced AI count and removed the "playerNear" parameter from testmission for easier testing.
+* NEW: When an AI vehicle gunner is killed, and the driver is still alive, after a little delay, the driver is then switched to the gunner seat. You should no longer have AI vehicles with a dead gunner that's driving around aimlessly :) There is a 5-8 second delay to simulate reaction time. Then the driver is ejected, then after 1.5 seconds the AI is then forced into the  gunner seat.
+* NOTE: The above feature only works when the AI is still local (not offloaded). If the AI is offloaded, the AI is simply ejected and becomes a foot soldier.
+* AI assigned vehicles are destroyed when the crew is empty. Simulation is also disabled on them.
+* Reduced some of the "params" RPT spam, from DMS_fnc_SetGroupBehavior.
+* Tweaked AI Vehicle spawning logic. The AI are initially assigned to a temporary group and then behavior is set, then they join the assigned group to prevent overriding behavior of other ground units.
+* Non-persistent vehicles should now be fit properly to the terrain.
+
+
 #### September 14, 2015 (11:00 PM CST-America):
 * NEW CONFIG VALUES: DMS_AIVehCleanUpTime, DMS_MinWaterDepth, DMS_Bandit_Vehicle_MoneyGain, DMS_Bandit_Vehicle_RepGain.
 * Changed default value of DMS_Bandit_Static_MoneyGain to 75, DMS_Bandit_Static_RepGain to 15.

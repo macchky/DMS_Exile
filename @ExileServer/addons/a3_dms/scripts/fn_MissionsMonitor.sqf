@@ -64,8 +64,11 @@ private ["_pos", "_success", "_timeStarted", "_timeUntilFail", "_units", "_build
 			_arr = DMS_Mission_Arr deleteAt _forEachIndex;
 
 			{
-				_x lock 0;
+				_x lock 1;
 				_x allowDamage true;
+				_x enableRopeAttach true;
+				_x enableSimulationGlobal true;
+				_x call ExileServer_system_simulationMonitor_addVehicle;
 			} forEach _vehs;
 
 			{

@@ -38,7 +38,10 @@ class CfgFunctions
 			class FillCrate 					{};
 			class FindSafePos 					{};
 			class FindSuppressor 				{};
+			//class HeliParatroopers			{};
+			//class HeliPatrol					{};
 			class ImportFromM3E					{};
+			class ImportFromM3E_Convert			{};
 			class IsPlayerNearby				{};
 			class IsNearWater 					{};
 			class MissionsMonitor 				{};
@@ -55,6 +58,7 @@ class CfgFunctions
 			class SpawnAIVehicle				{};
 			class SpawnAISoldier 				{};
 			class SpawnAIStatic 				{};
+			class SpawnBanditMission			{};
 			class SpawnCrate 					{};
 			class SpawnNonPersistentVehicle 	{};
 			class TargetsKilled 				{};

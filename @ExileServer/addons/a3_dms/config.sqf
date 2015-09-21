@@ -12,6 +12,7 @@ DMS_DEBUG = false;
 
 
 /* Mission System Settings */
+	/*General settings for dynamic missions*/
 	DMS_DynamicMission					= true;						// Enable/disable dynamic mission system
 	DMS_MaxBanditMissions				= 4;						// Maximum number of Bandit Missions running at the same time
 	DMS_StaticMission					= true;					// Enable/disable static missions
@@ -22,6 +23,7 @@ DMS_DEBUG = false;
 
 	DMS_AI_KillPercent					= 100;						// The percent amount of AI that need to be killed for "killPercent" mission requirement (NOT IMPLEMENTED)
 
+	/*Mission Marker settings*/
 	DMS_MarkerPosRandomization			= false;					// Randomize the position of the circle marker of a mission
 	DMS_MarkerPosRandomRadius			= [25,100];					// Minimum/Maximum distance that the circle marker position will be randomized | Default: 0 meters to 200 meters
 	DMS_RandomMarkerBrush				= "Cross";					// See: https://community.bistudio.com/wiki/setMarkerBrush
@@ -31,29 +33,38 @@ DMS_DEBUG = false;
 	DMS_MissionMarkerLoseDotTime		= 30;						// How many seconds the "lose" mission dot will remain on the map
 	DMS_MissionMarkerWinDotColor		= "ColorBlue";				// The color of the "win" marker dot
 	DMS_MissionMarkerLoseDotColor		= "ColorRed";				// The color of the "lose" marker dot
+	/*Mission Marker settings*/
 
+	/*Mission Cleanup/Timeout settings*/
 	DMS_CompletedMissionCleanup			= true;						// Cleanup mission-spawned buildings and AI bodies after some time
 	DMS_CompletedMissionCleanupTime		= 3600;						// Minimum time until mission-spawned buildings and AI are cleaned up
 	DMS_CleanUp_PlayerNearLimit			= 20;						// Cleanup of an object is aborted if a player is this many meters close to the object
 	DMS_AIVehCleanUpTime				= 900;						// Time until a destroyed AI vehicle is cleaned up.
 	DMS_MissionTimeoutReset				= true;						// Enable mission timeout timer reset if a player is close
 	DMS_MissionTimeoutResetRange		= 1000;						// If a player is this close to a mission then it won't time-out
+	/*Mission Cleanup/Timeout settings*/
 
+	/*Mission spawn location settings*/
 	DMS_PlayerNearBlacklist				= 2000;						// Missions won't spawn in a position this many meters close to a player
 	DMS_SpawnZoneNearBlacklist			= 2500;						// Missions won't spawn in a position this many meters close to a spawn zone
 	DMS_TraderZoneNearBlacklist			= 3000;						// Missions won't spawn in a position this many meters close to a trader zone
 	DMS_MissionNearBlacklist			= 4000;						// Missions won't spawn in a position this many meters close to another mission
 	DMS_WaterNearBlacklist				= 750;						// Missions won't spawn in a position this many meters close to water
+	DMS_MaxSurfaceNormal				= 0.95;						// Missions won't spawn if the surface normal of the location is less than this amount. The lower the value, the steeper the location. Greater values means flatter locations
+	/*Mission spawn location settings*/
 
 	DMS_MinWaterDepth					= 20;						// Minimum depth of water that an underwater mission can spawn at.
 
+	/*Crate/Box settings*/
+	DMS_HideBox							= false;					// "Hide" the box from being visible by players until the mission is completed.
 	DMS_SpawnBoxSmoke					= true;						// Spawn a smoke grenade on mission box upon misson completion during daytime
 	DMS_SpawnBoxIRGrenade				= true;						// Spawn an IR grenade on mission box upon misson completion during nighttime
+	/*Crate/Box settings*/
 	
 	DMS_MinPlayerCount					= 0; 						// Minimum number of players until mission start
 	DMS_MinServerFPS					= 1; 						// Minimum server FPS for missions to start
 
-	//Mission notification settings
+	/*Mission notification settings*/
 	DMS_PlayerNotificationTypes =		[							// Notification types. Supported values are: ["dynamicTextRequest", "standardHintRequest", "systemChatRequest"]
 											//"dynamicTextRequest", <--- Text formatting makes this weird...
 											"standardHintRequest"
@@ -61,8 +72,9 @@ DMS_DEBUG = false;
 										];
 	DMS_dynamicText_Size				= 0.65;						// Dynamic Text size for "dynamicTextRequest" notification type.
 	DMS_dynamicText_Color				= "#FFCC00";				// Dynamic Text color for "dynamicTextRequest" notification type.
+	/*Mission notification settings*/
 
-	DMS_MissionTypes =					[							//	List of missions with spawn chances. If they add up to 100%, they represent the percentage chance each one will spawn
+	DMS_BanditMissionTypes =			[							//	List of missions with spawn chances. If they add up to 100%, they represent the percentage chance each one will spawn
 											["bandits",25],
 											["bauhaus",25],
 											["beertransport",15],
@@ -105,7 +117,11 @@ DMS_DEBUG = false;
 	DMS_remove_roadkill_chance			= 50;						// Percentage chance that roadkilled AI bodies will be deleted
 	DMS_RemoveNVG						= false;					// Remove NVGs from AI bodies
 
+	DMS_MaxAIDistance					= 500;						// The maximum distance an AI unit can be from a mission before he is killed. Helps with AI running away and forcing the mission to keep running. Set to 0 if you don't want it.
+	DMS_AIDistanceCheckFrequency		= 60;						// How often to check within DMS_fnc_TargetsKilled whether or not the AI is out of the maximum radius. Lower values increase frequency and increase server load, greater values decrease frequency and may cause longer delays for "runaway" AI.
+
 	DMS_ai_offload_to_client			= true;						// Offload spawned AI groups to random clients. Helps with server performance.
+	DMS_ai_offload_Only_DMS_AI			= false;					// Do you use other mission systems on your server but still want to offload AI? You should probably enable this then, unless you have tested it for compatibility.
 
 	DMS_ai_share_info					= true;						// Share info about killer
 	DMS_ai_share_info_distance			= 300;						// The distance killer's info will be shared to other AI
@@ -127,7 +143,6 @@ DMS_DEBUG = false;
 	DMS_AI_WP_Radius_base				= 5;						// Waypoint radius for AI in bases
 
 	DMS_static_weapons =				[							// Static weapons for AI
-											"O_HMG_01_F",
 											"O_HMG_01_high_F"
 										];
 
@@ -579,9 +594,9 @@ DMS_DEBUG = false;
 // Debug Overwrites
 if(DMS_DEBUG) then
 {
-	DMS_TimeBetweenMissions			= [30,60];
-	DMS_MissionTimeOut				= [60,90];
-	DMS_MissionTypes = [["testmission",1]];
-	//DMS_MissionTypes = [["mercbase",1]];
+	DMS_TimeBetweenMissions			= [10,15];
+	DMS_MissionTimeOut				= [60,70];
+	//DMS_BanditMissionTypes = [["testmission",1]];
+	//DMS_BanditMissionTypes = [["mercbase",1]];
 	diag_log format ["DMS_DEBUG CONFIG :: Overriding DMS_TimeBetweenMissions (%1) and DMS_MissionTimeOut (%2)",DMS_TimeBetweenMissions,DMS_MissionTimeOut];
 };

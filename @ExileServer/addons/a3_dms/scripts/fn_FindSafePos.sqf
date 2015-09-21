@@ -36,7 +36,7 @@ _i = 0;
 while{!_validspot} do
 {
 	_pos 	= _safePosParams call BIS_fnc_findSafePos;
-	_i = _i+1;
+	_i 		= _i+1;
 	try
 	{
 		// Check for nearby water
@@ -49,6 +49,12 @@ while{!_validspot} do
 		if ((DMS_PlayerNearBlacklist>0) && {[_pos,DMS_PlayerNearBlacklist] call DMS_fnc_IsPlayerNearby}) then
 		{
 			throw ("players");
+		};
+
+		// Terrain steepness check
+		if (((surfaceNormal _pos) select 2)<DMS_MaxSurfaceNormal) then
+		{
+			throw ("a steep location");
 		};
 		
 		{

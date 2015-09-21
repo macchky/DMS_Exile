@@ -73,6 +73,9 @@ if(_pos_z == 0) then
 
 _group = createGroup (missionNamespace getVariable [format ["DMS_%1Side",_side],EAST]);
 
+_group setVariable ["DMS_LockLocality",nil];
+_group setVariable ["DMS_SpawnedGroup",true];
+
 for "_i" from 1 to _count do
 {
 	_unit = [_group,[_pos_x,_pos_y,_pos_z],_class,_difficulty,_side,"Soldier"] call DMS_fnc_SpawnAISoldier;
@@ -93,6 +96,8 @@ if ((!isNil "_launcher") || {DMS_ai_use_launchers && {(random 100) <= DMS_ai_use
 	_rocket = _launcher call DMS_fnc_selectMagazine;
 
 	[_unit, _launcher, DMS_AI_launcher_ammo_count,_rocket] call BIS_fnc_addWeapon;
+
+	_unit setVariable ["DMS_AI_Launcher",_launcher];
 	
 	if(DMS_DEBUG) then
 	{
@@ -107,7 +112,7 @@ _group setFormation "WEDGE";
 
 if(_pos_z == 0) then
 {
-	[_group,_pos,_difficulty] call DMS_fnc_SetGroupBehavior;
+	[_group,_pos,_difficulty,"COMBAT"] call DMS_fnc_SetGroupBehavior;
 };
 
 
