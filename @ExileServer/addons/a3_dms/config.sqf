@@ -16,7 +16,7 @@ DMS_DEBUG = false;
 	DMS_DynamicMission					= true;						// Enable/disable dynamic mission system
 	DMS_MaxBanditMissions				= 4;						// Maximum number of Bandit Missions running at the same time
 	DMS_StaticMission					= true;					// Enable/disable static missions
-	DMS_TimeBetweenMissions				= [300,1200];				// [Minimum,Maximum] time between missions (if mission limit is not reached) | DEFAULT: 10-15 mins
+	DMS_TimeBetweenMissions				= [300,900];				// [Minimum,Maximum] time between missions (if mission limit is not reached) | DEFAULT: 10-15 mins
 	DMS_MissionTimeOut					= [1200,2400]; 				// [Minimum,Maximum] time it will take for a mission to timeout | Default: 15-30 mins
 
 	DMS_playerNearRadius				= 125;						// How close a player has to be to a mission in order to satisfy the "playerNear" mission requirement (can be customized per mission).
@@ -62,7 +62,7 @@ DMS_DEBUG = false;
 	/*Crate/Box settings*/
 
 	/*Mine settings*/
-	DMS_SpawnMinesAroundMissions		= true;						// Whether or not to spawn mines around AI missions that have them.
+	DMS_SpawnMinesAroundMissions		= false;						// Whether or not to spawn mines around AI missions that have them.
 	DMS_despawnMines_onCompletion		= true;						// Despawn mines spawned around missions when the mission is completed
 	DMS_MineInfo_easy					= [5,50];					// Mine info for "easy" missions. This will spawn 5 mines within a 50m radius.
 	DMS_MineInfo_moderate				= [10,50];					// Mine info for "moderate" missions. This will spawn 10 mines within a 50m radius.
