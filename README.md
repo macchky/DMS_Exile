@@ -48,9 +48,27 @@ if (!hasInterface && !isServer) then
 - [Nawuko](https://github.com/Nawuko) for catching a silly mistake :P
 - [shaworth](https://github.com/shaworth) and [KawaiiPotato](https://github.com/KawaiiPotato) for making the README all nice and pretty :)
 - Everbody's feedback on [the DMS thread on exile forums](http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findComment&comment=242)
+- [maca134](http://maca134.co.uk/portfolio/m3editor-arma-3-map-editor/) for M3Editor Stuff
 
 
 ## Changelog:
+#### September 25, 2015 (1:30 AM CST-America):
+* NEW CONFIG VALUES:
+		DMS_SpawnMinesAroundMissions
+		DMS_despawnMines_onCompletion
+		DMS_MineInfo_easy
+		DMS_MineInfo_moderate
+		DMS_MineInfo_difficult
+		DMS_MineInfo_hardcore
+		DMS_explode_onRoadkill
+* You can now spawn randomly generated minefields around missions! Numberof mines and radius is dependent on difficulty.
+* Also, you can now spawn an explosion on an AI when it is roadkilled, causing a wheel or two of the roadkilling vehicle to break.
+* Commented out the spawning of static-relative conversion of base objects in test mission.
+* Included example of how to spawn the minefield in the test mission.
+* Reduced some of the RPT spam.
+* Smoke/IR grenades will only spawn on proper crates - you can now safely use DMS_fnc_FillCrate with non-crate objects but still have smoke available.
+
+
 #### September 21, 2015 (11:30 PM CST-America):
 * NEW CONFIG VALUES:
 		DMS_Diff_RepOrTabs_on_roadkill
