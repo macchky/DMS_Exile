@@ -45,11 +45,17 @@ DMS_DEBUG = false;
 	/*Mission Cleanup/Timeout settings*/
 
 	/*Mission spawn location settings*/
+	DMS_ThrottleBlacklists				= true;						// Whether or not to "throttle" the blacklist distance parameters in DMS_fnc_FindSafePos. This will reduce the values of the minimum
+																		//distances for some of the below parameters if several attempts have been made, but a suitable position was not yet found. This
+																		//should help with server performance drops when spawning a mission, as DMS_fnc_findSafePos is the most resource-intensive function.
+	DMS_AttemptsUntilThrottle			= 15;						// How many attempts until the parameters are throttled.
+	DMS_ThrottleCoefficient				= 0.9;						// How much the parameters are throttled. The parameters are multiplied by the coefficient, so 0.9 means 90% of whatever the parameter was.
+	DMS_MinThrottledDistance			= 100;						// The minimum distance to which it will throttle. If the throttled value is less than this, then this value is used instead.
 	DMS_PlayerNearBlacklist				= 1000;						// Missions won't spawn in a position this many meters close to a player
 	DMS_SpawnZoneNearBlacklist			= 1500;						// Missions won't spawn in a position this many meters close to a spawn zone
 	DMS_TraderZoneNearBlacklist			= 2000;						// Missions won't spawn in a position this many meters close to a trader zone
 	DMS_MissionNearBlacklist			= 2000;						// Missions won't spawn in a position this many meters close to another mission
-	DMS_WaterNearBlacklist				= 750;						// Missions won't spawn in a position this many meters close to water
+	DMS_WaterNearBlacklist				= 500;						// Missions won't spawn in a position this many meters close to water
 	DMS_MaxSurfaceNormal				= 0.95;						// Missions won't spawn if the surface normal of the location is less than this amount. The lower the value, the steeper the location. Greater values means flatter locations
 	/*Mission spawn location settings*/
 
@@ -62,12 +68,15 @@ DMS_DEBUG = false;
 	/*Crate/Box settings*/
 
 	/*Mine settings*/
+	DMS_SpawnMinefieldForEveryMission	= false;					// Whether or not to spawn a minefield for every dynamic mission.
 	DMS_SpawnMinesAroundMissions		= false;						// Whether or not to spawn mines around AI missions that have them.
 	DMS_despawnMines_onCompletion		= true;						// Despawn mines spawned around missions when the mission is completed
 	DMS_MineInfo_easy					= [5,50];					// Mine info for "easy" missions. This will spawn 5 mines within a 50m radius.
 	DMS_MineInfo_moderate				= [10,50];					// Mine info for "moderate" missions. This will spawn 10 mines within a 50m radius.
 	DMS_MineInfo_difficult				= [15,75];					// Mine info for "difficult" missions. This will spawn 15 mines within a 75m radius.
 	DMS_MineInfo_hardcore				= [25,100];					// Mine info for "hardcore" missions. This will spawn 25 mines within a 100m radius.
+	DMS_SpawnMineWarningSigns			= true;						// Whether or not to spawn mine warning signs around a minefield.
+	DMS_BulletProofMines				= true;						// Whether or not you want to make the mines bulletproof. Prevents players from being able to shoot the mines and creating explosions.
 	/*Mine settings*/
 	
 	DMS_MinPlayerCount					= 0; 						// Minimum number of players until mission start
@@ -75,12 +84,12 @@ DMS_DEBUG = false;
 
 	/*Mission notification settings*/
 	DMS_PlayerNotificationTypes =		[							// Notification types. Supported values are: ["dynamicTextRequest", "standardHintRequest", "systemChatRequest"]
-											//"dynamicTextRequest", <--- Text formatting makes this weird...
-											"standardHintRequest"
-											//"systemChatRequest"
+											"dynamicTextRequest",
+											//"standardHintRequest",
+											"systemChatRequest"
 										];
 	DMS_dynamicText_Size				= 0.65;						// Dynamic Text size for "dynamicTextRequest" notification type.
-	DMS_dynamicText_Color				= "#FFCC00";				// Dynamic Text color for "dynamicTextRequest" notification type.
+	DMS_dynamicText_Color				= "#FFFFFF";				// Dynamic Text color for "dynamicTextRequest" notification type.
 	/*Mission notification settings*/
 
 	DMS_BanditMissionTypes =			[							//	List of missions with spawn chances. If they add up to 100%, they represent the percentage chance each one will spawn
@@ -463,9 +472,9 @@ DMS_DEBUG = false;
 												["Rangefinder",1],
 												["srifle_GM6_F",1],
 												["srifle_LRR_F",1],
-												["srifle_EBR_DMS_pointer_snds_F",1],
-												["hgun_Pistol_heavy_01_MRD_F",1],
-												["hgun_PDW2000_Holo_snds_F",1]
+												["srifle_EBR_F",1],
+												["hgun_Pistol_heavy_01_F",1],
+												["hgun_PDW2000_F",1]
 											],
 											[
 												["ItemGPS",1],
@@ -478,8 +487,14 @@ DMS_DEBUG = false;
 												["Exile_Item_InstaDoc",3],
 												["Exile_Item_Surstromming_Cooked",5],
 												["Exile_Item_PlasticBottleFreshWater",5],
+												["optic_DMS",1],
+												["acc_pointer_IR",1],
+												["muzzle_snds_B",1],
 												["optic_LRPS",1],
+												["optic_MRD",1],
 												["muzzle_snds_acp",1],
+												["optic_Holosight_smg",1],
+												["muzzle_snds_L",1],
 												["5Rnd_127x108_APDS_Mag",3],
 												["7Rnd_408_Mag",3],
 												["20Rnd_762x51_Mag",5],
@@ -606,14 +621,3 @@ DMS_DEBUG = false;
 											"Exile_Chopper_Taru_Transport_Black"
 										];
 /* Loot Settings */
-
-
-// Debug Overwrites
-if(DMS_DEBUG) then
-{
-	DMS_TimeBetweenMissions			= [10,15];
-	DMS_MissionTimeOut				= [60,70];
-	//DMS_BanditMissionTypes = [["testmission",1]];
-	//DMS_BanditMissionTypes = [["mercbase",1]];
-	diag_log format ["DMS_DEBUG CONFIG :: Overriding DMS_TimeBetweenMissions (%1) and DMS_MissionTimeOut (%2)",DMS_TimeBetweenMissions,DMS_MissionTimeOut];
-};

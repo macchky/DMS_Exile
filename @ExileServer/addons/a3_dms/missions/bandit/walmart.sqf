@@ -16,7 +16,10 @@ _side = "bandit";
 
 
 // find position
-_pos = [10,100] call DMS_fnc_findSafePos;
+_pos = 
+[
+	10,DMS_WaterNearBlacklist,DMS_MaxSurfaceNormal,DMS_SpawnZoneNearBlacklist,DMS_TraderZoneNearBlacklist,DMS_MissionNearBlacklist,DMS_PlayerNearBlacklist,DMS_ThrottleBlacklists
+]call DMS_fnc_findSafePos;
 
 
 // Set general mission difficulty
@@ -69,13 +72,13 @@ _missionObjs =
 ];
 
 // Define Mission Start message
-_msgStart = format["<t color='#FFFF00' size='1.25'>Walmart Riot! </t><br/> コンビニが襲われている！襲撃者を排除しアイテムを奪え！<br/>A local Walmart shop is being raided, stop the raiders and take the loot!"];
+_msgStart = ['#FFFF00',"コンビニが襲われている！襲撃者を排除しアイテムを奪え！<br/>A local Walmart shop is being raided, stop the raiders and take the loot!"];
 
 // Define Mission Win message
-_msgWIN = format["<t color='#0080ff' size='1.25'>Walmart Riot! </t><br/> コンビニ襲撃は阻止された！<br/>Convicts have done a good deed and stopped the raiders!"];
+_msgWIN = ['#0080ff',"コンビニ襲撃は阻止された！<br/>Convicts have done a good deed and stopped the raiders!"];
 
 // Define Mission Lose message
-_msgLOSE = format["<t color='#FF0000' size='1.25'>Walmart Riot! </t><br/> コンビニ強盗は逃げてしまった！<br/>The raiders has looted everything from Walmart and escaped!"];
+_msgLOSE = ['#FF0000',"コンビニ強盗は逃げてしまった！<br/>The raiders has looted everything from Walmart and escaped!"];
 
 // Define mission name (for map marker and logging)
 _missionName = "Walmart Riot";
@@ -111,9 +114,11 @@ _added =
 	],
 	_missionAIUnits,
 	_missionObjs,
-	[_msgWIN,_msgLOSE],
+	[_missionName,_msgWIN,_msgLOSE],
 	_markers,
-	_side
+	_side,
+	_difficulty,
+	[]
 ] call DMS_fnc_AddMissionToMonitor;
 
 // Check to see if it was added correctly, otherwise delete the stuff
@@ -142,7 +147,7 @@ if !(_added) exitWith
 
 
 // Notify players
-_msgStart call DMS_fnc_BroadcastMissionStatus;
+[_missionName,_msgStart] call DMS_fnc_BroadcastMissionStatus;
 
 
 

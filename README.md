@@ -52,15 +52,65 @@ if (!hasInterface && !isServer) then
 
 
 ## Changelog:
+#### October 3, 2015 (10:30 PM CST-America):
+* **You must update all of your mission files; the mission message system as well as the calling parameters for DMS_fnc_FindSafePos have been overhauled and will be incompatible with previous versions.**
+* NEW CONFIG VALUES:
+
+	|DMS_ThrottleBlacklists|
+	|DMS_AttemptsUntilThrottle|
+	|DMS_ThrottleCoefficient|
+	|DMS_MinThrottledDistance|
+* Decreased "DMS_TraderZoneNearBlacklist","DMS_MissionNearBlacklist","DMS_WaterNearBlacklist"
+* Changed "DMS_dynamicText_Color" to "#FFFFFF" (white)
+* Replaced weapon classes in "DMS_CrateCase_Sniper" to the base classes; all attachments should now spawn in the box separately.
+* New function DMS_fnc_IsValidPosition (uses logic that was previously from "DMS_fnc_FindSafePos").
+* You can now manually define every individual parameter for DMS_fnc_findSafePos per-mission, instead of using global parameters.
+* AI will now be offloaded to an HC even with "DMS_ai_offload_to_client" set to false.
+* All of the previously "supported" values for "DMS_PlayerNotificationTypes" are now PROPERLY supported. DMS_PlayerNotificationTypes is now set to default "dynamicTextRequest" and "systemChatRequest".
+* Tweaked "cardealer" mission, the cars should no longer spawn inside of each other.
+
+
+
+#### September 30, 2015 (9:30 PM CST-America):
+* NEW CONFIG VALUE: DMS_SpawnMinefieldForEveryMission
+* You can now force-spawn an AT mine minefield on every mission with the above config. These mines will only blow up on Tanks, APCs, and MRAPs (Ifrits, Hunters, Striders).
+* ALL MISSIONS HAVE BEEN EDITED TO MATCH THE NEW STANDARD FOR DMS_fnc_AddMissionToMonitor. **If you have made any custom missions or modified any of the current mission scripts, make sure you merge your changes**!
+* Adjusted the placement of the armed car in "bandits" mission. It should no longer spawn right on the crate.
+* Marker and message names for the "foodtransport" mission have been adjusted.
+* Added the AI vehicle to the "mercbase" mission.
+* Removed some RPT spam...
+* Standardize ATL for DMS_fnc_importFromM3E_Convert
+* When revealing a player to AI, the reveal amount will be reduced if the player has a suppressor.
+* DMS_fnc_SetGroupBehavior will now remove all previous waypoints from the AI group.
+* Improved logging message for DMS_fnc_SpawnMinefield. Also, the mine warning signs should be on a random offset (instead of always spawning at 0, 90, 180, and 270 degrees)
+* Removed obsolete DMS_DEBUG overrides in config. "DMS_fnc_SpawnBanditMission" called from console works great.
+
+
+#### September 25, 2015 (11:30 PM CST-America):
+* Improved DMS_fnc_FindSafePos when checking for nearby missions - it should now use the proper mission location (if it was given correctly in the parameters for DMS_fnc_CreateMarker) instead of the marker position, which could be offset. Thanks to [Rod Serling](https://github.com/Rod-Serling) for complaining about this "issue" :P
+
+
+#### September 25, 2015 (7:30 PM CST-America):
+* NEW CONFIG VALUES:
+
+		|DMS_SpawnMineWarningSigns|
+		|DMS_BulletProofMines|
+* You can now manually define the rare loot chance per crate.
+* You can now define the mine amount and radius directly from the call for DMS_fnc_SpawnMinefield.
+* You can now define the classname of the mine to be spawned in the minefield.
+* Mines can now be configured to be bulletproof (AT mines by default will explode when shot).
+
+
 #### September 25, 2015 (1:30 AM CST-America):
 * NEW CONFIG VALUES:
-		DMS_SpawnMinesAroundMissions
-		DMS_despawnMines_onCompletion
-		DMS_MineInfo_easy
-		DMS_MineInfo_moderate
-		DMS_MineInfo_difficult
-		DMS_MineInfo_hardcore
-		DMS_explode_onRoadkill
+
+		|DMS_SpawnMinesAroundMissions|
+		|DMS_despawnMines_onCompletion|
+		|DMS_MineInfo_easy|
+		|DMS_MineInfo_moderate|
+		|DMS_MineInfo_difficult|
+		|DMS_MineInfo_hardcore|
+		|DMS_explode_onRoadkill|
 * You can now spawn randomly generated minefields around missions! Numberof mines and radius is dependent on difficulty.
 * Also, you can now spawn an explosion on an AI when it is roadkilled, causing a wheel or two of the roadkilling vehicle to break.
 * Commented out the spawning of static-relative conversion of base objects in test mission.
@@ -71,13 +121,14 @@ if (!hasInterface && !isServer) then
 
 #### September 21, 2015 (11:30 PM CST-America):
 * NEW CONFIG VALUES:
-		DMS_Diff_RepOrTabs_on_roadkill
-		DMS_Bandit_Soldier_RoadkillMoney
-		DMS_Bandit_Soldier_RoadkillRep
-		DMS_Bandit_Static_RoadkillMoney
-		DMS_Bandit_Static_RoadkillRep
-		DMS_Bandit_Vehicle_RoadkillMoney
-		DMS_Bandit_Vehicle_RoadkillRep
+
+		|DMS_Diff_RepOrTabs_on_roadkill|
+		|DMS_Bandit_Soldier_RoadkillMoney|
+		|DMS_Bandit_Soldier_RoadkillRep|
+		|DMS_Bandit_Static_RoadkillMoney|
+		|DMS_Bandit_Static_RoadkillRep|
+		|DMS_Bandit_Vehicle_RoadkillMoney|
+		|DMS_Bandit_Vehicle_RoadkillRep|
 * Removed config value: "DMS_credit_roadkill"
 * You can now REDUCE a player's respect/poptabs when the player roadkills an AI. The default values are -10 poptabs and -5 respect (hardly noticeable, but I didn't want it to be extreme).
 * Alternatively, you can simply reduce the amount of poptabs gained by giving each corresponding config a positive value less than the regular. Set the value to 0 if you don't want to credit the poptabs/respect.

@@ -16,7 +16,10 @@ _side = "bandit";
 
 
 // find position
-_pos = [10,100] call DMS_fnc_findSafePos;
+_pos = 
+[
+	10,DMS_WaterNearBlacklist,DMS_MaxSurfaceNormal,DMS_SpawnZoneNearBlacklist,DMS_TraderZoneNearBlacklist,DMS_MissionNearBlacklist,DMS_PlayerNearBlacklist,DMS_ThrottleBlacklists
+]call DMS_fnc_findSafePos;
 
 
 // Set general mission difficulty
@@ -73,13 +76,13 @@ _missionObjs =
 ];
 
 
-_msgStart = format["<t color='#FFFF00' size='1.25'>Bauhaus Truck </t><br/> トラックが事故って積み荷が落とされた、早く奪ってしまえ！<br/>A Bauhaus truck has crashed and lost all its building supplies, get there quickly!"];
+_msgStart = ['#FFFF00',"トラックが事故って積み荷が落とされた、早く奪ってしまえ！<br/>A Bauhaus truck has crashed and lost all its building supplies, get there quickly!"];
 
 // Define Mission Win message
-_msgWIN = format["<t color='#0080ff' size='1.25'>Bauhaus Truck </t><br/> 積み荷の奪取に成功した！<br/>Convicts have successfully claimed the crashed Buahaus truck!"];
+_msgWIN = ['#0080ff',"積み荷の奪取に成功した！<br/>Convicts have successfully claimed the crashed Buahaus truck!"];
 
 // Define Mission Lose message
-_msgLOSE = format["<t color='#FF0000' size='1.25'>Bauhaus Truck! </t><br/> トラックは直され、逃げてしまった！<br/>The Bauhause truck has been repaired and escaped!"];
+_msgLOSE = ['#FF0000',"トラックは直され、逃げてしまった！<br/>The Bauhause truck has been repaired and escaped!"];
 
 // Define mission name (for map marker and logging)
 _missionName = "Bauhaus Truck";
@@ -115,9 +118,11 @@ _added =
 	],
 	_missionAIUnits,
 	_missionObjs,
-	[_msgWIN,_msgLOSE],
+	[_missionName,_msgWIN,_msgLOSE],
 	_markers,
-	_side
+	_side,
+	_difficulty,
+	[]
 ] call DMS_fnc_AddMissionToMonitor;
 
 // Check to see if it was added correctly, otherwise delete the stuff
@@ -150,7 +155,7 @@ if !(_added) exitWith
 
 
 // Notify players
-_msgStart call DMS_fnc_BroadcastMissionStatus;
+[_missionName,_msgStart] call DMS_fnc_BroadcastMissionStatus;
 
 
 
