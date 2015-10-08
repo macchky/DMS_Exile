@@ -1,11 +1,6 @@
 /*
-	Sample mission
-	Created by Defent and eraser1
-
-	Called from DMS_selectMission
+	Sample mission (duplicate for testing purposes)
 */
-
-private ["_num", "_side", "_pos", "_difficulty", "_AICount", "_group", "_crate1", "_crate_loot_values1", "_crate2", "_crate_loot_values2", "_msgStart", "_msgWIN", "_msgLOSE", "_missionName", "_missionAIUnits", "_missionObjs", "_markers", "_time", "_added","_vehicle1","_vehicle2","_wreck"];
 
 // For logging purposes
 _num = DMS_MissionCount;
@@ -18,7 +13,7 @@ _side = "bandit";
 // find position
 _pos = 
 [
-	10,DMS_WaterNearBlacklist,DMS_MaxSurfaceNormal,DMS_SpawnZoneNearBlacklist,DMS_TraderZoneNearBlacklist,DMS_MissionNearBlacklist,DMS_PlayerNearBlacklist,DMS_ThrottleBlacklists
+	15,DMS_WaterNearBlacklist,DMS_MaxSurfaceNormal,DMS_SpawnZoneNearBlacklist,DMS_TraderZoneNearBlacklist,DMS_MissionNearBlacklist,DMS_PlayerNearBlacklist,DMS_ThrottleBlacklists
 ]call DMS_fnc_findSafePos;
 
 
@@ -28,41 +23,25 @@ _difficulty = "easy";
 
 // Create AI
 // TODO: Spawn AI only when players are nearby
-_AICount = 3 + (round (random 2));
+_AICount = 3 + (round (random 1));
 
 _group =
 [
 	_pos,					// Position of AI
 	_AICount,				// Number of AI
-	"moderate",				// "random","hardcore","difficult","moderate", or "easy"
+	"hardcore",				// "random","hardcore","difficult","moderate", or "easy"
 	"random", 				// "random","assault","MG","sniper" or "unarmed" OR [_type,_launcher]
 	_side 					// "bandit","hero", etc.
 ] call DMS_fnc_SpawnAIGroup;
 
 
-// Create Crates
-_crate1 = ["Box_NATO_Wps_F",_pos] call DMS_fnc_SpawnCrate;
+_class = (DMS_MilitaryVehicles+DMS_TransportTrucks) call BIS_fnc_SelectRandom;
 
-_rndDir = random 180;
+//DMS_fnc_SpawnPersistentVehicle will automatically turn the pincode into a string and format it.
+_pinCode = round (random 9999);
 
-_wreck = createVehicle ["Land_FuelStation_Build_F",[_pos,10+(random 5),_rndDir+90] call DMS_fnc_SelectOffsetPos,[], 0, "CAN_COLLIDE"];
+_vehicle = [_class,_pos,_pinCode] call DMS_fnc_SpawnPersistentVehicle;
 
-
-_vehicle1 = ["Exile_Car_SUV_Red", [_pos,5+(random 3),_rndDir] call DMS_fnc_SelectOffsetPos] call DMS_fnc_SpawnNonPersistentVehicle;
-//_vehicle1 setPosATL ([_pos,5+(random 3),_rndDir] call DMS_fnc_SelectOffsetPos);
-
-_vehicle2 = ["Exile_Car_SUV_Grey", [_pos,5+(random 3),_rndDir+180] call DMS_fnc_SelectOffsetPos] call DMS_fnc_SpawnNonPersistentVehicle;
-//_vehicle2 setPosATL ([_pos,5+(random 3),_rndDir+180] call DMS_fnc_SelectOffsetPos);
-
-
-
-// Set crate loot values
-_crate_loot_values1 =
-[
-	5,		// Weapons
-	5,		// Items
-	2 		// Backpacks
-];
 
 
 // Define mission-spawned AI Units
@@ -71,25 +50,25 @@ _missionAIUnits =
 	_group 		// We only spawned the single group for this mission
 ];
 
-// Define mission-spawned objects and loot values
+// Define mission-spawned objects
 _missionObjs =
 [
-	[_wreck],
-	[_vehicle1,_vehicle2],
-	[[_crate1,_crate_loot_values1]]
+	[],			// No spawned buildings
+	[_vehicle],
+	[]
 ];
 
 // Define Mission Start message
-_msgStart = ['#FFFF00',"A local car dealership is being robbed by bandits. Stop them!"];
+_msgStart = ['#FFFF00',format ["A band of thieves are attempting to break into a %1. Eliminate them and you might get the car for yourself!",getText (configFile >> "CfgVehicles" >> _class >> "displayName")]];
 
 // Define Mission Win message
-_msgWIN = ['#0080ff',"Convicts have secured the local dealership and eliminated the bandits!"];
+_msgWIN = ['#0080ff',format ["Convicts have eliminated the thieves! Looks like the thieves managed to figure out that the code was %1...",_pinCode]];
 
 // Define Mission Lose message
-_msgLOSE = ['#FF0000',"The bandits have escaped with the cars and left nothing but a trail of smoke behind!"];
+_msgLOSE = ['#FF0000',"The thieves cracked the code and drove off!"];
 
-// Define mission name (for map marker and logging)
-_missionName = "Car Dealer Robbery";
+// Define mission name (for map markers, mission messages, and logging)
+_missionName = "Car Thieves";
 
 // Create Markers
 _markers =
@@ -109,7 +88,8 @@ _added =
 	[
 		[
 			"kill",
-			_group
+			_group,
+			true
 		],
 		[
 			"playerNear",

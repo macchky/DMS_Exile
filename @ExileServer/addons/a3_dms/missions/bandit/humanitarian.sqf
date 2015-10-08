@@ -69,7 +69,7 @@ _missionObjs =
 ];
 
 // Define Mission Start message
-_msgStart = ['#FFFF00',"A truck carrying humanitarian supplies has been sized by bandits, stop them!"];
+_msgStart = ['#FFFF00',"A truck carrying humanitarian supplies has been sized by bandits. Stop them!"];
 
 // Define Mission Win message
 _msgWIN = ['#0080ff',"Convicts have successfully claimed the humanitarian supplies for themselves!"];
