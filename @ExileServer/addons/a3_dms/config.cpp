@@ -35,6 +35,7 @@ class CfgFunctions
 			class CleanUp 						{};
 			class CleanUpManager 				{};
 			class CreateMarker 					{};
+			class DebugLog						{};
 			class FillCrate 					{};
 			class FindSafePos 					{};
 			class FindSuppressor 				{};
@@ -45,6 +46,7 @@ class CfgFunctions
 			class IsPlayerNearby				{};
 			class IsNearWater 					{};
 			class IsValidPosition				{};
+			class MissionParams					{};
 			class MissionsMonitor 				{};
 			class MissionSuccessState 			{};
 			class OnKilled 						{};

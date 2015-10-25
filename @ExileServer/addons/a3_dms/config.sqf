@@ -5,25 +5,37 @@
 	Created by eraser1
 */
 
+
 // Enables debug logging in DMS functions. This will also make missions spawn and timeout more quickly (for testing purposes).
 // Disable this on live servers, unless you know what you're doing.
 DMS_DEBUG = false;
 
 
 
+DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific to the map.
+/*
+	If you are using a map other than Altis, Bornholm, Esseker, or Tavi (Taviana) you should set this to false OR create a new file within the map_configs folder for the map so that you don't get a missing file error.
+	To share your map-specific config, please create a merge request on GitHub and/or leave a message on the DMS thread in the Exile forums.
+	For any questions regarding map-specific configs, please leave a reply in the DMS thread on the Exile forums.
+*/
+
+
 /* Mission System Settings */
 	/*General settings for dynamic missions*/
 	DMS_DynamicMission					= true;						// Enable/disable dynamic mission system
 	DMS_MaxBanditMissions				= 4;						// Maximum number of Bandit Missions running at the same time
-	DMS_StaticMission					= true;					// Enable/disable static missions
+	DMS_StaticMission					= false;					// Enable/disable static missions
+	DMS_TimeToFirstMission				= [180,420];				// [Minimum,Maximum] time between first mission spawn.
 	DMS_TimeBetweenMissions				= [300,900];				// [Minimum,Maximum] time between missions (if mission limit is not reached) | DEFAULT: 10-15 mins
 	DMS_MissionTimeOut					= [1200,2400]; 				// [Minimum,Maximum] time it will take for a mission to timeout | Default: 15-30 mins
+	/*General settings for dynamic missions*/
 
 	DMS_playerNearRadius				= 125;						// How close a player has to be to a mission in order to satisfy the "playerNear" mission requirement (can be customized per mission).
 
 	DMS_AI_KillPercent					= 100;						// The percent amount of AI that need to be killed for "killPercent" mission requirement (NOT IMPLEMENTED)
 
 	/*Mission Marker settings*/
+	DMS_ShowDifficultyColorLegend		= true;						// Whether or not to show a "color legend" at the bottom left of the map that shows which color corresponds to which difficulty. I know it's not very pretty, meh.
 	DMS_MarkerText_ShowMissionPrefix	= true;						// Whether or not to place a prefix before the mission marker text. Enable this if your players get confused by the marker names :P
 	DMS_MarkerText_MissionPrefix		= "Mission:";				// The text displayed before the mission name in the mission marker.
 	DMS_MarkerText_ShowAICount			= true;						// Whether or not to display the number of remaining AI in the marker name.
@@ -60,7 +72,8 @@ DMS_DEBUG = false;
 	DMS_TraderZoneNearBlacklist			= 2000;						// Missions won't spawn in a position this many meters close to a trader zone
 	DMS_MissionNearBlacklist			= 2000;						// Missions won't spawn in a position this many meters close to another mission
 	DMS_WaterNearBlacklist				= 500;						// Missions won't spawn in a position this many meters close to water
-	DMS_MaxSurfaceNormal				= 0.95;						// Missions won't spawn if the surface normal of the location is less than this amount. The lower the value, the steeper the location. Greater values means flatter locations
+	DMS_TerritoryNearBlacklist			= 100;						// Missions won't spawn in a position this many meters close to a territory flag
+	DMS_MinSurfaceNormal				= 0.9;						// Missions won't spawn in a position where its surfaceNormal is less than this amount. The lower the value, the steeper the location. Greater values means flatter locations. Values can range from 0-1, with 0 being sideways, and 1 being perfectly flat. For reference: SurfaceNormal of about 0.7 is when you are forced to walk up a surface. If you want to convert surfaceNormal to degrees, use the arc-cosine of the surfaceNormal. 0.9 is about 25 degrees. Google "(arccos 0.9) in degrees"
 	/*Mission spawn location settings*/
 
 	DMS_MinWaterDepth					= 20;						// Minimum depth of water that an underwater mission can spawn at.
@@ -87,42 +100,73 @@ DMS_DEBUG = false;
 	DMS_MinServerFPS					= 1; 						// Minimum server FPS for missions to start
 
 	/*Mission notification settings*/
-	DMS_PlayerNotificationTypes =		[							// Notification types. Supported values are: ["dynamicTextRequest", "standardHintRequest", "systemChatRequest"]
-											"dynamicTextRequest",
-											//"standardHintRequest",
-											"systemChatRequest"
+	DMS_PlayerNotificationTypes =		[							// Notification types. Supported values are: ["dynamicTextRequest", "standardHintRequest", "systemChatRequest", "textTilesRequest"]
+											//"dynamicTextRequest",			// You should use either "dynamicTextRequest" or "textTilesRequest", and I think "textTilesRequest" looks better.
+											//"standardHintRequest",		// Hints are a bit wonky...
+											"textTilesRequest",				// Keep in mind you can only have 1 "text tile" message up at a time, so the message will disappear if the player gets a kill or something while the message is shown.
+											"systemChatRequest"				// Always nice to show in chat so that players can scroll up to read the info if they need to.
 										];
-	DMS_dynamicText_Size				= 0.65;						// Dynamic Text size for "dynamicTextRequest" notification type.
-	DMS_dynamicText_Color				= "#FFFFFF";				// Dynamic Text color for "dynamicTextRequest" notification type.
+
+		/*Dynamic Text Notification Settings*/
+	DMS_dynamicText_Duration			= 7;						// Number of seconds that the message will last on the screen.
+	DMS_dynamicText_FadeTime			= 1.5;						// Number of seconds that the message will fade in/out (does not affect duration).
+	DMS_dynamicText_Title_Size			= 1.2;						// Size for Client Dynamic Text mission titles.
+	DMS_dynamicText_Title_Font			= "puristaMedium";			// Font for Client Dynamic Text mission titles.
+	DMS_dynamicText_Message_Color		= "#FFFFFF";				// Dynamic Text color for "dynamicTextRequest" client notification type.
+	DMS_dynamicText_Message_Size		= 0.65;						// Dynamic Text size for "dynamicTextRequest" client notification type.
+	DMS_dynamicText_Message_Font		= "OrbitronMedium";			// Dynamic Text font for "dynamicTextRequest" client notification type.
+		/*Dynamic Text Notification Settings*/
+
+		/*Standard Hint Notification Settings*/
+	DMS_standardHint_Title_Size			= 2.5;						// Size for Client Standard Hint mission titles.
+	DMS_standardHint_Title_Font			= "puristaMedium";			// Font for Client Standard Hint mission titles.
+	DMS_standardHint_Message_Color		= "#FFFFFF";				// Standard Hint color for "standardHintRequest" client notification type.
+	DMS_standardHint_Message_Size		= 1;						// Standard Hint size for "standardHintRequest" client notification type.
+	DMS_standardHint_Message_Font		= "OrbitronMedium";			// Standard Hint font for "standardHintRequest" client notification type.
+		/*Standard Hint Notification Settings*/
+
+		/*Text Tiles Notification Settings*/
+	DMS_textTiles_Duration				= 7;						// Number of seconds that the message will last on the screen.
+	DMS_textTiles_FadeTime				= 1.5;						// Number of seconds that the message will fade in/out (does not affect duration).
+	DMS_textTiles_Title_Size			= 2.3;						// Size for Client Text Tiles mission titles.
+	DMS_textTiles_Title_Font			= "puristaMedium";			// Font for Client Text Tiles mission titles.
+	DMS_textTiles_Message_Color			= "#FFFFFF";				// Text Tiles color for "textTilesRequest" client notification type.
+	DMS_textTiles_Message_Size			= 1.25;						// Text Tiles size for "textTilesRequest" client notification type.
+	DMS_textTiles_Message_Font			= "OrbitronMedium";			// Text Tiles font for "textTilesRequest" client notification type.
+		/*Text Tiles Notification Settings*/
+
 	/*Mission notification settings*/
 
 	DMS_BanditMissionTypes =			[							//	List of missions with spawn chances. If they add up to 100%, they represent the percentage chance each one will spawn
-											["blackhawkdown",45],
-											["construction",35],
-											["donthasslethehoff",30],
-											["bandits",25],
-											["bauhaus",25],
-											["cardealer",25],
-											["humanitarian",25],
-											["foodtransport",25],
-											["walmart",20],
-											["mercenaries",20],
-											["guntransport",20],
-											["beertransport",15],
-											["roguenavyseals",15],
-											["thieves",10],
-											["lost_battalion",10],
-											["behindenemylines",10],
-											["mercbase",5]
+											["blackhawkdown",7],
+											["donthasslethehoff",6],
+											["bandits",5],
+											["bauhaus",5],
+											["cardealer",5],
+											["humanitarian",5],
+											["foodtransport",5],
+											["construction",4],
+											["walmart",4],
+											["mercenaries",4],
+											["guntransport",4],
+											["beertransport",3],
+											["roguenavyseals",3],
+											["thieves",2],
+											["lost_battalion",2],
+											["behindenemylines",2],
+											["mercbase",1]
 										];
 
-	DMS_findSafePosBlacklist =			[							// For BIS_fnc_findSafePos position blacklist info refer to: https://community.bistudio.com/wiki/BIS_fnc_findSafePos
-											[[22500,19420],[24870,16725]]		// Salt flats
+	DMS_findSafePosBlacklist =			[							// For BIS_fnc_findSafePos position blacklist info refer to: https://community.bistudio.com/wiki/BIS_fnc_findSafePos 
+											// An example is given in the altis_config.sqf (it blacklists the salt flats).
 										];
 /* Mission System Settings */
 
 
 /* AI Settings */
+
+	DMS_Show_Kill_Poptabs_Notification	= true;						// Whether or not to show the poptabs gained/lost message on the player's screen when killing an AI. (It will still change the player's money, it just won't show the "Money Received" notification)
+	DMS_Show_Kill_Respect_Notification	= true;						// Whether or not to show the "Frag Message" on the player's screen when killing an AI. (It will still change the player's respect, it just won't show the "AI Killed" frag message)
 
 	DMS_Bandit_Soldier_MoneyGain		= 100;						// The amount of Poptabs gained for killing a bandit soldier
 	DMS_Bandit_Soldier_RepGain			= 50;						// The amount of Respect gained for killing a bandit soldier
@@ -168,8 +212,8 @@ DMS_DEBUG = false;
 	DMS_ai_skill_hardcore				= [["aimingAccuracy",1.00],["aimingShake",1.00],["aimingSpeed",1.00],["spotDistance",1.00],["spotTime",1.00],["courage",1.00],["reloadSpeed",1.00],["commanding",1.00],["general",1.00]]; 	// Hardcore
 	DMS_ai_skill_random					= ["hardcore","difficult","difficult","difficult","moderate","moderate","moderate","moderate","easy","easy"];	// Skill frequencies for "random" AI skills | Default: 10% hardcore, 30% difficult, 40% moderate, and 20% easy
 	DMS_AI_WP_Radius_easy				= 20;						// Waypoint radius for "easy" AI
-	DMS_AI_WP_Radius_moderate			= 40;						// Waypoint radius for "moderate" AI
-	DMS_AI_WP_Radius_difficult			= 55;						// Waypoint radius for "difficult" AI
+	DMS_AI_WP_Radius_moderate			= 30;						// Waypoint radius for "moderate" AI
+	DMS_AI_WP_Radius_difficult			= 50;						// Waypoint radius for "difficult" AI
 	DMS_AI_WP_Radius_hardcore			= 75;						// Waypoint radius for "hardcore" AI
 	DMS_AI_WP_Radius_base				= 5;						// Waypoint radius for AI in bases
 
@@ -197,12 +241,12 @@ DMS_DEBUG = false;
 
 	//Assault Class
 	DMS_assault_weps =					[							// Assault Rifles
-											"arifle_Katiba_GL_F",
-											"arifle_MX_GL_Black_F",
-											"arifle_Mk20_GL_F",
-											"arifle_TRG21_GL_F",
-											"arifle_Katiba_F",
-											"arifle_MX_Black_F",
+											"CUP_arifle_AK107",
+											"CUP_arifle_AK107_GL",
+											"rhs_weap_m16a4_carryhandle_grip",
+											"rhs_weap_m16a4_grip",
+											"rhs_weap_m4a1_carryhandle_grip2",
+											"CUP_arifle_FNFAL",
 											"arifle_TRG21_F",
 											"arifle_TRG20_F",
 											"arifle_Mk20_plain_F",
@@ -242,16 +286,16 @@ DMS_DEBUG = false;
 											"H_HelmetLeaderO_oucamo"
 										];
 	DMS_assault_clothes	=				[							// Uniforms for Assault Class
-											"U_O_CombatUniform_ocamo",
+											"rhs_uniform_cu_ucp",
 											"U_O_PilotCoveralls",
 											"U_B_Wetsuit",
-											"U_BG_Guerilla3_1",
-											"U_BG_Guerilla2_3",
-											"U_BG_Guerilla2_2",
-											"U_BG_Guerilla1_1",
-											"U_BG_Guerrilla_6_1",
-											"U_IG_Guerilla3_2",
-											"U_B_SpecopsUniform_sgg",
+											"TRYK_U_B_fleece",
+											"TRYK_U_B_fleece_UCP",
+											"TRYK_U_B_PCUHs",
+											"TRYK_U_B_PCUGHs",
+											"TRYK_U_B_PCUODHs",
+											"rhs_uniform_FROG01_wd",
+											"rhs_uniform_FROG01_d",
 											"U_I_OfficerUniform",
 											"U_B_CTRG_3",
 											"U_I_G_resistanceLeader_F"
@@ -270,8 +314,8 @@ DMS_DEBUG = false;
 										];
 	DMS_assault_backpacks =				[							// Backpacks for Assault Class
 											"B_Bergen_rgr",
-											"B_Carryall_oli",
-											"B_Kitbag_mcamo",
+											"rhsusf_assault_eagleaiii_coy",
+											"TRYK_B_Coyotebackpack_BLK",
 											"B_Carryall_cbr",
 											"B_FieldPack_oucamo",
 											"B_FieldPack_cbr",
@@ -282,13 +326,13 @@ DMS_DEBUG = false;
 	DMS_MG_weps	=						[							// Machine Guns
 											"LMG_Zafir_F",
 											"LMG_Mk200_F",
-											"arifle_MX_SW_Black_F",
+											"rhs_weap_m249_pip_L_vfg",
 											"MMG_01_hex_F"
 										];
 	DMS_MG_pistols =					[							// Pistols for MG Class (Set to empty array if you don't want to give them any pistols)
 											"hgun_ACPC2_F",
-											"hgun_Rook40_F",
-											"hgun_P07_F",
+											"rhsusf_weap_glock17g4",
+											"CUP_hgun_M9",
 											"hgun_Pistol_heavy_01_F",
 											"hgun_Pistol_heavy_02_F"
 										];
@@ -324,16 +368,16 @@ DMS_DEBUG = false;
 											"H_HelmetLeaderO_oucamo"
 										];
 	DMS_MG_clothes =					[							// Uniforms for MG Class
-											"U_O_CombatUniform_ocamo",
+											"rhs_uniform_cu_ucp",
 											"U_O_PilotCoveralls",
 											"U_B_Wetsuit",
-											"U_BG_Guerilla3_1",
-											"U_BG_Guerilla2_3",
-											"U_BG_Guerilla2_2",
-											"U_BG_Guerilla1_1",
-											"U_BG_Guerrilla_6_1",
-											"U_IG_Guerilla3_2",
-											"U_B_SpecopsUniform_sgg",
+											"TRYK_U_B_fleece",
+											"TRYK_U_B_fleece_UCP",
+											"TRYK_U_B_PCUHs",
+											"TRYK_U_B_PCUGHs",
+											"TRYK_U_B_PCUODHs",
+											"rhs_uniform_FROG01_wd",
+											"rhs_uniform_FROG01_d",
 											"U_I_OfficerUniform",
 											"U_B_CTRG_3",
 											"U_I_G_resistanceLeader_F"
@@ -362,13 +406,13 @@ DMS_DEBUG = false;
 
 	//Sniper Class
 	DMS_sniper_weps =					[							// Sniper Rifles
-											"srifle_EBR_F",
+											"rhs_weap_m14ebrri",
 											"srifle_DMR_01_F",
 											"srifle_GM6_F",
 											"srifle_LRR_F",
-											"arifle_MXM_F",
-											"arifle_MXM_Black_F",
-											"srifle_DMR_02_F"
+											"CUP_srifle_M110",
+											"rhs_weap_sr25",
+											"CUP_srifle_Mk12SPR"
 										];
 	DMS_sniper_pistols =				[							// Pistols for Sniper Class (Set to empty array if you don't want to give them any pistols)
 											"hgun_ACPC2_F",
@@ -378,8 +422,9 @@ DMS_DEBUG = false;
 											"hgun_Pistol_heavy_02_F"
 										];
 	DMS_sniper_optics =					[							// Optics for Sniper Class
-											"optic_SOS",
+											"rhsusf_acc_LEUPOLDMK4",
 											"optic_DMS",
+											"rhsusf_acc_LEUPOLDMK4_2",
 											"optic_LRPS"
 										];
 	DMS_sniper_optic_chance				= 100;						// Percentage chance that a Sniper Class AI will get an optic
@@ -433,7 +478,7 @@ DMS_DEBUG = false;
 										];
 	DMS_sniper_backpacks =				[							// Backpacks for Sniper Class
 											"B_Bergen_rgr",
-											"B_Carryall_oli",
+											"rhsusf_assault_eagleaiii_ocp",
 											"B_Kitbag_mcamo",
 											"B_Carryall_cbr",
 											"B_Bergen_blk"
@@ -454,7 +499,8 @@ DMS_DEBUG = false;
 										];
 
 	DMS_ai_use_launchers				= true;						// Enable/disable spawning an AI in a group with a launcher
-	DMS_ai_use_launchers_chance			= 50;						// Percentage chance to actually spawn the launcher (per-group)
+	DMS_ai_launchers_per_group			= 2;						// How many units per AI group can get a launcher.
+	DMS_ai_use_launchers_chance			= 50;						// Percentage chance to actually spawn the launcher (per-unit). With "DMS_ai_launchers_per_group" set to 2, and "DMS_ai_use_launchers_chance" set to 50, there will be an average of 1 launcher per group.
 	DMS_AI_launcher_ammo_count			= 2;						// How many rockets an AI will get with its launcher
 	DMS_ai_remove_launchers				= true;						// Remove rocket launchers on AI death
 

@@ -56,7 +56,7 @@ _guns = [];
 		_MGClass = DMS_static_weapons call BIS_fnc_selectRandom;
 	};
 	
-	_gun = createVehicle [_MGClass, _pos, [], 0, "CAN_COLLIDE"];
+	_gun = createVehicle [_MGClass, [0,0,0], [], 0, "CAN_COLLIDE"];
 	_gun setDir (random 360);
 	_gun setPosATL _pos;
 	_gun addEventHandler ["GetOut",{(_this select 0) setDamage 1;}];
@@ -72,14 +72,14 @@ _guns = [];
 
 	if (DMS_DEBUG) then
 	{
-		diag_log format ["DMS_DEBUG SpawnAIStatic :: Created unit %1 at %2 as static gunner in %3",_unit,_pos,_gun];
+		(format ["SpawnAIStatic :: Created unit %1 at %2 as static gunner in %3",_unit,_pos,_gun]) call DMS_fnc_DebugLog;
 	};
 } forEach _positions;
 
 
 if (DMS_DEBUG) then
 {
-	diag_log format ["DMS_DEBUG SpawnAIStatic :: Created %1 static AI with parameters: %2",count _positions,_this];
+	(format ["SpawnAIStatic :: Created %1 static AI with parameters: %2",count _positions,_this]) call DMS_fnc_DebugLog;
 };
 
 _guns

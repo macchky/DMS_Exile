@@ -36,13 +36,18 @@ try
 			};
 		} forEach (crew _x);
 	} forEach (_pos nearEntities [["Exile_Unit_Player","LandVehicle", "Air", "Ship"], _dis]);
+	
+	if (DMS_DEBUG) then
+	{
+		(format ["IsPlayerNearby :: No players within %1 meters of %2!",_dis,_pos]) call DMS_fnc_DebugLog;
+	};
 }
 catch
 {
 	_isNear = true;
 	if (DMS_DEBUG) then
 	{
-		diag_log format ["DMS_DEBUG IsPlayerNearby :: %1 is within %2 meters of %3!",_exception,_dis,_pos];
+		(format ["IsPlayerNearby :: %1 is within %2 meters of %3!",_exception,_dis,_pos]) call DMS_fnc_DebugLog;
 	};
 };
 

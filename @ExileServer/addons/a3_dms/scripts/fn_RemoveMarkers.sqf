@@ -22,7 +22,7 @@ _text 			= missionNamespace getVariable [format ["%1_text",_markerDot],markerTex
 
 if (DMS_DEBUG) then
 {
-	diag_log format ["DMS_DEBUG RemoveMarkers :: Calling DMS_RemoveMarkers with parameters %1.",_this];
+	(format ["RemoveMarkers :: Calling DMS_RemoveMarkers with parameters %1.",_this]) call DMS_fnc_DebugLog;
 };
 
 
@@ -42,7 +42,7 @@ if (_status == "win") then
 	[DMS_MissionMarkerWinDotTime, {deleteMarker _this;}, _markerDot, false] call ExileServer_system_thread_addTask;
 	if (DMS_DEBUG) then
 	{
-		diag_log format ["DMS_DEBUG RemoveMarkers :: %1 Marker will be removed in %2 seconds!",_markerDot,DMS_MissionMarkerWinDotTime];
+		(format ["RemoveMarkers :: %1 Marker will be removed in %2 seconds!",_markerDot,DMS_MissionMarkerWinDotTime]) call DMS_fnc_DebugLog;
 	};
 }
 else
@@ -57,6 +57,6 @@ else
 	[DMS_MissionMarkerLoseDotTime, {deleteMarker _this;}, _markerDot, false] call ExileServer_system_thread_addTask;
 	if (DMS_DEBUG) then
 	{
-		diag_log format ["DMS_DEBUG RemoveMarkers :: %1 Marker will be removed in %2 seconds!",_markerDot,DMS_MissionMarkerLoseDotTime];
+		(format ["RemoveMarkers :: %1 Marker will be removed in %2 seconds!",_markerDot,DMS_MissionMarkerLoseDotTime]) call DMS_fnc_DebugLog;
 	};
 };

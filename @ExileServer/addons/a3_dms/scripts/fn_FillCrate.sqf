@@ -90,9 +90,9 @@ if ((typeName _lootValues)=="ARRAY") then
 	};
 
 
-	if(DMS_DEBUG) then
+	if (DMS_DEBUG) then
 	{
-		diag_log format["DMS_DEBUG FillCrate :: Filling %4 with %1 guns, %2 items and %3 backpacks",_wepCount,_itemCount,_backpackCount,_crate];
+		(format["FillCrate :: Filling %4 with %1 guns, %2 items and %3 backpacks",_wepCount,_itemCount,_backpackCount,_crate]) call DMS_fnc_DebugLog;
 	};
 
 

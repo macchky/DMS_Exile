@@ -1,34 +1,43 @@
+# To the User:
+####Read the instructions carefully. Before leaving any questions regarding DMS, please read through the [DMS "config.sqf"](https://github.com/Defent/DMS_Exile/blob/master/%40ExileServer/addons/a3_dms/config.sqf) ; the majority of the questions we receive are answered (directly or indirectly) by the config.
+
+####Disclaimer:
+Defent's Mission System (DMS) is written from the ground up to be an efficient, easy to install, and vastly customizable mission system for the ArmA 3 [Exile Mod](http://www.exilemod.com/). You are perfectly welcome to port DMS or any of its functions for any other mod or (legal) purposes. Providing credit is appreciated.
+
+However, creating such a mission system takes a lot of time and testing. We (the authors of DMS) are not perfect, and as a result, there may be bugs, glitches, and/or errors within DMS. We appreciate your co-operation in identifying and resolving such issues to improve DMS; however we are not liable for any issues resulting from the usage of DMS on/by your server. We are also not liable to help you in resolving any issues that may arise, although we will attempt to help you to some degree in most cases.
+
+
+___
+
+
 # Instructions
 See also: http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findComment&comment=242
 
 ## To install:
 Put the pre-packed PBO in your ```@ExileServer\addons\``` directory. It should be alongside ```exile_server``` and ```exile_server_config```.
 
-### NOTE: [Also look at the first part of this comment](http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findComment&comment=920). This will solve a few issues that you may encounter.
+If you are using Vilayer or some other GameServer hosting service, and/or the above step did not work, then create a new folder called @a3_dms in the root ArmA 3 folder, create a subfolder called "addons", and place the "a3_dms.pbo" in the "addons" subfolder. Then, edit your startup parameters/modline to include "@a3_dms". For example: ```-serverMod=@ExileServer;@a3_dms;```
 
-If you are using infiSTAR and want to keep ```_CGM = true;```, then set ```_UMW = true;```, and add ```DMS_MissionMarkerCircle```, ```DMS_MissionMarkerDot``` to ```_aLocalM```,
-so your ```_aLocalM``` would look like:
-
-```
-    _aLocalM = ["DMS_MissionMarkerCircle","DMS_MissionMarkerDot"];
-```
+## infiSTAR:
+If you are using infiSTAR and want to keep ```_CGM = true;```, then set ```_UMW = true;``` (the latest version of infiSTAR already has DMS markers whitelisted in ```_aLocalM```).
 
 ## Optional:
 
 
 ### To modify the config:
-* Download the a3_dms folder
-* Edit the config.sqf to your preferences.
-* Pack the a3_dms folder with a PBO tool (**PBO Manager**, Eliteness, or Arma 3 Tools suite)
-* Follow the "To install:" steps using the PBO you just created instead of the pre-packed one.
+1. Download the a3_dms folder
+2. Edit the config.sqf to your preferences.
+3. Pack the a3_dms folder with a PBO tool (**PBO Manager**, Eliteness, or Arma 3 Tools suite)
+4. Follow the ["To install:" steps](https://github.com/Defent/DMS_Exile#to-install) using the PBO you just created instead of the pre-packed one.
 
 
-### ~~HEADLESS CLIENT:~~
-![Warning](https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Achtung.svg/200px-Achtung.svg.png)
+### HEADLESS CLIENT:
 
-**Headless Client is currently broken in ArmA as of the 4th of September, do not use it as it WILL crash your server.**
+**The way DMS utilizes HC is unfavorable for large maps. As a result, we are dropping HC support for DMS until it is completed, then we will create proper Headless Client support.**
 
-~~Add this code to the TOP of your initPlayerLocal.sqf~~ 
+People have reported Headless Client working properly in ArmA v1.52
+
+Add this code to the TOP of your initPlayerLocal.sqf
 
 ```
 if (!hasInterface && !isServer) then
@@ -41,17 +50,138 @@ if (!hasInterface && !isServer) then
 	};
 };
 ```
-#### Thanks:
-- [Defent](https://github.com/Defent) for creating Defent's Mission System.
-- [eraser1](https://github.com/eraser1) for his constant codebase improvments.
+
+___
+
+# Credits:
+### Authors:
+- [Defent](https://github.com/Defent) from [NumenaDayZ](http://numenadayz.com/).
+- [eraser1](https://github.com/eraser1) from [TrainwreckDayZ](http://www.trainwreckdayz.com/home).
+
+
+### Thanks:
 - [Zupa](https://github.com/Windmolders) for suggestions and coding help.
 - [Nawuko](https://github.com/Nawuko) for catching a silly mistake :P
 - [shaworth](https://github.com/shaworth) and [KawaiiPotato](https://github.com/KawaiiPotato) for making the README all nice and pretty :)
-- Everbody's feedback on [the DMS thread on exile forums](http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findComment&comment=242)
 - [maca134](http://maca134.co.uk/portfolio/m3editor-arma-3-map-editor/) for M3Editor Stuff
+- Everbody's feedback on [the DMS thread on exile forums](http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findComment&comment=242)
+
+___
+
+# Roadmap:
+#### Continuous Optimization + Improvements.
+
+#### Static Mission(s):
+* Create a sample static mission on the salt flats for Altis. Maybe other samples for other maps later on.
+* Implement a function that continues to spawn AI on a static mission.
+* Create a kick-ass static AI base :P
+* Implement the ability to "freeze" and "unfreeze" AI when there are no players nearby to improve performance.
+
+#### AI Heli Paratroopers/air support.
+
+#### Convoy Mission:
+* Regularly update marker position.
+* Implement function(s) for AI pathing.
+
+#### Underwater Missions
+
+#### Dynamic/Ambient AI Spawning
+* Spawn AI that are meant to "hunt" individual players.
+* Air/Land AI Vehicle Patrols
+
+#### Custom client notifications.
+
+#### (Maybe) Implement a form of stat-tracking system
+* It will store AI kills in the database (this would almost certainly require some extra work on the behalf of server owners).
+
+___
+
+# Changelog:
+#### October 17, 2015 (2:30 PM CST-America):
+* **NEW CONFIG VALUES**:
+
+		|DMS_TimeToFirstMission|
+		|DMS_ShowDifficultyColorLegend|
+		|DMS_TerritoryNearBlacklist|
+		|DMS_MinSurfaceNormal|	(Used to be DMS_MaxSurfaceNormal, simply renamed)
+		|DMS_ai_launchers_per_group|
+* **UPDATING ALL OF YOUR MISSION FILES IS HIGHLY RECOMMENDED UNLESS YOU KNOW WHAT YOU'RE DOING**
+* RENAMED "DMS_MaxSurfaceNormal" to "DMS_MinSurfaceNormal". I must have been very tired when I named it...
+* DMS_MinSurfaceNormal is now 0.9 by default, but will be 0.95 for Altis and Bornholm (since they're relatively large/flat maps). Esseker is still 0.85. If you want to convert DMS_MinSurfaceNormal to degrees, you would take the arc-cosine of the surfaceNormal, and that will give you the degrees from horizontal. For example, arccos(0.9) is about 25 degrees. Google: "arccos(0.9) in degrees"
+* Tweaked and rebalanced "DMS_BanditMissionTypes". Most of the spawn chances are the same, they're just reduced in order to prevent the creation of arrays that are far larger than they need to be.
+* You can now manually define how long it takes for the first mission to spawn after a restart.
+* DMS will now by default create markers on the bottom left of the map to show which colors correspond to which difficulty. It isn't very pretty, but it gets the point across.
+* DMS will now manually calculate the center of the map and its radius, if it isn't preconfigured by DMS.
+* You can now specify the vehicles to spawn for missions: "bandits", "cardealer", "construction", "donthasslethehoff", and "thieves".
+* You can now specify the spawning location of any mission (and whether or not to use an alternative location if the provided location is invalid). This will allow for easy integration of DMS into admin tools.
+* Added support for scripts to be executed on mission completion or mission failure (this will allow you to have "multi-part" missions, where you would simply spawn the next part of the mission if the previous is completed).
+* Restructured DMS_DEBUG from the previous patch in favor of a more "optimized" method.
+* DMS_fnc_findSafePos is completely overhauled; DMS no longer uses "BIS_fnc_findSafePos". It also now throttles minSurfaceNormal on repeated failure. You can now determine whether or not the mission should spawn on water (however, I don't suggest you use this function for water spawns yet).
+* You can also now define a minimum distance from other territories for missions.
+* DMS_fnc_IsValidPosition will now check for water depth if the provided position is meant to be checked as a "water spawn". It will now also check for nearby missions from A3XAI or VEMF (untested).
+* DMS_fnc_IsValidPosition now checks whether or not the position is outside of the map borders.
+* DMS_fnc_SelectOffsetPos will now return the 3rd element of the provided position as-is.
+* You can now have multiple AI within a group with a launcher.
+* AI now have a 5-second godmode after spawning.
+* You can now spawn a crate using ASL pos. DMS_fnc_SpawnCrate will also make sure that the provided classname is valid.
+* Just like SpawnCrate, "DMS_fnc_SpawnNonPersistentVehicle" and "DMS_fnc_SpawnPersistentVehicle" will now make sure that the provided classname is valid.
+* "DMS_fnc_SpawnPersistentVehicle" now supports ASL spawning.
+* Added support for [Rod Serling's](https://github.com/Rod-Serling) AVS.
+* General optimization.
 
 
-## Changelog:
+#### October 9, 2015 (8:30 PM CST-America):
+* **NEW CONFIG VALUE: DMS_Use_Map_Config**
+* You can now overwrite "main config values" with map-specific config values located in the new "map_configs" folder. This should allow you to use one DMS PBO if you have multiple servers with different maps. Included examples for Altis, Bornholm, Esseker, and Tavi (Taviana).
+* Because of the above implementation, DMS by default will not include the salt flats blacklist for findSafePos. In addition, it is preconfigured to the hilly terrains in Esseker and Taviana, as well as reducing all of the blacklist distances due to the smaller map size in Esseker.
+* Created new function "DMS_fnc_DebugLog". All DMS files (that produced debug logs) have been changed, including mission files. However, updating them is not important (and completely pointless if you don't even use DMS_DEBUG).
+* Fixed a few locations where it said "sized" instead of "seized". Thanks to [icomrade](https://github.com/icomrade) for pointing them out.
+* DMS now utilizes the "ARMA_LOG" DLL (if it exists) by infiSTAR to produce debug logs (if enabled). All debug logs now also include server uptime (in seconds) and server FPS.
+* The FSM no longer produces debug logs.
+* AI Locality manager will now run every minute.
+* Debug logs for "DMS_fnc_MissionsMonitor" will only output the mission name and the position, instead of all of the parameters.
+* "DMS_fnc_IsNearWater" will now check the provided position itself for water.
+* "DMS_fnc_IsValidPosition" will now do a surfaceNormal check within a 5 meter radius of the provided position as well.
+* "_customGearSet" should now actually work for "DMS_fnc_SpawnAISoldier", and the function title comment has been updated for the slightly tweaked syntax.
+
+
+#### October 8, 2015 (7:15 PM CST-America):
+* **NEW CONFIG VALUES**:
+
+		|DMS_Show_Kill_Poptabs_Notification|
+		|DMS_Show_Kill_Respect_Notification|
+		|DMS_dynamicText_Duration|
+		|DMS_dynamicText_FadeTime|
+		|DMS_dynamicText_Title_Size|
+		|DMS_dynamicText_Title_Font|
+		|DMS_dynamicText_Message_Color|
+		|DMS_dynamicText_Message_Size|
+		|DMS_dynamicText_Message_Font|
+		|DMS_standardHint_Title_Size|
+		|DMS_standardHint_Title_Font|
+		|DMS_standardHint_Message_Color|
+		|DMS_standardHint_Message_Size|
+		|DMS_standardHint_Message_Font|
+		|DMS_textTiles_Duration|
+		|DMS_textTiles_FadeTime|
+		|DMS_textTiles_Title_Size|
+		|DMS_textTiles_Title_Font|
+		|DMS_textTiles_Message_Color|
+		|DMS_textTiles_Message_Size|
+		|DMS_textTiles_Message_Font|
+* "DMS_PlayerNotificationTypes" has been adjusted to include "systemChatRequest" and the brand new "textTilesRequest". **NOTE:** Due to the way "text tiles" work, a player can only have one on his screen at a time. As a result, if another text tile is created while the mission message is up, the message will immediately disappear to display the new text tile. Currently, the "Frag Messages" (the ones that say "Player Kill 	+100") use text tiles. I don't think it should be a major issue (especially if you use "systemChatRequest", so the player can just scroll up), but if I get reports of it being stupid, I will default to "dynamicTextRequest", which should also look pretty damn nice.
+* These changes should make it much easier for people to use DMS notification functions for other purposes.
+* Fixed AI waypoints - the AI should now properly circle the objective at the proper radius.
+* Tweaked "DMS_AI_WP_Radius_moderate" and "DMS_AI_WP_Radius_difficult" (reduced the radii). Due to the AI pathing fix.
+* Fixed a couple typos in "DMS_fnc_SpawnAISoldier". "_customGearSet" should work now (although I'm fairly certain nobody uses it since nobody ever complained :P )
+* Improved "DMS_fnc_SpawnNonPersistentVehicle"; Vehicles should no longer spawn jumbled up in most cases (like cardealer). Also, it's updated to the latest Exile methods to ensure that vehicles have no nightvision/thermal if configured to do so in Exile configs. Also added the "MPKilled" EH used by Exile for non-persistent (persistent vehicles already had it).
+* You can now choose whether or not you want to display the poptabs or respect kill messages when killing an AI with "DMS_Show_Kill_Poptabs_Notification" and "DMS_Show_Kill_Respect_Notification". Both are enabled by default.
+* Fixed typos in the "OnKilled" EH (didn't really affect anything)
+* Fixed cases when "currentMuzzle" would return a number. Thanks to [azmodii](https://github.com/azmodii) for the report.
+* Optimized the "AI share info" function in "OnKilled"
+* Fixed mines facing the wrong direction. Thanks to [boLekc](https://github.com/boLekc) for the report.
+
+
 #### October 4, 2015 (10:30 PM CST-America):
 * **NEW CONFIG VALUES**:
 

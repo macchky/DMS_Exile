@@ -41,11 +41,7 @@ _exit = false;
 		};
 
 
-		_absoluteWinCondition = false;
-		if (((count _x)>2) && {_x select 2}) then
-		{
-			_absoluteWinCondition = true;
-		};
+		_absoluteWinCondition = if ((count _x)>2) then {_x select 2} else {false};
 
 		if (!_success && {!_absoluteWinCondition}) then
 		{
@@ -55,7 +51,7 @@ _exit = false;
 
 		if (DMS_DEBUG) then
 		{
-			diag_log format ["DMS_DEBUG MissionSuccessState :: Checking completion type %1 with parameter %2. Absolute: %3",_completionType,_completionArgs,_absoluteWinCondition];
+			(format ["MissionSuccessState :: Checking completion type ""%1"" with argument |%2|. Absolute: %3",_completionType,_completionArgs,_absoluteWinCondition]) call DMS_fnc_DebugLog;
 		};
 
 		switch (toLower _completionType) do 
@@ -92,7 +88,7 @@ _exit = false;
 	{
 		if (DMS_DEBUG) then
 		{
-			diag_log format ["DMS_DEBUG MissionSuccessState :: %1",_exception];
+			(format ["MissionSuccessState :: %1",_exception]) call DMS_fnc_DebugLog;
 		};
 	};
 } forEach _this;

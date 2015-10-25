@@ -23,12 +23,7 @@ if !(_missionType in DMS_BanditMissionTypesArray) then
 }
 else
 {
-	_parameters = [];
-
-	if ((count _this)>1) then
-	{
-		_parameters = _this select 1;
-	};
+	_parameters = if ((count _this)>1) then {_this select 1} else {[]};
 
 	DMS_MissionCount 			= DMS_MissionCount + 1;
 	DMS_RunningBMissionCount 	= DMS_RunningBMissionCount + 1;
@@ -41,6 +36,6 @@ else
 
 	if (DMS_DEBUG) then
 	{
-		diag_log format ["DMS_DEBUG SelectMission :: Spawned mission %1 with parameters (%2) | DMS_BMissionDelay set to %3 seconds",str _missionType,_parameters,DMS_BMissionDelay];
+		(format ["SelectMission :: Spawned mission %1 with parameters (%2) | DMS_BMissionDelay set to %3 seconds",str _missionType,_parameters,DMS_BMissionDelay]) call DMS_fnc_DebugLog;
 	};
 };
