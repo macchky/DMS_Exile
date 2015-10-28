@@ -111,28 +111,28 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 	DMS_dynamicText_Duration			= 7;						// Number of seconds that the message will last on the screen.
 	DMS_dynamicText_FadeTime			= 1.5;						// Number of seconds that the message will fade in/out (does not affect duration).
 	DMS_dynamicText_Title_Size			= 1.2;						// Size for Client Dynamic Text mission titles.
-	DMS_dynamicText_Title_Font			= "puristaMedium";			// Font for Client Dynamic Text mission titles.
+	DMS_dynamicText_Title_Font			= "OrbitronMedium";			// Font for Client Dynamic Text mission titles.
 	DMS_dynamicText_Message_Color		= "#FFFFFF";				// Dynamic Text color for "dynamicTextRequest" client notification type.
 	DMS_dynamicText_Message_Size		= 0.65;						// Dynamic Text size for "dynamicTextRequest" client notification type.
-	DMS_dynamicText_Message_Font		= "OrbitronMedium";			// Dynamic Text font for "dynamicTextRequest" client notification type.
+	DMS_dynamicText_Message_Font		= "puristaMedium";			// Dynamic Text font for "dynamicTextRequest" client notification type.
 		/*Dynamic Text Notification Settings*/
 
 		/*Standard Hint Notification Settings*/
 	DMS_standardHint_Title_Size			= 2.5;						// Size for Client Standard Hint mission titles.
-	DMS_standardHint_Title_Font			= "puristaMedium";			// Font for Client Standard Hint mission titles.
+	DMS_standardHint_Title_Font			= "OrbitronMedium";			// Font for Client Standard Hint mission titles.
 	DMS_standardHint_Message_Color		= "#FFFFFF";				// Standard Hint color for "standardHintRequest" client notification type.
 	DMS_standardHint_Message_Size		= 1;						// Standard Hint size for "standardHintRequest" client notification type.
-	DMS_standardHint_Message_Font		= "OrbitronMedium";			// Standard Hint font for "standardHintRequest" client notification type.
+	DMS_standardHint_Message_Font		= "puristaMedium";			// Standard Hint font for "standardHintRequest" client notification type.
 		/*Standard Hint Notification Settings*/
 
 		/*Text Tiles Notification Settings*/
 	DMS_textTiles_Duration				= 7;						// Number of seconds that the message will last on the screen.
 	DMS_textTiles_FadeTime				= 1.5;						// Number of seconds that the message will fade in/out (does not affect duration).
 	DMS_textTiles_Title_Size			= 2.3;						// Size for Client Text Tiles mission titles.
-	DMS_textTiles_Title_Font			= "puristaMedium";			// Font for Client Text Tiles mission titles.
+	DMS_textTiles_Title_Font			= "OrbitronMedium";			// Font for Client Text Tiles mission titles.
 	DMS_textTiles_Message_Color			= "#FFFFFF";				// Text Tiles color for "textTilesRequest" client notification type.
 	DMS_textTiles_Message_Size			= 1.25;						// Text Tiles size for "textTilesRequest" client notification type.
-	DMS_textTiles_Message_Font			= "OrbitronMedium";			// Text Tiles font for "textTilesRequest" client notification type.
+	DMS_textTiles_Message_Font			= "puristaMedium";			// Text Tiles font for "textTilesRequest" client notification type.
 		/*Text Tiles Notification Settings*/
 
 	/*Mission notification settings*/
