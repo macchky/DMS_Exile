@@ -38,6 +38,8 @@ _crate = createVehicle [_crateClassName,_pos,[], 0, "CAN_COLLIDE"];
 
 _crate setDir (random 360);
 
+_crate setVariable ["R3F_LOG_disabled",false,true];
+
 if (_spawnATL) then
 {
 	_crate setPosATL _pos;
