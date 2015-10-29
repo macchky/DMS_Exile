@@ -243,6 +243,9 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 	DMS_assault_weps =					[							// Assault Rifles
 											"CUP_arifle_AK107",
 											"CUP_arifle_AK107_GL",
+											"CUP_arifle_AKM",
+											"CUP_arifle_AK74",
+											"CUP_arifle_AK74M",
 											"rhs_weap_m16a4_carryhandle_grip",
 											"rhs_weap_m16a4_grip",
 											"rhs_weap_m4a1_carryhandle_grip2",
@@ -265,7 +268,8 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 											"optic_Aco",
 											"optic_Holosight",
 											"optic_MRCO",
-											"optic_DMS"
+											"optic_DMS",
+											"CUP_optic_Kobra"
 										];
 	DMS_assault_optic_chance			= 75;						// Percentage chance that an Assault Class AI will get an optic
 	DMS_assault_bipod_chance			= 25;						// Percentage chance that an Assault Class AI will get a bipod
