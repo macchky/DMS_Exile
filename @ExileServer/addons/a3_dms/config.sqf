@@ -298,7 +298,9 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 											"rhs_uniform_FROG01_d",
 											"U_I_OfficerUniform",
 											"U_B_CTRG_3",
-											"U_I_G_resistanceLeader_F"
+											"U_I_G_resistanceLeader_F",
+											"TRYK_U_B_JSDF_CombatUniform",
+											"TRYK_U_B_JSDF_CombatUniformTshirt"
 										];
 	DMS_assault_vests =					[							// Vests for Assault Class
 											"V_PlateCarrierH_CTRG",
@@ -327,7 +329,10 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 											"LMG_Zafir_F",
 											"LMG_Mk200_F",
 											"rhs_weap_m249_pip_L_vfg",
-											"MMG_01_hex_F"
+											"MMG_01_hex_F",
+											"CUP_lmg_Pecheneg",
+											"CUP_lmg_PKM",
+											"CUP_RPK_74"
 										];
 	DMS_MG_pistols =					[							// Pistols for MG Class (Set to empty array if you don't want to give them any pistols)
 											"hgun_ACPC2_F",
@@ -380,7 +385,9 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 											"rhs_uniform_FROG01_d",
 											"U_I_OfficerUniform",
 											"U_B_CTRG_3",
-											"U_I_G_resistanceLeader_F"
+											"U_I_G_resistanceLeader_F",
+											"TRYK_U_B_JSDF_CombatUniform",
+											"TRYK_U_B_JSDF_CombatUniformTshirt"
 										];
 	DMS_MG_vests =						[							// Vests for MG Class
 											"V_PlateCarrierH_CTRG",
@@ -412,7 +419,9 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 											"srifle_LRR_F",
 											"CUP_srifle_M110",
 											"rhs_weap_sr25",
-											"CUP_srifle_Mk12SPR"
+											"CUP_srifle_Mk12SPR",
+											"CUP_srifle_SVD",
+											"CUP_arifle_Mk20"
 										];
 	DMS_sniper_pistols =				[							// Pistols for Sniper Class (Set to empty array if you don't want to give them any pistols)
 											"hgun_ACPC2_F",
@@ -425,7 +434,8 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 											"rhsusf_acc_LEUPOLDMK4",
 											"optic_DMS",
 											"rhsusf_acc_LEUPOLDMK4_2",
-											"optic_LRPS"
+											"optic_LRPS",
+											"CUP_optic_PSO_3"
 										];
 	DMS_sniper_optic_chance				= 100;						// Percentage chance that a Sniper Class AI will get an optic
 	DMS_sniper_bipod_chance				= 90;						// Percentage chance that a Sniper Class AI will get a bipod
