@@ -107,6 +107,7 @@ if (DMS_StaticMission_Arr isEqualTo []) exitWith {};				// Empty array, no stati
 					_x setVariable ["ExileLastLockToggleAt", time];
 					_x setVariable ["ExileAccessDenied", false];
 					_x setVariable ["ExileAccessDeniedExpiresAt", 0];
+					_x setVariable ["R3F_LOG_disabled",false,true];
 
 					// NOW we save the vehicle in the database, since we know we're not deleting this vehicle.
 					_x call ExileServer_object_vehicle_database_insert;
