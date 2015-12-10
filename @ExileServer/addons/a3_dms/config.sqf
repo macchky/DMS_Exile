@@ -6,8 +6,9 @@
 */
 
 
-// Enables debug logging in DMS functions. This will also make missions spawn and timeout more quickly (for testing purposes).
-// Disable this on live servers, unless you know what you're doing.
+// Enables debug logging in DMS functions.
+// Logs will be written in the RPT, and if you have infiSTAR's "ARMA_LOG" DLL loaded, it will also produce logs in the server directory.
+// This will produce A LOT of logs, so make sure you leave it to false unless you know what you're doing.
 DMS_DEBUG = false;
 
 
@@ -22,15 +23,26 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 
 /* Mission System Settings */
 	/*General settings for dynamic missions*/
-	DMS_DynamicMission					= true;						// Enable/disable dynamic mission system
+	DMS_DynamicMission					= true;						// Enable/disable dynamic mission system.
 	DMS_MaxBanditMissions				= 4;						// Maximum number of Bandit Missions running at the same time
-	DMS_StaticMission					= false;					// Enable/disable static missions
-	DMS_TimeToFirstMission				= [180,420];				// [Minimum,Maximum] time between first mission spawn.
+	DMS_TimeToFirstMission				= [180,420];				// [Minimum,Maximum] time between first mission spawn. | DEFAULT: 3-7 minutes.
 	DMS_TimeBetweenMissions				= [300,900];				// [Minimum,Maximum] time between missions (if mission limit is not reached) | DEFAULT: 10-15 mins
-	DMS_MissionTimeOut					= [1200,2400]; 				// [Minimum,Maximum] time it will take for a mission to timeout | Default: 15-30 mins
+	DMS_MissionTimeOut					= [900,1800]; 				// [Minimum,Maximum] time it will take for a mission to timeout | DEFAULT: 15-30 mins
+	DMS_MissionTimeoutResetRange		= 1000;						// If a player is this close to a mission then it won't time-out. Set to 0 to disable this check.
 	/*General settings for dynamic missions*/
 
-	DMS_playerNearRadius				= 125;						// How close a player has to be to a mission in order to satisfy the "playerNear" mission requirement (can be customized per mission).
+	/*General settings for static missions*/
+	DMS_StaticMission					= true;						// Enable/disable static mission system.
+	DMS_MaxStaticMissions				= 1;						// Maximum number of Static Missions running at the same time. It's recommended you set this to the same amount of static missions that you have in total.
+	DMS_TimeToFirstStaticMission		= [180,420];				// [Minimum,Maximum] time between first static mission spawn. | DEFAULT: 3-7 minutes.
+	DMS_TimeBetweenStaticMissions		= [900,1800];				// [Minimum,Maximum] time between static missions (if static mission limit is not reached) | DEFAULT: 15-30 mins
+	DMS_StaticMissionTimeOut			= [1800,3600]; 				// [Minimum,Maximum] time it will take for a static mission to timeout | DEFAULT: 30-60 mins
+	DMS_StaticMissionTimeoutResetRange	= 1500;						// If a player is this close to a mission then it won't time-out. Set to 0 to disable this check.
+	DMS_StaticMinPlayerDistance			= 1500;						// If a player is this close to a mission location, then it won't spawn the mission and will wait 60 seconds before attempting to spawn it.
+	DMS_AllowStaticReinforcements		= true;						// Whether or not static missions will receive reinforcements. This will simply disable the calling of GroupReinforcementsMonitor;
+	/*General settings for static missions*/
+
+	DMS_playerNearRadius				= 100;						// How close a player has to be to a mission in order to satisfy the "playerNear" mission requirement (can be customized per mission).
 
 	DMS_AI_KillPercent					= 100;						// The percent amount of AI that need to be killed for "killPercent" mission requirement (NOT IMPLEMENTED)
 
@@ -39,9 +51,10 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 	DMS_MarkerText_ShowMissionPrefix	= true;						// Whether or not to place a prefix before the mission marker text. Enable this if your players get confused by the marker names :P
 	DMS_MarkerText_MissionPrefix		= "Mission:";				// The text displayed before the mission name in the mission marker.
 	DMS_MarkerText_ShowAICount			= true;						// Whether or not to display the number of remaining AI in the marker name.
+	DMS_MarkerText_ShowAICount_Static	= true;						// Whether or not to display the number of remaining AI in the marker name for STATIC missions.
 	DMS_MarkerText_AIName				= "Units";					// What the AI will be called in the map marker. For example, the marker text can show: "Car Dealer (3 Units remaining)"
 	DMS_MarkerPosRandomization			= false;					// Randomize the position of the circle marker of a mission
-	DMS_MarkerPosRandomRadius			= [25,100];					// Minimum/Maximum distance that the circle marker position will be randomized | Default: 0 meters to 200 meters
+	DMS_MarkerPosRandomRadius			= [25,100];					// Minimum/Maximum distance that the circle marker position will be randomized | DEFAULT: 0 meters to 200 meters
 	DMS_RandomMarkerBrush				= "Cross";					// See: https://community.bistudio.com/wiki/setMarkerBrush
 	DMS_MissionMarkerWinDot				= true;						// Keep the mission marker dot with a "win" message after mission is over
 	DMS_MissionMarkerLoseDot			= true;						// Keep the mission marker dot with a "lose" message after mission is over
@@ -51,16 +64,34 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 	DMS_MissionMarkerLoseDotColor		= "ColorRed";				// The color of the "lose" marker dot
 	/*Mission Marker settings*/
 
-	/*Mission Cleanup/Timeout settings*/
-	DMS_CompletedMissionCleanup			= false;						// Cleanup mission-spawned buildings and AI bodies after some time
+	/*Mission Cleanup settings*/
+	DMS_CompletedMissionCleanup			= true;						// Cleanup mission-spawned buildings and AI bodies after some time
 	DMS_CompletedMissionCleanupTime		= 3600;						// Minimum time until mission-spawned buildings and AI are cleaned up
 	DMS_CleanUp_PlayerNearLimit			= 20;						// Cleanup of an object is aborted if a player is this many meters close to the object
-	DMS_AIVehCleanUpTime				= 900;						// Time until a destroyed AI vehicle is cleaned up.
-	DMS_MissionTimeoutReset				= true;						// Enable mission timeout timer reset if a player is close
-	DMS_MissionTimeoutResetRange		= 1000;						// If a player is this close to a mission then it won't time-out
-	/*Mission Cleanup/Timeout settings*/
+	DMS_AIVehCleanUpTime				= 300;						// Time until a destroyed AI vehicle is cleaned up.
+	/*Mission Cleanup settings*/
 
 	/*Mission spawn location settings*/
+	DMS_UsePredefinedMissionLocations	= false;					// Whether or not to use a list of pre-defined mission locations instead before attempting to find a random (valid) position. The positions will still be checked for validity. If none of the provided positions are valid, a random one will be generated.
+	DMS_PredefinedMissionLocations = 	[							// List of Preset/Predefined mission locations.
+											/* List of positions:
+											position1: [x_1,y_1,z_1],
+											position2: [x_2,y_2,z_2],
+											...
+											positionN: [x_N,y_N,z_N]
+											*/
+
+										];
+
+	DMS_PredefinedMissionLocations_WEIGHTED = 	[					// List of Preset/Predefined mission locations WITH WEIGHTED CHANCES. This will NOT override "DMS_PredefinedMissionLocations", and everything from "DMS_PredefinedMissionLocations" will behave as though it has 1 weight per position.
+											/* List of arrays with position and weighted chance:
+											[[x_1,y_1,z_1], chance_1],
+											[[x_2,y_2,z_2], chance_2],
+											...
+											[[x_N,y_N,z_N], chance_N]
+											*/
+
+										];
 	DMS_ThrottleBlacklists				= true;						// Whether or not to "throttle" the blacklist distance parameters in DMS_fnc_FindSafePos. This will reduce the values of the minimum
 																		//distances for some of the below parameters if several attempts have been made, but a suitable position was not yet found. This
 																		//should help with server performance drops when spawning a mission, as DMS_fnc_findSafePos is the most resource-intensive function.
@@ -74,6 +105,10 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 	DMS_WaterNearBlacklist				= 500;						// Missions won't spawn in a position this many meters close to water
 	DMS_TerritoryNearBlacklist			= 100;						// Missions won't spawn in a position this many meters close to a territory flag
 	DMS_MinSurfaceNormal				= 0.9;						// Missions won't spawn in a position where its surfaceNormal is less than this amount. The lower the value, the steeper the location. Greater values means flatter locations. Values can range from 0-1, with 0 being sideways, and 1 being perfectly flat. For reference: SurfaceNormal of about 0.7 is when you are forced to walk up a surface. If you want to convert surfaceNormal to degrees, use the arc-cosine of the surfaceNormal. 0.9 is about 25 degrees. Google "(arccos 0.9) in degrees"
+	DMS_MinDistFromWestBorder			= 250;						// Missions won't spawn in a position this many meters close to the western map border.
+	DMS_MinDistFromEastBorder			= 250;						// Missions won't spawn in a position this many meters close to the easter map border.
+	DMS_MinDistFromSouthBorder			= 250;						// Missions won't spawn in a position this many meters close to the southern map border.
+	DMS_MinDistFromNorthBorder			= 250;						// Missions won't spawn in a position this many meters close to the northern map border.
 	/*Mission spawn location settings*/
 
 	DMS_MinWaterDepth					= 20;						// Minimum depth of water that an underwater mission can spawn at.
@@ -156,6 +191,13 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 											["behindenemylines",2],
 											["mercbase",1]
 										];
+	
+
+	DMS_StaticMissionTypes =			[							// List of STATIC missions with spawn chances.
+											
+										];
+
+
 
 	DMS_findSafePosBlacklist =			[							// For BIS_fnc_findSafePos position blacklist info refer to: https://community.bistudio.com/wiki/BIS_fnc_findSafePos 
 											// An example is given in the altis_config.sqf (it blacklists the salt flats).
@@ -174,6 +216,9 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 	DMS_Bandit_Static_RepGain			= 100;						// The amount of Respect gained for killing a bandit static gunner
 	DMS_Bandit_Vehicle_MoneyGain		= 100;						// The amount of Poptabs gained for killing a bandit vehicle crew member
 	DMS_Bandit_Vehicle_RepGain			= 50;						// The amount of Respect gained for killing a bandit vehicle crew member
+	
+	DMS_AIKill_DistanceBonusMinDistance	= 100;						// Minimum distance from the player to the AI to apply the distance bonus.
+	DMS_AIKill_DistanceBonusCoefficient	= 0.05;						// If the distance from the player to the killed unit is more than "DMS_AIKill_DistanceBonusMinDistance" meters then the player gets a respect bonus equivalent to the distance multiplied by this coefficient. For example, killing an AI from 400 meters will give 100 extra respect (when the coefficient is 0.25). Set to 0 to disable the bonus. This bonus will not be applied if there isn't a regular AI kill bonus.
 
 	DMS_Diff_RepOrTabs_on_roadkill 		= true;						// Whether or not you want to use different values for giving respect/poptabs when you run an AI over. Default values are NEGATIVE. This means player will LOSE respect or poptabs.
 	DMS_Bandit_Soldier_RoadkillMoney	= 50;						// The amount of Poptabs gained/lost for running over a bandit soldier
@@ -186,9 +231,9 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 	DMS_banditSide						= EAST;						// The side (team) that AI Bandits will spawn on
 	DMS_clear_AI_body					= false;					// Clear AI body as soon as they die
 	DMS_clear_AI_body_chance			= 50;						// Percentage chance that AI bodies will be cleared when they die
-	DMS_ai_disable_ramming_damage 		= true;						// Disables damage due to ramming into AI. !!!NOTE: THIS WILL NOT BE RELIABLE WITH "DMS_ai_offload_to_client"!!!
-	DMS_remove_roadkill					= true; 					// Remove gear from AI bodies that are roadkilled
-	DMS_remove_roadkill_chance			= 50;						// Percentage chance that roadkilled AI bodies will be deleted
+	DMS_ai_disable_ramming_damage 		= false;						// Disables damage due to ramming into AI. !!!NOTE: THIS WILL NOT BE RELIABLE WITH "DMS_ai_offload_to_client"!!!
+	DMS_remove_roadkill					= false; 					// Remove gear from AI bodies that are roadkilled
+	DMS_remove_roadkill_chance			= 30;						// Percentage chance that roadkilled AI bodies will be deleted
 	DMS_explode_onRoadkill				= false;						// Whether or not to spawn an explosion when an AI gets run over. It will likely take out the 2 front wheels. Should help mitigate the ineffective AI vs. striders issue ;)
 	DMS_RemoveNVG						= false;					// Remove NVGs from AI bodies
 

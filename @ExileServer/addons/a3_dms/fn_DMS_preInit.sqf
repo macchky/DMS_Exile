@@ -5,6 +5,8 @@
 
 DMS_HC_Object = objNull;
 
+DMS_CleanUpList	= [];
+
 
 //Load main config
 call compileFinal preprocessFileLineNumbers "\x\addons\dms\config.sqf";
@@ -124,7 +126,7 @@ DMS_fnc_setRelPositions =
 	{
 		private ['_relpos','_objPos'];
 
-		_relpos = [getPosATL _x, _center] call M3E_fnc_subArr;
+		_relpos = (getPosATL _x) vectorDiff _center;
 		_objPos = [_newCPos,_relpos] call DMS_fnc_CalcPos;
 
 		_x setPosATL _objPos;
@@ -134,3 +136,5 @@ DMS_fnc_setRelPositions =
 
 // Because I fucked up the name on first implementation and don't want to mess anybody up who didn't realize to change every occurence of "DMS_MaxSurfaceNormal" to "DMS_MinSurfaceNormal".
 DMS_MaxSurfaceNormal = DMS_MinSurfaceNormal;
+
+DMS_AttemptsUntilThrottle = DMS_AttemptsUntilThrottle + 1;
