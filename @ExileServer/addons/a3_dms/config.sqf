@@ -378,7 +378,6 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 											"LMG_Zafir_F",
 											"LMG_Mk200_F",
 											"rhs_weap_m249_pip_L_vfg",
-											"MMG_01_hex_F",
 											"CUP_lmg_Pecheneg",
 											"CUP_lmg_PKM",
 											"CUP_RPK_74"
@@ -631,7 +630,6 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 											"LMG_Zafir_F",
 											"LMG_Mk200_F",
 											"arifle_MX_SW_Black_F",
-											"MMG_01_hex_F",
 											"srifle_EBR_F",
 											"srifle_DMR_01_F",
 											"srifle_GM6_F",
