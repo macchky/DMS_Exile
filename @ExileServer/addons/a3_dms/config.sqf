@@ -642,6 +642,14 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 											"Exile_Item_Catfood_Cooked",
 											"Exile_Item_SausageGravy_Cooked",
 											"Exile_Item_BBQSandwich_Cooked",
+											"Exile_Item_EMRE",
+											"Exile_Item_BeefParts"
+											"Exile_Item_Cheathas",
+											"Exile_Item_Noodles",
+											"Exile_Item_SeedAstics",
+											"Exile_Item_Raisins",
+											"Exile_Item_Moobar",
+											"Exile_Item_InstantCoffee",
 											"Exile_Item_PlasticBottleFreshWater",
 											"Exile_Item_PlasticBottleFreshWater",
 											"Exile_Item_Matches",
@@ -681,7 +689,9 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 	DMS_RareLoot						= true;						// Potential chance to spawn rare loot in any crate.
 	DMS_RareLootList =					[							// List of rare loot to spawn
 											"Exile_Item_SafeKit",
-											"Exile_Item_CodeLock"
+											"Exile_Item_CodeLock",
+											"Exile_Item_BaseCameraKit",
+											"Exile_Item_Laptop"
 										];
 	DMS_RareLootChance					= 10;						// Percentage Chance to spawn rare loot in any crate | Default: 10%
 
