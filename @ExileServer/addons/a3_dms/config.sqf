@@ -643,7 +643,7 @@ DMS_Use_Map_Config = true;	// Whether or not to use config overwrites specific t
 											"Exile_Item_SausageGravy_Cooked",
 											"Exile_Item_BBQSandwich_Cooked",
 											"Exile_Item_EMRE",
-											"Exile_Item_BeefParts"
+											"Exile_Item_BeefParts",
 											"Exile_Item_Cheathas",
 											"Exile_Item_Noodles",
 											"Exile_Item_SeedAstics",
