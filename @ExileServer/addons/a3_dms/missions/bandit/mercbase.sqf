@@ -51,7 +51,7 @@ _group =
 [
 	[_pos,[-9.48486,-12.4834,0]] call DMS_fnc_CalcPos,
 	_AICount,
-	"moderate",
+	"easy",
 	"random",
 	_side
 ] call DMS_fnc_SpawnAIGroup;
