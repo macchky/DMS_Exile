@@ -17,7 +17,6 @@
 
 	A single object can also be used for (_this select 0)
 */
-if (DMS_CleanUpList isEqualTo []) exitWith {};		// Empty array, no objects to clean :)
 
 {
 	if (DMS_DEBUG) then
@@ -25,14 +24,12 @@ if (DMS_CleanUpList isEqualTo []) exitWith {};		// Empty array, no objects to cl
 		(format ["CleanUpManager :: Checking Cleaning Status for: %1",_x]) call DMS_fnc_DebugLog;
 	};
 
-	private ["_objs","_timeAddedToList","_timeUntilClean"];
 
-	
 	if !(_x params
 	[
-		["_objs",[objNull],[objNull,[],grpNull]],
-		["_timeAddedToList",diag_tickTime,[0]],
-		["_timeUntilClean",DMS_CompletedMissionCleanupTime,[0]]
+		"_objs",
+		"_timeAddedToList",
+		"_timeUntilClean"
 	])
 	then
 	{

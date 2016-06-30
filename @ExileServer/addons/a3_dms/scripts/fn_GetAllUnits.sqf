@@ -14,19 +14,15 @@
 	Returns all living units from a given array of groups or objects.
 */
 
-private ["_units"];
-
 if !(_this isEqualType []) then
 {
 	_this = [_this];
 };
 
-
-_units = [];
+private _units = [];
 
 {
-	private ["_parameter"];
-	_parameter = _x;
+	private _parameter = _x;
 
 	_units append
 	(
@@ -39,28 +35,15 @@ _units = [];
 
 			case "OBJECT":
 			{
-				if (!(isNull _parameter) && {alive _parameter}) then
-				{
+				[
+					[],
 					[_parameter]
-				}
-				else
-				{
-					[]
-				}
+				] select (alive _parameter);
 			};
 
 			case "GROUP":
 			{
-				if (!isNull _parameter) then
-				{
-					{
-						if (alive _x) then
-						{
-							_units pushBack _x;
-						};
-					} forEach (units _parameter);
-				};
-				[]
+				(units _parameter) select {alive _x};
 			};
 
 			default

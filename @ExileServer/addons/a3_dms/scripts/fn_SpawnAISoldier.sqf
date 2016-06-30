@@ -32,20 +32,17 @@
 	Returns AI Unit
 */
 
-private ["_OK", "_useCustomGear", "_unarmed", "_class", "_type", "_unit", "_side", "_nighttime", "_weapon", "_muzzle", "_suppressor", "_pistols", "_pistol", "_customGearSet", "_helmet", "_uniform", "_vest", "_backpack", "_launcher", "_magazines", "_weaponAttachments", "_pistolAttachments", "_assignedItems", "_difficulty", "_skillArray"];
-
-
-_useCustomGear = false;
-_unarmed = false;
+private _customGearSet = [];
+private _unarmed = false;
 
 if !(params
 [
-	["_group",grpNull,[grpNull]],
-	["_pos",[0,0,0],[[]],[3]],
-	["_class","random",[""]],
-	["_difficulty","random",[""]],
-	["_side","bandit",[""]],
-	["_type","soldier",[""]]
+	"_group",
+	"_pos",
+	"_class",
+	"_difficulty",
+	"_side",
+	"_type"
 ])
 then
 {
@@ -56,19 +53,42 @@ else
 	if ((_class == "custom") && {(count _this)>6}) then
 	{
 		_customGearSet = _this select 6;
-		_useCustomGear = true;
 	};
 };
 
-if(_difficulty == "random") then
-{
-	_difficulty = DMS_ai_skill_random call BIS_fnc_selectRandom;
-};
+_difficulty =
+	switch (toLower _difficulty) do
+	{
+		case "random":
+		{
+			selectRandom DMS_ai_skill_random;
+		};
+
+		case "randomdifficult":
+		{
+			selectRandom DMS_ai_skill_randomDifficult;
+		};
+
+		case "randomeasy":
+		{
+			selectRandom DMS_ai_skill_randomEasy;
+		};
+
+		case "randomintermediate":
+		{
+			selectRandom DMS_ai_skill_randomIntermediate;
+		};
+
+		default
+		{
+		    _difficulty;
+		};
+	};
+
 
 //Create unit
-_unit = _group createUnit [DMS_AI_Classname, _pos, [], 0,"FORM"];
+private _unit = _group createUnit [DMS_AI_Classname, _pos, [], 0,"FORM"];
 _unit allowFleeing 0;
-[_unit] joinSilent _group;
 
 // Remove existing gear
 {_unit removeWeaponGlobal _x;} 	forEach (weapons _unit);
@@ -81,20 +101,17 @@ removeVest 						_unit;
 removeBackpackGlobal 			_unit;
 
 // Give default items
-if !(DMS_ai_default_items isEqualTo []) then
 {
+	// "Why doesn't linkItem work with any of these? Because fuck you, that's why" - BIS
+	if (_x in ["Binocular","Rangefinder","Laserdesignator","Laserdesignator_02","Laserdesignator_03"]) then
 	{
-		// "Why doesn't linkItem work with any of these? Because fuck you, that's why" - BIS
-		if (_x in ["Binocular","Rangefinder","Laserdesignator","Laserdesignator_02","Laserdesignator_03"]) then
-		{
-			_unit addWeapon _x;
-		}
-		else
-		{
-			_unit linkItem _x;
-		};
-	} forEach DMS_ai_default_items;
-};
+		_unit addWeapon _x;
+	}
+	else
+	{
+		_unit linkItem _x;
+	};
+} forEach DMS_ai_default_items;
 
 
 if (_class == "unarmed") then
@@ -106,14 +123,17 @@ else
 {
 	if (_class in DMS_ai_SupportedRandomClasses) then
 	{
-		_class = (missionNamespace getVariable [format["DMS_%1_AI",_class], DMS_random_AI]) call BIS_fnc_selectRandom;
+		_class = selectRandom (missionNamespace getVariable [format["DMS_%1_AI",_class], DMS_random_AI]);
 	};
 };
 
-// Unit name
-_unit setName format["[DMS_%3Unit_%1%2]",_class,floor(random 1000),toUpper _side];
+// Set random DMS unit names if you don't want Arma assigned (real names)
+if !(DMS_AI_UseRealNames) then
+{
+	_unit setName format["[DMS %1 %2 %3]",toUpper _side,_class,floor(random 1000)];
+};
 
-if (!_useCustomGear) then
+if (_customGearSet isEqualTo []) then
 {
 	if !(_class in DMS_ai_SupportedClasses) exitWith
 	{
@@ -135,18 +155,30 @@ if (!_useCustomGear) then
 	} forEach (missionNamespace getVariable [format ["DMS_%1_equipment",_class],[]]);
 
 
+	// Clothes
+	_unit addHeadgear 		(selectRandom (missionNamespace getVariable [format ["DMS_%1_helmets",_class],DMS_assault_helmets]));
+	_unit forceAddUniform 	(selectRandom (missionNamespace getVariable [format ["DMS_%1_clothes",_class],DMS_assault_clothes]));
+	_unit addVest 			(selectRandom (missionNamespace getVariable [format ["DMS_%1_vests",_class],DMS_assault_vests]));
+	_unit addBackpackGlobal	(selectRandom (missionNamespace getVariable [format ["DMS_%1_backpacks",_class],DMS_assault_backpacks]));
+
+
+	// Random items that can be added to the unit's inventory, such as food, meds, etc.
+	private _randItemCount = missionNamespace getVariable [format ["DMS_%1_RandItemCount",_class],0];
+	if (_randItemCount>0) then
+	{
+		private _randItems = missionNamespace getVariable [format ["DMS_%1_RandItems",_class],["Exile_Item_PlasticBottleFreshWater"]];
+		for "_i" from 1 to _randItemCount do
+		{
+			_unit addItem (selectRandom _randItems);
+		};
+	};
+
+
 	// Items (Loot stuff that goes in uniform/vest/backpack)
 	{_unit addItem _x;} forEach (missionNamespace getVariable [format ["DMS_%1_items",_class],[]]);
 
-
-	// Clothes
-	_unit addHeadgear 		((missionNamespace getVariable [format ["DMS_%1_helmets",_class],DMS_assault_helmets]) call BIS_fnc_selectRandom);
-	_unit forceAddUniform 	((missionNamespace getVariable [format ["DMS_%1_clothes",_class],DMS_assault_clothes]) call BIS_fnc_selectRandom);
-	_unit addVest 			((missionNamespace getVariable [format ["DMS_%1_vests",_class],DMS_assault_vests]) call BIS_fnc_selectRandom);
-	_unit addBackpack 		((missionNamespace getVariable [format ["DMS_%1_backpacks",_class],DMS_assault_backpacks]) call BIS_fnc_selectRandom);
-
 	// Make AI effective at night
-	_nighttime = (sunOrMoon != 1);
+	private _nighttime = (sunOrMoon != 1);
 	if (_nighttime) then
 	{
 		_unit linkItem "NVGoggles";
@@ -154,35 +186,36 @@ if (!_useCustomGear) then
 
 	if (!_unarmed) then
 	{
-		_weapon = (missionNamespace getVariable [format ["DMS_%1_weps",_class],DMS_assault_weps]) call BIS_fnc_selectRandom;
-		[_unit, _weapon, 6 + floor(random 3)] call BIS_fnc_addWeapon;
+		private _weapon = selectRandom (missionNamespace getVariable [format ["DMS_%1_weps",_class],DMS_assault_weps]);
+		[_unit, _weapon, 6 + floor(random 3)] call DMS_fnc_AddWeapon;
 		_unit selectWeapon _weapon;
-		
-		
+
+
 		if((random 100) <= (missionNamespace getVariable [format["DMS_%1_optic_chance",_class],0])) then
 		{
-			_unit addPrimaryWeaponItem ((missionNamespace getVariable [format ["DMS_%1_optics",_class],DMS_assault_optics]) call BIS_fnc_selectRandom);
+			_unit addPrimaryWeaponItem (selectRandom (missionNamespace getVariable [format ["DMS_%1_optics",_class],DMS_assault_optics]));
 		};
-		
+
 		if (_nighttime && {(random 100) <= DMS_ai_nighttime_accessory_chance}) then
 		{
-			_unit addPrimaryWeaponItem (["acc_pointer_IR","acc_flashlight"] call BIS_fnc_selectRandom);
+			_unit addPrimaryWeaponItem (selectRandom ["acc_pointer_IR","acc_flashlight"]);
 		};
 
 		if((random 100) <= (missionNamespace getVariable [format["DMS_%1_bipod_chance",_class],0])) then
 		{
-			_unit addPrimaryWeaponItem (DMS_ai_BipodList call BIS_fnc_selectRandom);
+			_unit addPrimaryWeaponItem (selectRandom DMS_ai_BipodList);
 		};
 
 		if((random 100) <= (missionNamespace getVariable [format["DMS_%1_suppressor_chance",_class],0])) then
 		{
-			_suppressor = _weapon call DMS_fnc_FindSuppressor;
-			if(_suppressor != "") then
+			private _suppressor = _weapon call DMS_fnc_FindSuppressor;
+			if (_suppressor != "") then
 			{
 				_unit addPrimaryWeaponItem _suppressor;
-			};	
+			};
 		};
 
+		/*
 		// In case spawn position is water
 		if (DMS_ai_enable_water_equipment && {surfaceIsWater _pos}) then
 		{
@@ -191,14 +224,15 @@ if (!_useCustomGear) then
 			_unit forceAddUniform "U_O_Wetsuit";
 			_unit addVest "V_RebreatherIA";
 			_unit addGoggles "G_Diving";
-			[_unit, "arifle_SDAR_F", 4 + floor(random 3), "20Rnd_556x45_UW_mag"] call BIS_fnc_addWeapon;
+			[_unit, "arifle_SDAR_F", 4 + floor(random 3), "20Rnd_556x45_UW_mag"] call DMS_fnc_AddWeapon;
 		};
+		*/
 
-		_pistols = missionNamespace getVariable [format ["DMS_%1_pistols",_class],[]];
+		private _pistols = missionNamespace getVariable [format ["DMS_%1_pistols",_class],[]];
 		if !(_pistols isEqualTo []) then
 		{
-			_pistol = _pistols call BIS_fnc_selectRandom;
-			[_unit, _pistol, 2 + floor(random 2)] call BIS_fnc_addWeapon;
+			private _pistol = selectRandom _pistols;
+			[_unit, _pistol, 2 + floor(random 2)] call DMS_fnc_AddWeapon;
 		};
 
 		// Infinite Ammo
@@ -250,41 +284,19 @@ else
 
 	if !(_backpack isEqualTo "") then
 	{
-		_unit addBackpack _backpack;
+		_unit addBackpackGlobal _backpack;
 	};
 
 	if !(_launcher isEqualTo "") then
 	{
-		[_unit, _launcher, 0] call BIS_fnc_addWeapon;
+		_unit addWeapon _launcher;
 	};
-
-
-	// Add Magazines before weapon so that gun will be loaded
-	{
-		if (_x isEqualType "") then
-		{
-			_x = [_x,1];
-		};
-		_unit addMagazines _x;
-	} forEach _magazines;
-
-	// Add items
-	{
-		if (_x in ["Binocular","Rangefinder","Laserdesignator","Laserdesignator_02","Laserdesignator_03"]) then
-		{
-			_unit addWeapon _x;
-		}
-		else
-		{
-			_unit linkItem _x;
-		};
-	} forEach _assignedItems;
 
 
 	// Add pistol and attachments
 	if !(_pistol isEqualTo "") then
 	{
-		[_unit, _pistol, 0] call BIS_fnc_addWeapon;
+		_unit addWeapon _pistol;
 
 		{
 			_unit addHandgunItem _x;
@@ -295,7 +307,7 @@ else
 	// Add gun and attachments
 	if !(_weapon isEqualTo "") then
 	{
-		[_unit, _weapon, 0] call BIS_fnc_addWeapon;
+		_unit addWeapon _weapon;
 
 		{
 			_unit addPrimaryWeaponItem _x;
@@ -303,6 +315,42 @@ else
 
 		_unit selectWeapon _weapon;
 	};
+
+
+	// Add magazines and items about half a second after spawning so that backpack inventory can be used reliably. Thanks to second_coming for reporting this issue.
+	[
+		0.5,
+		{
+			params
+			[
+				"_unit",
+				"_magazines",
+				"_assignedItems"
+			];
+
+			{
+				if (_x isEqualType "") then
+				{
+					_x = [_x,1];
+				};
+				_unit addMagazines _x;
+			} forEach _magazines;
+
+			{
+				if (_x in ["Binocular","Rangefinder","Laserdesignator","Laserdesignator_02","Laserdesignator_03"]) then
+				{
+					_unit addWeapon _x;
+				}
+				else
+				{
+					_unit linkItem _x;
+				};
+			} forEach _assignedItems;
+		},
+		[_unit,_magazines,_assignedItems],
+		false,
+		false
+	] call ExileServer_system_thread_addTask;
 };
 
 {
@@ -311,7 +359,7 @@ else
 
 
 // Soldier killed event handler
-_unit addMPEventHandler ["MPKilled",'if (isServer) then {[_this, '+str _side+', '+str _type+'] call DMS_fnc_OnKilled;};'];
+_unit addMPEventHandler ["MPKilled",'if (isServer) then {_this call DMS_fnc_OnKilled;};'];
 
 // Remove ramming damage from players. Also remove any damage within 5 seconds of spawning.
 // Will not work if unit is not local (offloaded)
@@ -349,21 +397,64 @@ _unit setCustomAimCoef (missionNamespace getVariable [format["DMS_AI_AimCoef_%1"
 _unit enableStamina (missionNamespace getVariable [format["DMS_AI_EnableStamina_%1",_difficulty], true]);
 
 
-_unit setVariable ["DMS_AISpawnTime", time];
-_unit setVariable ["DMS_AI_Side", _side];
-_unit setVariable ["DMS_AI_Type", _type];
-
 if (_type=="Soldier") then
 {
 	_unit setVariable ["DMS_AISpawnPos",_pos];
 	_unit setVariable ["DMS_LastAIDistanceCheck",time];
 };
 
-if (DMS_DEBUG) then
+// Just use "Soldier" type for everything else.
+if (_type == "Paratroopers") then
 {
-	(format ["SpawnAISoldier :: Spawned a %1 %2 %6 AI at %3 with %4 difficulty to group %5",_class,_side,_pos,_difficulty,_group,_type]) call DMS_fnc_DebugLog;
+	_type = "Soldier";
+	_unit addBackpackGlobal "B_Parachute";
 };
 
+// Set info variables
+_unit setVariable ["DMS_AISpawnTime", time];
+_unit setVariable ["DMS_AI_Side", _side];
+_unit setVariable ["DMS_AI_Type", _type];
+
+// Set money/respect variables
+_unit setVariable
+[
+	"DMS_AI_Money",
+	missionNamespace getVariable [format ["DMS_%1_%2_MoneyGain",_side,_type],0]
+];
+_unit setVariable
+[
+	"DMS_AI_Respect",
+	missionNamespace getVariable [format ["DMS_%1_%2_RepGain",_side,_type],0]
+];
+
+
+private _AIMoney =
+	if (DMS_Spawn_AI_With_Money) then
+	{
+		private _base_money_amount = missionNamespace getVariable [format["DMS_%1_%2_SpawnMoney",_side,_type], 0];
+		private _population_bonus = DMS_AIMoney_PopulationMultiplier * (if (isNil '_playerCount') then {count allPlayers} else {_playerCount});
+		_base_money_amount + _population_bonus
+	}
+	else
+	{
+		0
+	};
+
+_unit setVariable
+[
+	"ExileMoney",
+	_AIMoney,
+	true
+];
+
+
+if (DMS_DEBUG) then
+{
+	(format ["SpawnAISoldier :: Spawned a %1 %2 %6 AI at %3 with %4 difficulty carrying %7 poptabs to group %5",_class,_side,_pos,_difficulty,_group,_type,_AIMoney]) call DMS_fnc_DebugLog;
+};
+
+
+[_unit] joinSilent _group;
 
 
 _unit

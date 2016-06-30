@@ -18,15 +18,15 @@ if (isNil "DMS_DynamicMission") exitWith
 {
 	for "_i" from 0 to 99 do
 	{
-		diag_log "DMS ERROR :: You have made an error in your DMS config.sqf! Cancelling DMS Launch.";
+		diag_log "DMS ERROR :: You have made an error in your DMS config.sqf! Please look for any script errors. Cancelling DMS Launch.";
 	};
 };
 
 
 // This code is NECESSARY for spawning persistent vehicles. DO NOT REMOVE THIS CODE UNLESS YOU KNOW WHAT YOU ARE DOING
-if !("isKnownAccount:76561198027700602" call ExileServer_system_database_query_selectSingleField) then
+if !("isKnownAccount:DMS_PersistentVehicle" call ExileServer_system_database_query_selectSingleField) then
 {
-	"createAccount:76561198027700602:eraser1" call ExileServer_system_database_query_fireAndForget;
+	"createAccount:DMS_PersistentVehicle:DMS_PersistentVehicle" call ExileServer_system_database_query_fireAndForget;
 };
 
 
@@ -36,7 +36,7 @@ if !("isKnownAccount:76561198027700602" call ExileServer_system_database_query_s
 // Some custom maps don't have the proper safePos config entries.
 // If you are using one and you have an issue with mission spawns, please create an issue on GitHub or post a comment in the DMS thread.
 switch (toLower worldName) do
-{ 
+{
 	case "altis":										// [16000,16000] w/ radius of 16000 works well for Altis
 	{
 		DMS_MapCenterPos 	= [16000,16000];
@@ -52,7 +52,8 @@ switch (toLower worldName) do
 		DMS_MapCenterPos 	= [6275,6350];
 		DMS_MapRadius 		= 5000;
 	};
-	case "tavi":										// Thanks to JamieKG for this info
+	case "taviana";										// Thanks to JamieKG for this info
+	case "tavi":
 	{
 		DMS_MapCenterPos 	= [12800,12800];
 		DMS_MapRadius 		= 12800;
@@ -92,6 +93,11 @@ if ((isClass (configFile >> "CfgPatches" >> "Ryanzombies")) && {!DMS_ai_offload_
 	DMS_ai_offload_Only_DMS_AI = true;
 };
 
+if !(DMS_ai_offload_to_client) then
+{
+	DMS_ai_offloadOnUnfreeze = false;
+};
+
 
 
 DMS_A3_AllMarkerColors = [];
@@ -115,38 +121,15 @@ if !((toLower DMS_MissionMarkerLoseDotColor) in DMS_A3_AllMarkerColors) then
 
 
 
-// Create and send Client Functions using compileFinal for security.
-DMS_CLIENT_fnc_spawnDynamicText = compileFinal
-("
-[
-	_this,
-	0,
-	safeZoneY,
-	"+str DMS_dynamicText_Duration+",
-	"+str DMS_dynamicText_FadeTime+",
-	0,
-	24358
-] spawn BIS_fnc_dynamicText;
-");
+// Send Client Functions using compileFinal for security.
 publicVariable "DMS_CLIENT_fnc_spawnDynamicText";
-
-DMS_CLIENT_fnc_spawnTextTiles = compileFinal
-("
-[
-	parseText _this,
-	[
-		0,
-		safeZoneY,
-		1,
-		1
-	],
-	[10,10],
-	"+str DMS_textTiles_Duration+",
-	"+str DMS_textTiles_FadeTime+",
-	0
-] spawn BIS_fnc_textTiles;
-");
 publicVariable "DMS_CLIENT_fnc_spawnTextTiles";
+publicVariable "DMS_CLIENT_fnc_hintSilent";
+
+publicVariable "DMS_Version";
+
+
+format["DMS_Version: %1",DMS_Version] remoteExecCall ["diag_log", -2, "DMS_LogVersion_JIP_ID"]; 
 
 
 
@@ -165,57 +148,44 @@ DMS_MinMax_X_Coords = [DMS_MinDistFromWestBorder, worldSize - DMS_MinDistFromEas
 DMS_MinMax_Y_Coords = [DMS_MinDistFromSouthBorder, worldSize - DMS_MinDistFromNorthBorder];
 
 
+execFSM "\x\addons\dms\FSM\missions.fsm";
 
-if (DMS_DynamicMission || {DMS_StaticMission}) then
+
+if (DMS_ShowDifficultyColorLegend) then
 {
-	call compileFinal preprocessFileLineNumbers "\x\addons\dms\missions\static_init.sqf";
-
-	call compileFinal preprocessFileLineNumbers "\x\addons\dms\missions\mission_init.sqf";
-
-
-	if (DMS_ShowDifficultyColorLegend) then
+	private "_title";
+	_title = createmarker ["DMS_MissionMarker_DifficultyColorLegend",[-500,-200]];
+	_title setMarkerColor "ColorRed";
+	_title setmarkertext "DMS Mission Difficulties Color Legend";
+	_title setMarkerType "mil_dot";
+	_title setMarkerAlpha 0.5;
 	{
-		private "_title";
-		_title = createmarker ["DMS_MissionMarker_DifficultyColorLegend",[-500,-200]];
-		_title setMarkerColor "ColorRed";
-		_title setmarkertext "DMS Mission Difficulties Color Legend";
-		_title setMarkerType "mil_dot";
-		_title setMarkerAlpha 0.5;
+		private ["_difficulty", "_color", "_num", "_pos", "_circle", "_dot"];
+
+		_difficulty = _x;
+		switch (_difficulty) do
 		{
-			private ["_difficulty", "_color", "_num", "_pos", "_circle", "_dot"];
+			case "easy": 		{_color = "ColorGreen";};
+			case "moderate": 	{_color = "ColorYellow";};
+			case "difficult": 	{_color = "ColorRed";};
+			case "hardcore" : 	{_color = "ColorBlack";};
+		};
 
-			_difficulty = _x;
-			switch (_difficulty) do
-			{
-				case "easy": 		{_color = "ColorGreen";};
-				case "moderate": 	{_color = "ColorYellow";};
-				case "difficult": 	{_color = "ColorRed";};
-				case "hardcore" : 	{_color = "ColorBlack";};
-			};
+		_num = -200 * (_forEachIndex - 0.5);
+		_pos = [100,_num];
 
-			_num = -200 * (_forEachIndex - 0.5);
-			_pos = [100,_num];
+		_circle = createMarker [format ["DMS_MissionMarker_DifficultyColor_%1",_color], _pos];
+		_circle setMarkerColor _color;
+		_circle setMarkerShape "ELLIPSE";
+		_circle setMarkerBrush "Solid";
+		_circle setMarkerSize [100,100];
 
-			_circle = createMarker [format ["DMS_MissionMarker_DifficultyColor_%1",_color], _pos];
-			_circle setMarkerColor _color;
-			_circle setMarkerShape "ELLIPSE";
-			_circle setMarkerBrush "Solid";
-			_circle setMarkerSize [100,100];
-
-			_dot = createMarker [format ["DMS_MissionMarker_Difficulty_%1",_difficulty],_pos];
-			_dot setMarkerColor "ColorWhite";
-			_dot setMarkerType "mil_dot";
-			_dot setMarkerAlpha 0.5;
-			_dot setMarkerText _difficulty;
-		} forEach ["hardcore","difficult","moderate","easy"];
-	};
-
-
-	execFSM "\x\addons\dms\FSM\missions.fsm";
-}
-else
-{
-	diag_log "Enjoy DMS functions! :)";
+		_dot = createMarker [format ["DMS_MissionMarker_Difficulty_%1",_difficulty],_pos];
+		_dot setMarkerColor "ColorWhite";
+		_dot setMarkerType "mil_dot";
+		_dot setMarkerAlpha 0.5;
+		_dot setMarkerText _difficulty;
+	} forEach ["hardcore","difficult","moderate","easy"];
 };
 
 
@@ -223,6 +193,24 @@ else
 	[_x] call DMS_fnc_ImportFromM3E_Static;			// Spawn all of the bases that are supposed to be spawned on server startup.
 } forEach DMS_BasesToImportOnServerStart;
 
+
+{
+	[_x] call DMS_fnc_SpawnBanditMission;
+} forEach DMS_BanditMissionsOnServerStart;
+
+if (DMS_StaticMission) then
+{
+	{
+		[_x] call DMS_fnc_SpawnStaticMission;
+	} forEach DMS_StaticMissionsOnServerStart;
+};
+
+
+// Add heli paratroopers monitor to the thread system.
+[5, DMS_fnc_HeliParatroopers_Monitor, [], true] call ExileServer_system_thread_addTask;
+
+// Add "freeze" monitor to the thread system.
+[DMS_ai_freezeCheckingDelay, DMS_fnc_FreezeManager, [], true] call ExileServer_system_thread_addTask;
 
 
 

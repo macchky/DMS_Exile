@@ -1,7 +1,7 @@
 /*
 	DMS_fnc_MissionSuccessState
 	Created by eraser1
-	
+
 	Usage:
 	[
 		[_completionType1,_completionArgs1,_isAbsoluteCondition],
@@ -16,23 +16,18 @@ if !(_this isEqualType []) exitWith
 	diag_log format ["DMS ERROR :: DMS_fnc_MissionSuccessState called with invalid parameter: %1",_this];
 };
 
-private ["_success", "_exit"];
-
-_success = true;
-_exit = false;
+private _success = true;
+private _exit = false;
 
 {
 	if (_exit) exitWith {};
 
 	try
 	{
-		private ["_OK","_completionType","_completionArgs","_absoluteWinCondition"];
-
-
 		if !(_x params
 		[
-			["_completionType", "", [""] ],
-			["_completionArgs", [], [[],grpNull] ]
+			"_completionType",
+			"_completionArgs"
 		])
 		then
 		{
@@ -41,7 +36,7 @@ _exit = false;
 		};
 
 
-		_absoluteWinCondition = if ((count _x)>2) then {_x select 2} else {false};
+		private _absoluteWinCondition = if ((count _x)>2) then {_x select 2} else {false};
 
 		if (!_success && {!_absoluteWinCondition}) then
 		{
@@ -54,7 +49,7 @@ _exit = false;
 			(format ["MissionSuccessState :: Checking completion type ""%1"" with argument |%2|. Absolute: %3",_completionType,_completionArgs,_absoluteWinCondition]) call DMS_fnc_DebugLog;
 		};
 
-		switch (toLower _completionType) do 
+		switch (toLower _completionType) do
 		{
 			case "kill":
 			{
@@ -69,6 +64,10 @@ _exit = false;
 			case "playernear":
 			{
 				_success = _completionArgs call DMS_fnc_IsPlayerNearby;
+			};
+			case "external":			// This is a special completion type. It is intended to be a flag for people who want to control mission completion using _onMonitorStart and _onMonitorEnd through array manipulation. You probably don't want to use this unless you know what you're doing.
+			{
+				_success = _completionArgs;
 			};
 			default
 			{

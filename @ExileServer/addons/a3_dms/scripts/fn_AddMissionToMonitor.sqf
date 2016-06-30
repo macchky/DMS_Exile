@@ -2,6 +2,8 @@
 	DMS_fnc_AddMissionToMonitor
 	Created by eraser1
 
+	https://github.com/Defent/DMS_Exile/wiki/DMS_fnc_AddMissionToMonitor
+
 	Parses and adds mission information to "DMS_Mission_Arr" for Mission Monitoring.
 
 	Usage:
@@ -46,9 +48,9 @@
 		_difficulty,
 		_missionEvents,
 		[
-			_onSuccessScripts,			// (OPTIONAL) Array of code or string to be executed on mission completion (in addition to regular code).
-			_onFailScripts,				// (OPTIONAL) Array of code or stirng to be executed on mission failure (in addition to regular code).
-			_onMonitorStart,			// (OPTIONAL) Code to run when the monitor starts to check the mission status, however it is checked AFTER "MissionSuccessState" is checked, so you can use/set the variable "_success" manually. The passed parameter (_this) is the mission data array itself.
+			_onSuccessScripts,			// (OPTIONAL) Array of code or string to be executed on mission completion (in addition to regular code). Each element should be an array in the form [_params, _code].
+			_onFailScripts,				// (OPTIONAL) Array of code or string to be executed on mission failure (in addition to regular code). Each element should be an array in the form [_params, _code].
+			_onMonitorStart,			// (OPTIONAL) Code to run when the monitor starts to check the mission status. The passed parameter (_this) is the mission data array itself.
 			_onMonitorEnd				// (OPTIONAL) Code to run when the monitor is done with checking the mission status. The passed parameter (_this) is the mission data array itself.
 		]
 	] call DMS_fnc_AddMissionToMonitor;
@@ -57,24 +59,20 @@
 
 */
 
-private ["_added", "_pos", "_onEndingScripts", "_completionInfo", "_timeOutInfo", "_units", "_inputUnits", "_missionObjs", "_mines", "_difficulty", "_side", "_messages", "_markers", "_arr", "_timeStarted", "_timeUntilFail", "_buildings", "_vehs", "_crate_info_array", "_missionName", "_msgWIN", "_msgLose", "_markerDot", "_markerCircle", "_missionEvents", "_onSuccessScripts", "_onFailScripts"];
-
-
-_added = false;
-
+private _added = false;
 
 if !(params
 [
-	["_pos","",[[]],[2,3]],
-	["_completionInfo","",[[]]],
-	["_timeOutInfo","",[[]],[1,2]],
-	["_inputUnits","",[[]]],
-	["_missionObjs","",[[]],[3,4]],
-	["_messages","",[[]],[3]],
-	["_markers","",[[]],[DMS_MissionMarkerCount]],
-	["_side","bandit",[""]],
-	["_difficulty","moderate",[""]],
-	["_missionEvents",[],[[]]]
+	"_pos",
+	"_completionInfo",
+	"_timeOutInfo",
+	"_units",
+	"_missionObjs",
+	"_messages",
+	"_markers",
+	"_side",
+	"_difficulty",
+	"_missionEvents"
 ])
 exitWith
 {
@@ -82,7 +80,7 @@ exitWith
 	false;
 };
 
-_onEndingScripts = if ((count _this)>10) then {_this select 10} else {[[],[],{},{}]};
+private _onEndingScripts = if ((count _this)>10) then {_this select 10} else {[[],[],{},{}]};
 
 
 try
@@ -103,9 +101,6 @@ try
 		["_timeUntilFail",DMS_MissionTimeOut call DMS_fnc_SelectRandomVal,[0]]
 	];
 
-	_units = _inputUnits call DMS_fnc_GetAllUnits;
-
-
 	if !(_missionObjs params
 	[
 		["_buildings","",[[]]],
@@ -117,12 +112,15 @@ try
 		throw format["_missionObjs |%1|",_missionObjs];
 	};
 
-	_mines = [];
-	
-	if ((count _missionObjs)>3) then
-	{
-		_mines = _missionObjs param [3,[],[[]]];
-	};
+	private _mines =
+		if ((count _missionObjs)>3) then
+		{
+			_missionObjs param [3,[],[[]]]
+		}
+		else
+		{
+			[]
+		};
 
 	// Don't spawn a minefield if there is one already defined in _missionObjs.
 	if (DMS_SpawnMinefieldForEveryMission && {_mines isEqualTo []}) then
@@ -142,6 +140,8 @@ try
 	{
 		throw format["_messages |%1|",_messages];
 	};
+	_msgWIN pushBack "win";
+	_msgLose pushBack "lose";
 
 
 	if !(_onEndingScripts params
@@ -156,7 +156,7 @@ try
 		throw format["_onEndingScripts |%1|",_onEndingScripts];
 	};
 
-	_arr = 
+	private _arr =
 	[
 		_pos,
 		_completionInfo,
@@ -192,7 +192,7 @@ try
 
 	if (DMS_MarkerText_ShowAICount) then
 	{
-		_markerDot = _markers select 0;
+		private _markerDot = _markers select 0;
 		_markerDot setMarkerText (format ["%1 (%2 %3 remaining)",markerText _markerDot,count _units,DMS_MarkerText_AIName]);
 	};
 

@@ -42,3 +42,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 @ExileServer/addons/a3_dms.pbo
+
+
+# Private files/missions
+@ExileServer/addons/a3_dms/missions/static/sectorB.sqf
