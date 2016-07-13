@@ -19,16 +19,16 @@
 #define USE_MARKSMAN_DLC_WEAPONS_IN_CRATES 1
 
 // Uncomment this if you want Apex weapons on AI.
-//#define GIVE_AI_APEX_WEAPONS 1
+#define GIVE_AI_APEX_WEAPONS 1
 
 // Uncomment this if you want Apex gear on AI. Uniforms, Vests, Backpacks, Helmets,Scopes
-//#define GIVE_AI_APEX_GEAR
+#define GIVE_AI_APEX_GEAR
 
 // Uncomment this if you want Apex weapons in loot crates
-//#define USE_APEX_WEAPONS_IN_CRATES 1
+#define USE_APEX_WEAPONS_IN_CRATES 1
 
 // Uncomment this if you want Apex vehicles to spawn for AI/missions
-//#define USE_APEX_VEHICLES 1
+#define USE_APEX_VEHICLES 1
 
 
 
@@ -132,13 +132,13 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 	DMS_AttemptsUntilThrottle			= 15;						// How many attempts until the parameters are throttled.
 	DMS_ThrottleCoefficient				= 0.9;						// How much the parameters are throttled. The parameters are multiplied by the coefficient, so 0.9 means 90% of whatever the parameter was.
 	DMS_MinThrottledDistance			= 100;						// The minimum distance to which it will throttle. If the throttled value is less than this, then this value is used instead.
-	DMS_PlayerNearBlacklist				= 1000;						// Missions won't spawn in a position this many meters close to a player
-	DMS_SpawnZoneNearBlacklist			= 1500;						// Missions won't spawn in a position this many meters close to a spawn zone
-	DMS_TraderZoneNearBlacklist			= 1500;						// Missions won't spawn in a position this many meters close to a trader zone
-	DMS_MissionNearBlacklist			= 1000;						// Missions won't spawn in a position this many meters close to another mission
+	DMS_PlayerNearBlacklist				= 500;						// Missions won't spawn in a position this many meters close to a player
+	DMS_SpawnZoneNearBlacklist			= 1000;						// Missions won't spawn in a position this many meters close to a spawn zone
+	DMS_TraderZoneNearBlacklist			= 1000;						// Missions won't spawn in a position this many meters close to a trader zone
+	DMS_MissionNearBlacklist			= 500;						// Missions won't spawn in a position this many meters close to another mission
 	DMS_WaterNearBlacklist				= 500;						// Missions won't spawn in a position this many meters close to water
 	DMS_TerritoryNearBlacklist			= 100;						// Missions won't spawn in a position this many meters close to a territory flag. This is a resource intensive check, don't set this value too high!
-	DMS_MixerNearBlacklist				= 1000;						// Missions won't spawn in a position this many meters close to a concrete mixer
+	DMS_MixerNearBlacklist				= 500;						// Missions won't spawn in a position this many meters close to a concrete mixer
 	DMS_ContaminatedZoneNearBlacklist	= 1000;						// Missions won't spawn in a position this many meters close to a contaminated zone
 	DMS_MinSurfaceNormal				= 0.9;						// Missions won't spawn in a position where its surfaceNormal is less than this amount. The lower the value, the steeper the location. Greater values means flatter locations. Values can range from 0-1, with 0 being sideways, and 1 being perfectly flat. For reference: SurfaceNormal of about 0.7 is when you are forced to walk up a surface. If you want to convert surfaceNormal to degrees, use the arc-cosine of the surfaceNormal. 0.9 is about 25 degrees. Google "(arccos 0.9) in degrees"
 	DMS_MinDistFromWestBorder			= 250;						// Missions won't spawn in a position this many meters close to the western map border.
@@ -314,33 +314,33 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 	DMS_GiveRespectToPlayer_OnAIKill	= true;						// Whether or not to give respect to players when they kill AI.
 
 	DMS_Bandit_Soldier_MoneyGain		= 50;						// The amount of Poptabs gained for killing a bandit soldier
-	DMS_Bandit_Soldier_RepGain			= 10;						// The amount of Respect gained for killing a bandit soldier
+	DMS_Bandit_Soldier_RepGain			= 50;						// The amount of Respect gained for killing a bandit soldier
 	DMS_Bandit_Soldier_RankGain			= 15;
 	DMS_Bandit_Soldier_SpawnMoney		= 50;						// The amount of Poptabs carried by a bandit soldier
 
 	DMS_Bandit_Static_MoneyGain			= 75;						// The amount of Poptabs gained for killing a bandit static gunner
-	DMS_Bandit_Static_RepGain			= 15;						// The amount of Respect gained for killing a bandit static gunner
+	DMS_Bandit_Static_RepGain			= 45;						// The amount of Respect gained for killing a bandit static gunner
 	DMS_Bandit_Static_RankGain			= 30;
 	DMS_Bandit_Static_SpawnMoney		= 75;						// The amount of Poptabs carried by a bandit static gunner
 
 	DMS_Bandit_Vehicle_MoneyGain		= 100;						// The amount of Poptabs gained for killing a bandit vehicle crew member
-	DMS_Bandit_Vehicle_RepGain			= 25;						// The amount of Respect gained for killing a bandit vehicle crew member
+	DMS_Bandit_Vehicle_RepGain			= 75;						// The amount of Respect gained for killing a bandit vehicle crew member
 	DMS_Bandit_Vehicle_RankGain			= 50;
 	DMS_Bandit_Vehicle_SpawnMoney		= 100;						// The amount of Poptabs carried by a bandit vehicle crew member
 
 /* DonkeyPunchDMS Custom Settings for Hero AI*/
 	DMS_Hero_Soldier_MoneyGain			= 100;						// The amount of Poptabs gained for killing a hero soldier
-	DMS_Hero_Soldier_RepGain			= 20;						// The amount of Respect gained for killing a hero soldier
+	DMS_Hero_Soldier_RepGain			= 60;						// The amount of Respect gained for killing a hero soldier
 	DMS_Hero_Soldier_RankGain			= -30;
 	DMS_Hero_Soldier_SpawnMoney			= 100;						// The amount of Poptabs carried by a hero soldier
 
 	DMS_Hero_Static_MoneyGain			= 120;						// The amount of Poptabs gained for killing a hero static gunner
-	DMS_Hero_Static_RepGain				= 30;						// The amount of Respect gained for killing a hero static gunner
+	DMS_Hero_Static_RepGain				= 70;						// The amount of Respect gained for killing a hero static gunner
 	DMS_Hero_Static_RankGain			= -60;
 	DMS_Hero_Static_SpawnMoney			= 120;						// The amount of Poptabs carried by a hero static gunner
 
 	DMS_Hero_Vehicle_MoneyGain			= 200;						// The amount of Poptabs gained for killing a hero vehicle crew member
-	DMS_Hero_Vehicle_RepGain			= 50;						// The amount of Respect gained for killing a hero vehicle crew member
+	DMS_Hero_Vehicle_RepGain			= 100;						// The amount of Respect gained for killing a hero vehicle crew member
 	DMS_Hero_Vehicle_RankGain			= -100;
 	DMS_Hero_Vehicle_SpawnMoney			= 200;						// The amount of Poptabs carried by a hero vehicle crew member
 /* DonkeyPunchDMS Custom Settings for Survivor AI*/
@@ -374,7 +374,7 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 	DMS_Bandit_Vehicle_RoadkillRank		= 50;
 /* DonkeyPunchDMS Custom RoadKill Settings for Hero AI*/
 	DMS_Hero_Soldier_RoadkillMoney		= 20;						// The amount of Poptabs gained/lost for running over a hero soldier
-	DMS_Hero_Soldier_RoadkillRep		= 10;						// The amount of Respect gained/lost for running over a hero soldier
+	DMS_Hero_Soldier_RoadkillRep		= 40;						// The amount of Respect gained/lost for running over a hero soldier
 	DMS_Hero_Soldier_RoadkillRank		= 40;
 	DMS_Hero_Static_RoadkillMoney		= 20;						// The amount of Poptabs gained/lost for running over a hero static gunner
 	DMS_Hero_Static_RoadkillRep			= 10;						// The amount of Respect gained/lost for running over a hero static gunner
