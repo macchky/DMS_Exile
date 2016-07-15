@@ -606,24 +606,20 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 										];
 	DMS_assault_backpacks =				[							// Backpacks for Assault Class
 											#ifdef GIVE_AI_APEX_GEAR
-											"B_Bergen_tna_F",
 											"B_FieldPack_ghex_F",
 											"B_ViperLightHarness_khk_F",
 											#endif
-											"B_Bergen_rgr",
 											"B_Carryall_oli",
 											"B_Kitbag_mcamo",
 											"B_Carryall_cbr",
 											"B_FieldPack_oucamo",
-											"B_FieldPack_cbr",
-											"B_Bergen_blk"
+											"B_FieldPack_cbr"
 										];
 
 	//Machine Gun Class
 	DMS_MG_weps	=						[							// Machine Guns
 											#ifdef GIVE_AI_MARKSMAN_DLC_WEAPONS
-											"MMG_01_hex_F",
-											"MMG_02_black_F",
+
 											#endif
 
 											#ifdef GIVE_AI_APEX_WEAPONS
@@ -761,8 +757,6 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 	//Sniper Class
 	DMS_sniper_weps =					[							// Sniper Rifles
 											"srifle_EBR_F",
-											"srifle_GM6_F",
-											"srifle_LRR_F",
 											"arifle_MXM_Black_F",
 											"srifle_DMR_01_F",
 											#ifdef GIVE_AI_MARKSMAN_DLC_WEAPONS
@@ -885,19 +879,15 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 										];
 	DMS_sniper_backpacks =				[							// Backpacks for Sniper Class
 											#ifdef GIVE_AI_APEX_GEAR
-											"B_Bergen_tna_F",
-											"B_Bergen_hex_F",
 											"B_Carryall_ghex_F",
 											"B_ViperHarness_ghex_F",
 											"B_ViperHarness_blk_F",
 											"B_ViperLightHarness_ghex_F",
 											"B_ViperLightHarness_khk_F",
 											#endif
-											"B_Bergen_rgr",
 											"B_Carryall_oli",
 											"B_Kitbag_mcamo",
-											"B_Carryall_cbr",
-											"B_Bergen_blk"
+											"B_Carryall_cbr"
 										];
 
 	DMS_ai_SupportedClasses =			[							// Allowed AI classes. If you want to create your own class, make sure you define everything as I've defined above, and add it here
@@ -972,7 +962,6 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 	DMS_CrateCase_Sniper =				[							// If you pass "Sniper" in _lootValues, then it will spawn these weapons/items/backpacks
 											[
 												["Rangefinder",1],
-												["srifle_GM6_F",1],
 												["srifle_LRR_F",1],
 												["srifle_EBR_F",1],
 												["hgun_Pistol_heavy_01_F",1],
@@ -997,7 +986,6 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 												["muzzle_snds_acp",1],
 												["optic_Holosight_smg",1],
 												["muzzle_snds_L",1],
-												["5Rnd_127x108_APDS_Mag",3],
 												["7Rnd_408_Mag",3],
 												["20Rnd_762x51_Mag",5],
 												["11Rnd_45ACP_Mag",3],
@@ -1015,8 +1003,6 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 											//"srifle_DMR_04_F",			// ASP-1 Kir
 											"srifle_DMR_05_blk_F",
 											"srifle_DMR_06_olive_F",
-											"MMG_01_hex_F",
-											"MMG_02_black_F",
 											#endif
 
 											#ifdef USE_APEX_WEAPONS_IN_CRATES
@@ -1090,7 +1076,8 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 	DMS_BoxMeds =						[
 											"Exile_Item_InstaDoc",
 											"Exile_Item_Vishpirin",
-											"Exile_Item_Bandage"
+											"Exile_Item_Bandage",
+											"Exile_Item_Defibrillator"
 										];
 	DMS_BoxSurvivalSupplies	=			[							//List of survival supplies (food/drink/meds) that can spawn in a crate. "DMS_BoxFood", "DMS_BoxDrinks", and "DMS_BoxMeds" is automatically added to this list.
 											"Exile_Item_Matches",
@@ -1164,8 +1151,7 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 											"optic_MRCO",
 											"optic_SOS",
 											"optic_DMS",
-											"optic_LRPS",
-											"optic_Nightstalker"			// Nightstalker scope lost thermal in Exile v0.9.4
+											"optic_LRPS"
 										];
 	DMS_BoxBackpacks =					[							//List of backpacks that can spawn in a crate
 											"B_Bergen_rgr",
