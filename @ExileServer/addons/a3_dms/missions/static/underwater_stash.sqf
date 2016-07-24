@@ -92,6 +92,8 @@ private _diverGearSet =
 private _temp = DMS_ai_use_launchers;
 DMS_ai_use_launchers = false;
 
+private _driverAIcount = 10 + (round (random 5));
+
 private _diverGroup =
 [
     [
@@ -117,7 +119,7 @@ private _diverGroup =
         [5875.81,3007.73,-55.331],
         [5899.77,2994.57,-61.1307]
     ],
-	21,
+	_driverAIcount,
 	"hardcore",
 	"custom",
 	_side,
