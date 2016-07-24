@@ -428,9 +428,9 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 	DMS_ai_enable_water_equipment		= true;						// Enable/disable overriding default weapons of an AI if it spawns on/in water
 
 	// https://community.bistudio.com/wiki/AI_Sub-skills#general
-	DMS_ai_skill_static					= [["aimingAccuracy",0.20],["aimingShake",0.70],["aimingSpeed",0.75],["spotDistance",0.70],["spotTime",0.50],["courage",1.00],["reloadSpeed",1.00],["commanding",1.00],["general",1.00]];	// Static AI Skills
-	DMS_ai_skill_easy					= [["aimingAccuracy",0.10],["aimingShake",0.10],["aimingSpeed",0.20],["spotDistance",0.30],["spotTime",0.20],["courage",1.00],["reloadSpeed",0.50],["commanding",1.00],["general",0.20]];	// Easy
-	DMS_ai_skill_moderate				= [["aimingAccuracy",0.20],["aimingShake",0.40],["aimingSpeed",0.40],["spotDistance",0.40],["spotTime",0.40],["courage",1.00],["reloadSpeed",1.00],["commanding",1.00],["general",0.40]];	// Moderate
+	DMS_ai_skill_static					= [["aimingAccuracy",0.10],["aimingShake",0.10],["aimingSpeed",0.25],["spotDistance",0.20],["spotTime",0.50],["courage",1.00],["reloadSpeed",1.00],["commanding",1.00],["general",1.00]];	// Static AI Skills
+	DMS_ai_skill_easy					= [["aimingAccuracy",0.05],["aimingShake",0.05],["aimingSpeed",0.10],["spotDistance",0.20],["spotTime",0.20],["courage",1.00],["reloadSpeed",0.50],["commanding",1.00],["general",0.10]];	// Easy
+	DMS_ai_skill_moderate				= [["aimingAccuracy",0.10],["aimingShake",0.20],["aimingSpeed",0.20],["spotDistance",0.20],["spotTime",0.20],["courage",1.00],["reloadSpeed",1.00],["commanding",1.00],["general",0.20]];	// Moderate
 	DMS_ai_skill_difficult				= [["aimingAccuracy",0.50],["aimingShake",0.50],["aimingSpeed",0.70],["spotDistance",0.50],["spotTime",0.50],["courage",1.00],["reloadSpeed",1.00],["commanding",1.00],["general",0.50]]; 	// Difficult
 	DMS_ai_skill_hardcore				= [["aimingAccuracy",1.00],["aimingShake",1.00],["aimingSpeed",1.00],["spotDistance",1.00],["spotTime",1.00],["courage",1.00],["reloadSpeed",1.00],["commanding",1.00],["general",1.00]]; 	// Hardcore
 	DMS_ai_skill_random					= ["hardcore","difficult","difficult","difficult","moderate","moderate","moderate","moderate","easy","easy"];	// Skill frequencies for "random" AI skills | Default: 10% hardcore, 30% difficult, 40% moderate, and 20% easy
