@@ -606,9 +606,34 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 										];
 	DMS_assault_backpacks =				[							// Backpacks for Assault Class
 											#ifdef GIVE_AI_APEX_GEAR
-											"B_FieldPack_ghex_F",
+											"B_ViperHarness_base_F",
+											"B_ViperHarness_blk_F",
+											"B_ViperHarness_ghex_F",
+											"B_ViperHarness_hex_F",
+											"B_ViperHarness_khk_F",
+											"B_ViperHarness_oli_F",
+											"B_ViperLightHarness_base_F",
+											"B_ViperLightHarness_blk_F",
+											"B_ViperLightHarness_ghex_F",
+											"B_ViperLightHarness_hex_F",
 											"B_ViperLightHarness_khk_F",
+											"B_ViperLightHarness_oli_F",
 											#endif
+											"B_OutdoorPack_blk",
+											"B_OutdoorPack_tan",
+											"B_OutdoorPack_blu",
+											"B_HuntingBackpack",
+											"B_AssaultPack_khk",
+											"B_AssaultPack_dgtl",
+											"B_AssaultPack_rgr",
+											"B_AssaultPack_sgg",
+											"B_AssaultPack_blk",
+											"B_AssaultPack_cbr",
+											"B_AssaultPack_mcamo",
+											"B_Kitbag_mcamo",
+											"B_Kitbag_sgg",
+											"B_Kitbag_cbr",
+											"B_AssaultPack_tna_F",
 											"B_Carryall_oli",
 											"B_Kitbag_mcamo",
 											"B_Carryall_cbr",
@@ -742,16 +767,39 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 										];
 	DMS_MG_backpacks =					[							// Backpacks for MG Class
 											#ifdef GIVE_AI_APEX_GEAR
-											"B_Bergen_tna_F",
-											"B_Carryall_ghex_F",
+											"B_ViperHarness_base_F",
+											"B_ViperHarness_blk_F",
 											"B_ViperHarness_ghex_F",
+											"B_ViperHarness_hex_F",
+											"B_ViperHarness_khk_F",
+											"B_ViperHarness_oli_F",
+											"B_ViperLightHarness_base_F",
+											"B_ViperLightHarness_blk_F",
 											"B_ViperLightHarness_ghex_F",
+											"B_ViperLightHarness_hex_F",
+											"B_ViperLightHarness_khk_F",
+											"B_ViperLightHarness_oli_F",
 											#endif
-											"B_Bergen_rgr",
+											"B_OutdoorPack_blk",
+											"B_OutdoorPack_tan",
+											"B_OutdoorPack_blu",
+											"B_HuntingBackpack",
+											"B_AssaultPack_khk",
+											"B_AssaultPack_dgtl",
+											"B_AssaultPack_rgr",
+											"B_AssaultPack_sgg",
+											"B_AssaultPack_blk",
+											"B_AssaultPack_cbr",
+											"B_AssaultPack_mcamo",
+											"B_Kitbag_mcamo",
+											"B_Kitbag_sgg",
+											"B_Kitbag_cbr",
+											"B_AssaultPack_tna_F",
 											"B_Carryall_oli",
 											"B_Kitbag_mcamo",
 											"B_Carryall_cbr",
-											"B_Bergen_blk"
+											"B_FieldPack_oucamo",
+											"B_FieldPack_cbr"
 										];
 
 	//Sniper Class
@@ -879,15 +927,39 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 										];
 	DMS_sniper_backpacks =				[							// Backpacks for Sniper Class
 											#ifdef GIVE_AI_APEX_GEAR
-											"B_Carryall_ghex_F",
-											"B_ViperHarness_ghex_F",
+											"B_ViperHarness_base_F",
 											"B_ViperHarness_blk_F",
+											"B_ViperHarness_ghex_F",
+											"B_ViperHarness_hex_F",
+											"B_ViperHarness_khk_F",
+											"B_ViperHarness_oli_F",
+											"B_ViperLightHarness_base_F",
+											"B_ViperLightHarness_blk_F",
 											"B_ViperLightHarness_ghex_F",
+											"B_ViperLightHarness_hex_F",
 											"B_ViperLightHarness_khk_F",
+											"B_ViperLightHarness_oli_F",
 											#endif
+											"B_OutdoorPack_blk",
+											"B_OutdoorPack_tan",
+											"B_OutdoorPack_blu",
+											"B_HuntingBackpack",
+											"B_AssaultPack_khk",
+											"B_AssaultPack_dgtl",
+											"B_AssaultPack_rgr",
+											"B_AssaultPack_sgg",
+											"B_AssaultPack_blk",
+											"B_AssaultPack_cbr",
+											"B_AssaultPack_mcamo",
+											"B_Kitbag_mcamo",
+											"B_Kitbag_sgg",
+											"B_Kitbag_cbr",
+											"B_AssaultPack_tna_F",
 											"B_Carryall_oli",
 											"B_Kitbag_mcamo",
-											"B_Carryall_cbr"
+											"B_Carryall_cbr",
+											"B_FieldPack_oucamo",
+											"B_FieldPack_cbr"
 										];
 
 	DMS_ai_SupportedClasses =			[							// Allowed AI classes. If you want to create your own class, make sure you define everything as I've defined above, and add it here
@@ -1154,13 +1226,38 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 											"optic_LRPS"
 										];
 	DMS_BoxBackpacks =					[							//List of backpacks that can spawn in a crate
-											"B_Bergen_rgr",
+											"B_ViperHarness_base_F",
+											"B_ViperHarness_blk_F",
+											"B_ViperHarness_ghex_F",
+											"B_ViperHarness_hex_F",
+											"B_ViperHarness_khk_F",
+											"B_ViperHarness_oli_F",
+											"B_ViperLightHarness_base_F",
+											"B_ViperLightHarness_blk_F",
+											"B_ViperLightHarness_ghex_F",
+											"B_ViperLightHarness_hex_F",
+											"B_ViperLightHarness_khk_F",
+											"B_ViperLightHarness_oli_F",
+											"B_OutdoorPack_blk",
+											"B_OutdoorPack_tan",
+											"B_OutdoorPack_blu",
+											"B_HuntingBackpack",
+											"B_AssaultPack_khk",
+											"B_AssaultPack_dgtl",
+											"B_AssaultPack_rgr",
+											"B_AssaultPack_sgg",
+											"B_AssaultPack_blk",
+											"B_AssaultPack_cbr",
+											"B_AssaultPack_mcamo",
+											"B_Kitbag_mcamo",
+											"B_Kitbag_sgg",
+											"B_Kitbag_cbr",
+											"B_AssaultPack_tna_F",
 											"B_Carryall_oli",
 											"B_Kitbag_mcamo",
 											"B_Carryall_cbr",
 											"B_FieldPack_oucamo",
-											"B_FieldPack_cbr",
-											"B_Bergen_blk"
+											"B_FieldPack_cbr"
 										];
 	DMS_BoxItems						= DMS_BoxSurvivalSupplies+DMS_BoxBuildingSupplies+DMS_BoxOptics;	// Random "items" can spawn optics, survival supplies, or building supplies
 
@@ -1179,7 +1276,9 @@ DMS_SpawnMissions_Scheduled = false;	// Whether or not to spawn missions in a sc
 											"Exile_Item_SafeKit",
 											"Exile_Item_CodeLock",
 											"Exile_Item_BaseCameraKit",
-											"Exile_Item_Laptop"
+											"Exile_Item_Laptop",
+											"Exile_Item_ThermalScannerPro",
+											"Exile_Item_Knife"
 										];
 	DMS_RareLootChance					= 10;						// Percentage Chance to spawn rare loot in any crate | Default: 10%
 
