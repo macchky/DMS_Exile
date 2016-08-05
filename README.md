@@ -1,4 +1,4 @@
-![Arma 1.62](https://img.shields.io/badge/Arma-1.62-blue.svg) ![Exile 1.0.0 Potato](https://img.shields.io/badge/Exile-1.0.0%20Potato-C72651.svg) ![DMS Version](https://img.shields.io/badge/DMS%20Version-2016--07--19%20v2-blue.svg) ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
+![Arma 1.62](https://img.shields.io/badge/Arma-1.62-blue.svg) ![Exile 1.0.0 Potato](https://img.shields.io/badge/Exile-1.0.0%20Potato-C72651.svg) ![DMS Version](https://img.shields.io/badge/DMS%20Version-2016--07--26-blue.svg) ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
 
 # To the User:
@@ -134,11 +134,13 @@ ___
 <br><br><br>
 
 # Roadmap:
+### Zombies are NOT SUPPORTED by DMS, nor do we ever plan to support zombies within DMS.
+
 #### Convoy Mission:
 * Regularly update marker position.
 * Implement function(s) for AI pathing.
 
-#### Underwater Missions
+#### Dynamic Underwater Missions
 
 #### Dynamic/Ambient AI Spawning
 * Spawn AI that are meant to "hunt" individual players.
