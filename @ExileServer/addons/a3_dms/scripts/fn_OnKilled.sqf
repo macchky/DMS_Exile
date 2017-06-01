@@ -5,13 +5,10 @@
 
 	Usage:
 	[
-		[
-			_killedUnit,
-			_killer
-		],
-		_side,				// "bandit" only for now
-		_type				// Type of AI: "soldier","static","vehicle","heli", etc.
+		_killedUnit,
+		_killer
 	] call DMS_fnc_OnKilled;
+	***Designed for use with the ArmA "MPKilled" EH. This function should not be explicitly called otherwise.***
 */
 if (DMS_DEBUG) then
 {
@@ -108,7 +105,10 @@ if (!(_grpUnits isEqualTo []) && {(leader _grp) isEqualTo _unit}) then
 private _av = _unit getVariable ["DMS_AssignedVeh",objNull];
 if (!isNull _av) then
 {
-	_av enableSimulationGlobal true;
+	if!(dynamicSimulationEnabled _av)then
+	{
+		_av enableSimulationGlobal true;
+	};
 
 	// Determine whether or not the vehicle has any active crew remaining.
 	private _memCount = {[(alive _x),false] select (_unit isEqualTo _x);} count (crew _av);
@@ -152,8 +152,11 @@ if (!isNull _av) then
 				[_av, 1] remoteExecCall ["lock", _av];
 			};
 
-			_av call ExileServer_system_simulationMonitor_addVehicle;
-
+			if!(dynamicSimulationEnabled _av)then
+			{
+				_av call ExileServer_system_simulationMonitor_addVehicle;
+				_av enableSimulationGlobal true;
+			};
 			_av setVariable ["ExileMoney",0,true];
 			_av setVariable ["ExileIsPersistent", false];
 			_av addMPEventHandler ["MPKilled", { if (isServer) then {_this call ExileServer_object_vehicle_event_onMPKilled;};}];

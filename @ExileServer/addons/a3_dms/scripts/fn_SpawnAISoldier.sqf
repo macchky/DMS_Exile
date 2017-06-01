@@ -7,7 +7,7 @@
 	[
 		_group,					// GROUP: Group the AI will belong to
 		_pos,					// ARRAY (positionATL): Position of AI
-		_class,					// STRING: Classname: "random","assault","MG","sniper" or "unarmed". Use "custom" to use "_customGearSet"
+		_class,					// STRING: Classname: "random","assault","MG", or "sniper".
 		_difficulty,			// STRING: Difficulty: "random","static","hardcore","difficult","moderate", or "easy"
 		_side, 					// STRING: "bandit" only by default
 		_type,					// STRING: Type of AI: "soldier","static","vehicle","heli", etc.
@@ -29,11 +29,12 @@
 		_backpack				// String | EG: "B_Carryall_oli"
 	]
 
-	Returns AI Unit
+	Returns AI Object
 */
+// Enabling this ensures that any optic/bipod/accessory that isn't compatible with a weapon cannot be selected. (Doesn't apply to custom gear sets)
+#define USE_EXTRA_CHECKING 1
 
 private _customGearSet = [];
-private _unarmed = false;
 
 if !(params
 [
@@ -100,46 +101,43 @@ removeUniform 					_unit;
 removeVest 						_unit;
 removeBackpackGlobal 			_unit;
 
-// Give default items
-{
-	// "Why doesn't linkItem work with any of these? Because fuck you, that's why" - BIS
-	if (_x in ["Binocular","Rangefinder","Laserdesignator","Laserdesignator_02","Laserdesignator_03"]) then
-	{
-		_unit addWeapon _x;
-	}
-	else
-	{
-		_unit linkItem _x;
-	};
-} forEach DMS_ai_default_items;
 
-
-if (_class == "unarmed") then
+if (_class in DMS_ai_SupportedRandomClasses) then
 {
-	_class = "assault";
-	_unarmed = true;
-}
-else
-{
-	if (_class in DMS_ai_SupportedRandomClasses) then
-	{
-		_class = selectRandom (missionNamespace getVariable [format["DMS_%1_AI",_class], DMS_random_AI]);
-	};
+	_class = selectRandom (missionNamespace getVariable [format["DMS_%1_AI",_class], DMS_random_AI]);
 };
 
 // Set random DMS unit names if you don't want Arma assigned (real names)
-if !(DMS_AI_UseRealNames) then
+switch (DMS_AI_NamingType) do
 {
-	_unit setName format["[DMS %1 %2 %3]",toUpper _side,_class,floor(random 1000)];
+	case 1:
+	{
+		_unit setName format["[DMS %1 %2 %3]",toUpper _side,_class,floor(random 1000)];
+	};
+
+	case 2:
+	{
+		_unit setName format["%1 %2", selectRandom DMS_AI_FirstNames, selectRandom DMS_AI_LastNames];
+	};
+
+	default {};		// Default ArmA names otherwise...
 };
+
 
 if (_customGearSet isEqualTo []) then
 {
+	// Make sure the "_class" is supported. This check is moved here to maintain backwards compatibility.
 	if !(_class in DMS_ai_SupportedClasses) exitWith
 	{
 		diag_log format ["DMS ERROR :: DMS_SpawnAISoldier called with unsupported _class: %1 | _this: %2",_class,_this];
-		deleteVehicle _unit;
 	};
+
+
+	// Add Clothes first to make sure the unit can store everything...
+	_unit addHeadgear 		(selectRandom (missionNamespace getVariable [format ["DMS_%1_helmets",_class],DMS_assault_helmets]));
+	_unit forceAddUniform 	(selectRandom (missionNamespace getVariable [format ["DMS_%1_clothes",_class],DMS_assault_clothes]));
+	_unit addVest 			(selectRandom (missionNamespace getVariable [format ["DMS_%1_vests",_class],DMS_assault_vests]));
+	_unit addBackpackGlobal	(selectRandom (missionNamespace getVariable [format ["DMS_%1_backpacks",_class],DMS_assault_backpacks]));
 
 
 	// Equipment (Stuff that goes in the toolbelt slots)
@@ -154,12 +152,6 @@ if (_customGearSet isEqualTo []) then
 		};
 	} forEach (missionNamespace getVariable [format ["DMS_%1_equipment",_class],[]]);
 
-
-	// Clothes
-	_unit addHeadgear 		(selectRandom (missionNamespace getVariable [format ["DMS_%1_helmets",_class],DMS_assault_helmets]));
-	_unit forceAddUniform 	(selectRandom (missionNamespace getVariable [format ["DMS_%1_clothes",_class],DMS_assault_clothes]));
-	_unit addVest 			(selectRandom (missionNamespace getVariable [format ["DMS_%1_vests",_class],DMS_assault_vests]));
-	_unit addBackpackGlobal	(selectRandom (missionNamespace getVariable [format ["DMS_%1_backpacks",_class],DMS_assault_backpacks]));
 
 
 	// Random items that can be added to the unit's inventory, such as food, meds, etc.
@@ -184,61 +176,104 @@ if (_customGearSet isEqualTo []) then
 		_unit linkItem "NVGoggles";
 	};
 
-	if (!_unarmed) then
+
+	private _weapon = selectRandom (missionNamespace getVariable [format ["DMS_%1_weps",_class],DMS_assault_weps]);
+	[_unit, _weapon, 6 + floor(random 3)] call DMS_fnc_AddWeapon;
+	_unit selectWeapon _weapon;
+
+
+#ifdef USE_EXTRA_CHECKING
+	// "Guaranteed" method of finding/adding weapon attachments.
+	if ((random 100) <= (missionNamespace getVariable [format["DMS_%1_optic_chance",_class],0])) then
 	{
-		private _weapon = selectRandom (missionNamespace getVariable [format ["DMS_%1_weps",_class],DMS_assault_weps]);
-		[_unit, _weapon, 6 + floor(random 3)] call DMS_fnc_AddWeapon;
-		_unit selectWeapon _weapon;
+		private _optic = selectRandom
+		(
+			(missionNamespace getVariable [format ["DMS_%1_optics",_class],DMS_assault_optics]) arrayIntersect
+			(getArray (configfile >> "CfgWeapons" >> _weapon >> "WeaponSlotsInfo" >> "CowsSlot"))
+		);
 
-
-		if((random 100) <= (missionNamespace getVariable [format["DMS_%1_optic_chance",_class],0])) then
+		if !(isNil "_optic") then
 		{
-			_unit addPrimaryWeaponItem (selectRandom (missionNamespace getVariable [format ["DMS_%1_optics",_class],DMS_assault_optics]));
+			_unit addPrimaryWeaponItem _optic;
 		};
-
-		if (_nighttime && {(random 100) <= DMS_ai_nighttime_accessory_chance}) then
-		{
-			_unit addPrimaryWeaponItem (selectRandom ["acc_pointer_IR","acc_flashlight"]);
-		};
-
-		if((random 100) <= (missionNamespace getVariable [format["DMS_%1_bipod_chance",_class],0])) then
-		{
-			_unit addPrimaryWeaponItem (selectRandom DMS_ai_BipodList);
-		};
-
-		if((random 100) <= (missionNamespace getVariable [format["DMS_%1_suppressor_chance",_class],0])) then
-		{
-			private _suppressor = _weapon call DMS_fnc_FindSuppressor;
-			if (_suppressor != "") then
-			{
-				_unit addPrimaryWeaponItem _suppressor;
-			};
-		};
-
-		/*
-		// In case spawn position is water
-		if (DMS_ai_enable_water_equipment && {surfaceIsWater _pos}) then
-		{
-			removeHeadgear _unit;
-			removeAllWeapons _unit;
-			_unit forceAddUniform "U_O_Wetsuit";
-			_unit addVest "V_RebreatherIA";
-			_unit addGoggles "G_Diving";
-			[_unit, "arifle_SDAR_F", 4 + floor(random 3), "20Rnd_556x45_UW_mag"] call DMS_fnc_AddWeapon;
-		};
-		*/
-
-		private _pistols = missionNamespace getVariable [format ["DMS_%1_pistols",_class],[]];
-		if !(_pistols isEqualTo []) then
-		{
-			private _pistol = selectRandom _pistols;
-			[_unit, _pistol, 2 + floor(random 2)] call DMS_fnc_AddWeapon;
-		};
-
-		// Infinite Ammo
-		// This will NOT work if AI unit is offloaded to client
-		_unit addeventhandler ["Fired", {(vehicle (_this select 0)) setvehicleammo 1;}];
 	};
+
+	if (_nighttime && {(random 100) <= DMS_ai_nighttime_accessory_chance}) then
+	{
+		private _accessory = selectRandom (getArray (configfile >> "CfgWeapons" >> _weapon >> "WeaponSlotsInfo" >> "PointerSlot"));
+
+		if !(isNil "_accessory") then
+		{
+			_unit addPrimaryWeaponItem _accessory;
+		};
+	};
+
+	if ((random 100) <= (missionNamespace getVariable [format["DMS_%1_bipod_chance",_class],0])) then
+	{
+		private _bipod = selectRandom
+		(
+			DMS_AI_BipodList arrayIntersect
+			(getArray (configfile >> "CfgWeapons" >> _weapon >> "WeaponSlotsInfo" >> "UnderBarrelSlot"))
+		);
+
+		if !(isNil "_bipod") then
+		{
+			_unit addPrimaryWeaponItem _bipod;
+		};
+	};
+
+#else
+	// "Regular" method of finding/adding weapon attachments.
+	if ((random 100) <= (missionNamespace getVariable [format["DMS_%1_optic_chance",_class],0])) then
+	{
+		_unit addPrimaryWeaponItem (selectRandom (missionNamespace getVariable [format ["DMS_%1_optics",_class],DMS_assault_optics]));
+	};
+
+	if (_nighttime && {(random 100) <= DMS_ai_nighttime_accessory_chance}) then
+	{
+		_unit addPrimaryWeaponItem (selectRandom ["acc_pointer_IR","acc_flashlight"]);
+	};
+
+	if ((random 100) <= (missionNamespace getVariable [format["DMS_%1_bipod_chance",_class],0])) then
+	{
+		_unit addPrimaryWeaponItem (selectRandom DMS_AI_BipodList);
+	};
+
+#endif
+
+
+	if ((random 100) <= (missionNamespace getVariable [format["DMS_%1_suppressor_chance",_class],0])) then
+	{
+		private _suppressor = _weapon call DMS_fnc_FindSuppressor;
+		if (_suppressor != "") then
+		{
+			_unit addPrimaryWeaponItem _suppressor;
+		};
+	};
+
+	/*
+	// In case spawn position is water
+	if (DMS_ai_enable_water_equipment && {surfaceIsWater _pos}) then
+	{
+		removeHeadgear _unit;
+		removeAllWeapons _unit;
+		_unit forceAddUniform "U_O_Wetsuit";
+		_unit addVest "V_RebreatherIA";
+		_unit addGoggles "G_Diving";
+		[_unit, "arifle_SDAR_F", 4 + floor(random 3), "20Rnd_556x45_UW_mag"] call DMS_fnc_AddWeapon;
+	};
+	*/
+
+	private _pistols = missionNamespace getVariable [format ["DMS_%1_pistols",_class],[]];
+	if !(_pistols isEqualTo []) then
+	{
+		private _pistol = selectRandom _pistols;
+		[_unit, _pistol, 2 + floor(random 2)] call DMS_fnc_AddWeapon;
+	};
+
+	// Infinite Ammo. This will NOT work if AI unit is offloaded to client.
+	// Removed because there isn't much need for this.
+	// _unit addeventhandler ["Fired", {(vehicle (_this select 0)) setvehicleammo 1;}];
 }
 else
 {
@@ -353,13 +388,26 @@ else
 	] call ExileServer_system_thread_addTask;
 };
 
+// Give default items
 {
-	_unit setSkill _x;
-} forEach (missionNamespace getVariable [format["DMS_ai_skill_%1",_difficulty],[]]);
+	// "Why doesn't linkItem work with any of these? Because fuck you, that's why" - BIS
+	if (_x in ["Binocular","Rangefinder","Laserdesignator","Laserdesignator_02","Laserdesignator_03"]) then
+	{
+		_unit addWeapon _x;
+	}
+	else
+	{
+		_unit linkItem _x;
+	};
+} forEach DMS_ai_default_items;
+
+
 
 
 // Soldier killed event handler
 _unit addMPEventHandler ["MPKilled",'if (isServer) then {_this call DMS_fnc_OnKilled;};'];
+
+
 
 // Remove ramming damage from players.
 // Will not work if unit is not local (offloaded)
@@ -381,6 +429,11 @@ if (DMS_ai_disable_ramming_damage) then
 };
 
 
+// Tweak difficulty stuff.
+{
+	_unit setSkill _x;
+} forEach (missionNamespace getVariable [format["DMS_ai_skill_%1",_difficulty],[]]);
+
 if (_difficulty == "hardcore") then
 {
 	// Make him a little bit harder ;)
@@ -399,6 +452,7 @@ _unit setCustomAimCoef (missionNamespace getVariable [format["DMS_AI_AimCoef_%1"
 _unit enableStamina (missionNamespace getVariable [format["DMS_AI_EnableStamina_%1",_difficulty], true]);
 
 
+
 if (_type=="Soldier") then
 {
 	_unit setVariable ["DMS_AISpawnPos",_pos];
@@ -411,6 +465,7 @@ if (_type == "Paratroopers") then
 	_type = "Soldier";
 	_unit addBackpackGlobal "B_Parachute";
 };
+
 
 // Set info variables
 _unit setVariable ["DMS_AISpawnTime", time];
