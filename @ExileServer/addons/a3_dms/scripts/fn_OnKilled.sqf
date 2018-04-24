@@ -64,7 +64,7 @@ if ((_unit getVariable ["DMS_ai_remove_launchers",DMS_ai_remove_launchers]) && {
 
 		_unit spawn
 		{
-			sleep 0.5;
+			uiSleep 0.5;
 
 			{
 				_holder = _x;
@@ -105,10 +105,7 @@ if (!(_grpUnits isEqualTo []) && {(leader _grp) isEqualTo _unit}) then
 private _av = _unit getVariable ["DMS_AssignedVeh",objNull];
 if (!isNull _av) then
 {
-	if!(dynamicSimulationEnabled _av)then
-	{
-		_av enableSimulationGlobal true;
-	};
+	_av enableSimulationGlobal true;
 
 	// Determine whether or not the vehicle has any active crew remaining.
 	private _memCount = {[(alive _x),false] select (_unit isEqualTo _x);} count (crew _av);
@@ -130,7 +127,7 @@ if (!isNull _av) then
 			] select (_av isKindOf "StaticWeapon"))
 		) then
 		{
-			_av setDamage 1;
+			_av setDamage [1, false];
 			_av setVariable ["ExileDiedAt",time];
 
 			[if (_av isKindOf "Air") then {30} else {5}, {_this enableSimulationGlobal false}, _av, false, false] call ExileServer_system_thread_addTask;
@@ -152,11 +149,8 @@ if (!isNull _av) then
 				[_av, 1] remoteExecCall ["lock", _av];
 			};
 
-			if!(dynamicSimulationEnabled _av)then
-			{
-				_av call ExileServer_system_simulationMonitor_addVehicle;
-				_av enableSimulationGlobal true;
-			};
+			_av call ExileServer_system_simulationMonitor_addVehicle;
+
 			_av setVariable ["ExileMoney",0,true];
 			_av setVariable ["ExileIsPersistent", false];
 			_av addMPEventHandler ["MPKilled", { if (isServer) then {_this call ExileServer_object_vehicle_event_onMPKilled;};}];
@@ -219,7 +213,7 @@ if (!isNull _av) then
 						diag_log format ["DMS Seat Switcher :: Temporarily setting owner of %1 to server from %2. Success: %3",_grp,_owner,_grp setGroupOwner 2];
 					};
 
-					sleep 5+(random 3); // 5 to 8 seconds delay after gunner death
+					uiSleep 5+(random 3); // 5 to 8 seconds delay after gunner death
 
 					if !(alive _driver) exitWith {};
 
@@ -241,7 +235,7 @@ if (!isNull _av) then
 					_driver assignAsGunner _av;
 					[_driver] orderGetIn true;
 
-					sleep 1.5;
+					uiSleep 1.5;
 					if !(alive _driver) exitWith {};
 
 					_driver moveInGunner _av;
@@ -268,7 +262,7 @@ if (!isNull _av) then
 							(((gunner _av) isEqualTo _driver) || {(time-_start)>30})
 						};
 
-						sleep 3;
+						uiSleep 3;
 
 						_start = time;
 
@@ -283,9 +277,9 @@ if (!isNull _av) then
 						};
 
 						_driver doTarget _killer;
-						_driver doFire _killer;
+						_driver doSuppressiveFire _killer;
 
-						sleep 15;
+						uiSleep 15;
 
 						diag_log format ["DMS Seat Switcher :: Resetting ownership of %1 to %2. Success: %3",_grp,_owner,_grp setGroupOwner _owner];
 					};

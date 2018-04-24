@@ -1,4 +1,4 @@
-![ArmA 1.66](https://img.shields.io/badge/Arma-1.66-blue.svg) ![Exile 1.0.2 "Kohlrabi"](https://img.shields.io/badge/Exile-1.0.2%20Kohlrabi-C72651.svg) ![DMS Version](https://img.shields.io/badge/DMS%20Version-2017--03--10-blue.svg)
+![ArmA 1.80](https://img.shields.io/badge/Arma-1.80-blue.svg) ![Exile 1.0.3 "Lemon"](https://img.shields.io/badge/Exile-1.0.3%20Lemon-C72651.svg) ![DMS Version](https://img.shields.io/badge/DMS%20Version-2018--02--12-blue.svg)
 
 
 # To the User:
@@ -58,7 +58,7 @@ It is highly recommended that you add
 !="(_this select 0) execVM \"\A3\Structures_F\Wrecks\Scripts\Wreck_Heli_Attack_01.sqf\""
 ```
 
-at ***the END of the line that starts with "7 exec" in scripts.txt*** . [Here is the pastebin](http://pastebin.com/W8bH252U).
+at ***the END of the line that starts with "7 exec" in scripts.txt*** (if it exists). [Here is the pastebin](http://pastebin.com/W8bH252U).
 
 ***AND:***
 
@@ -78,8 +78,7 @@ after "7 createVehicle"
 
 <br>
 ## infiSTAR:
-* If you are using infiSTAR and want to keep ```CGM = true;```, then set ```UMW = true;```.
-* Add ```'O_HMG_01_high_F'``` to ```_VehicleWhiteList```, as well as any other vehicles you add to DMS that are not whitelisted.
+* If you want to enable "VehicleWhiteList_check", make sure to add ```'O_HMG_01_high_F'``` to ```_VehicleWhiteList```, as well as any other vehicles you add to DMS that are not whitelisted.
 
 <br><br>
 ### Vilayer or other Game Server Providers Instructions:
@@ -120,8 +119,9 @@ ___
 - [maca134](http://maca134.co.uk/portfolio/m3editor-arma-3-map-editor/) for M3Editor Stuff
 - [Darth Rogue from SOA](http://soldiersofanarchy.net/) for the awesome base for the first DMS static mission :D
 - [William from Refugees of the Fallen](http://rtfgaming.com/) for the amazing slums static mission base and ideas :)
-- [DONKEYPUNCH](https://github.com/donkeypunchepoch) for everything on the [February 17th 2016 commit](https://github.com/Defent/DMS_Exile#february-17-2016-600-pm-cst-america) ;)
-- Everbody's feedback on [the DMS thread on exile forums](http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findComment&comment=242)
+- [DONKEYPUNCH](https://github.com/donkeypunchepoch) for everything on the [February 17th 2016 commit](https://github.com/Defent/DMS_Exile/wiki/Changelog#february-17-2016-600-pm-cst-america) ;)
+- [MGTDB](https://github.com/MGTDB) for the plethora of fixes, testing, and all-around doing our work for us :P
+- Everybody's feedback on [the DMS thread on exile forums](http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findComment&comment=242)
 
 #### Testers/Reporters:
 - [William from Refugees of the Fallen](http://rtfgaming.com/)
@@ -133,7 +133,7 @@ ___
 ___
 <br><br><br>
 
-# Roadmap:
+# Ideas:
 ### Zombies are NOT SUPPORTED by DMS, nor do we ever plan to support zombies within DMS.
 
 #### Convoy Mission:
@@ -147,7 +147,7 @@ ___
 * Air/Land AI Vehicle Patrols
 
 #### Random community ideas:
-* Spawning in a trader on mission completion ([Trillseeker82](http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findComment&comment=43932)). This might be done after the next Exile update due to the trader system overhaul :)
+* Spawning in a trader on mission completion ([Trillseeker82](http://www.exilemod.com/topic/61-dms-defents-mission-system/?do=findComment&comment=43932)).
 
 #### Full Headless Client Support.
 * AI will still be offloaded to clients (ideally); strictly DMS functions will be handled by the HC.
